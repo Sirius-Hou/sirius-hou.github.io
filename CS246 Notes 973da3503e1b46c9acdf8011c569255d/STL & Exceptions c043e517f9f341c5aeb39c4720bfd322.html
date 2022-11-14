@@ -1,0 +1,1071 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>STL &amp; Exceptions</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="c043e517-f9f3-41c5-aeb3-9c4720bfd322" class="page sans"><header><h1 class="page-title">STL &amp; Exceptions</h1></header><div class="page-body"><h1 id="59eef2b1-576d-4f10-9ed4-0162822b048d" class="">C++ Templates</h1><ul id="6e0c958f-9545-418c-819e-9b77317e2fda" class="bulleted-list"><li style="list-style-type:disc">A feature of C++ programming language</li></ul><ul id="118580e6-5ac7-4ff4-999e-9c92f54f7f99" class="bulleted-list"><li style="list-style-type:disc">Allows functions and classes to operate with generic types</li></ul><ul id="9a13936f-a727-41c5-8f44-eb77b4ca5aba" class="bulleted-list"><li style="list-style-type:disc">Allows functions and classes to work on <mark class="highlight-red">different data types</mark> without re-writing the code</li></ul><p id="ebd472ba-3c8d-4325-96f8-0c538295aa18" class="">
+</p><p id="4e0c668f-83e2-44a0-9b9a-fdfc105cd6ee" class=""><strong>Why we need templates?</strong></p><p id="96386d5d-61a2-4998-824d-adfc99fb0fd8" class="">Scene:  Assume that our client wants us to implement ADT Stack using dynamic arrays, however, he wants the Stack to support <em>int</em>, <em>char</em>, <em>std::string</em>, so what should we do?
+Based on what we have learned so far, we have no choice but to implement 3 different Stacks, one supports <em>int</em>, one supports <em>char</em>, and one support <em>std::string</em>. So why bother writing the same code three times? Therefore, we need templates to simplify this process.</p><p id="3f9e727b-dda1-47a6-9de6-c056af678b9f" class="">
+</p><p id="34f748ce-a85b-4e70-8b34-bdf74a168a3a" class=""><strong>Syntax:</strong> <code>template&lt;typename T&gt;</code> (no semicolon <code>;</code>)</p><p id="69d3dab7-045a-45f8-bfcb-b00f349ef2f2" class=""><strong>Interpretation:</strong></p><ul id="d5d54405-5cb0-41f9-80c9-21397e624366" class="bulleted-list"><li style="list-style-type:disc">Telling the compiler that we have some data type <code>T</code>.</li></ul><ul id="4564d347-0a30-4d81-b66f-616badc19b30" class="bulleted-list"><li style="list-style-type:disc">We replace <code>T</code> with specific data type when calling functions or classes.</li></ul><ul id="35e59f72-993a-4fb0-a958-6f120d7a4b84" class="bulleted-list"><li style="list-style-type:disc">We can avoid writing the same code for supporting different data types.</li></ul><p id="78405e58-ae5e-4a84-b056-99faef5b95a3" class="">
+</p><p id="e98f669c-a45d-4c89-be23-28b9a4a2e858" class="">Example: Write a function that finds the maximum of two integers or two chars.</p><p id="e09dc646-e0f3-42b3-82e0-3d54455fc5af" class="">Old Method:</p><pre id="7a83781d-3723-4092-be2d-fc43767c1659" class="code"><code>using namespace std;
+// using function over loading
+int findMax(int a, int b) {
+	return a &gt;= b ? a : b;
+}
+
+int findMax(char a, char b) {
+	return a &gt;= b ? a : b;
+}
+
+int main() {
+	cout &lt;&lt; findMax(3,5) &lt;&lt; endl;
+	cout &lt;&lt; findMax(&#x27;a&#x27;, &#x27;B&#x27;) &lt;&lt; endl;
+}</code></pre><p id="50da212f-f2e4-465f-8c23-9277aaf22bdb" class="">New Method (using template):</p><pre id="e15c62c4-ed44-4a22-aca6-c9d3f7ce917f" class="code"><code>template&lt;typemname T&gt;
+T findMax(T a, T b) {
+	return a &gt;= b ? a : b;
+}
+
+int main() {
+	cout &lt;&lt; findMax(3,5) &lt;&lt; endl;
+	cout &lt;&lt; findMax(&#x27;a&#x27;, &#x27;B&#x27;) &lt;&lt; endl;
+}</code></pre><p id="66179988-3862-4c58-a715-010278090448" class="">
+</p><p id="47895610-c85f-448d-862e-0f20918f2d9f" class="">Then, for the Stack ADT example, we can implement it as following:</p><pre id="7860fe4b-6397-400b-86ef-49b25dae5415" class="code"><code>template &lt;typename T&gt;
+class Stack {
+	int size = 0, cap = 10;
+	T* arr;
+public:
+	explicit Stack();
+	~Stack();
+
+	void push(const T&amp;);
+	T pop();
+	int size() const;
+}
+
+Stack::Stack(): // However, this would cause error...
+	arr{new T[cap]} { } // see below for reason</code></pre><p id="a7a90819-16b6-4986-b9dc-7e8b5c673e29" class=""><em><strong>Reason:</strong></em></p><ul id="250ba6ff-80b5-4e74-8596-8dfb5b38b5f6" class="bulleted-list"><li style="list-style-type:disc">We must let the compiler know the specific type when compiling.</li></ul><ul id="367383ca-81fc-44be-8161-f078c36271af" class="bulleted-list"><li style="list-style-type:disc">So instead of writing <code>Stack</code>, we must write <code>Stack&lt;T&gt;</code> where <code>T</code> will be replaced by a specific data type when create <code>Stack</code> objects</li></ul><ul id="d54b6627-6f7d-4a3d-ab32-b517a0e807d8" class="bulleted-list"><li style="list-style-type:disc">And also, remember that template statement is single-use! We have to redefine it every time a function uses it! Thus, we have to add <code>template &lt;typename T&gt;</code> before the function definition.</li></ul><ul id="e95ca28d-030e-4396-b320-181f76a3986b" class="bulleted-list"><li style="list-style-type:disc">*Remember we did not add semicolon after <code>template &lt;typename T&gt;</code>, this means that this is not a complete command, and it has to be bound with something.</li></ul><p id="e6689646-53bd-44a2-a3c4-9fc2f09651c7" class="">
+</p><p id="3972dcdb-f36a-4da1-911d-577c545f7b3c" class="">Correct implementation:</p><pre id="9abb982e-761f-4edd-b28f-51f3e49958dc" class="code"><code>template &lt;typename T&gt;
+class Stack {
+	int size = 0, cap = 10;
+	T* arr;
+public:
+	explicit Stack();
+	~Stack();
+
+	void push(const T&amp;);
+	T pop();
+	int size() const;
+}
+
+template &lt;typename T&gt;
+Stack&lt;T&gt;::Stack():
+	arr{new T[cap]} { } // now this can compile</code></pre><p id="02612270-e8c6-4f95-ba1f-153e3610c584" class="">Other functions in Stack ADT:</p><pre id="573ca1f1-8ff9-45c1-b644-00567a0738a8" class="code"><code>template&lt;typename T&gt;
+Stack&lt;T&gt;::~Stack() {delete [] arr};
+
+template&lt;typename T&gt;
+void Stack&lt;T&gt;::push(const T&amp; item) {
+	if (size == cap) {
+		cap *= 2;
+		T* newArr = new T[cap];
+		for (int i = 0; i &lt; size; i++) {
+			newArr[i] = arr[i];
+		}
+		delete [] arr;
+		arr = newArr;
+	}
+	arr[size++] = item;
+}
+
+template&lt;typename T&gt;
+T Stack&lt;T&gt;::pop() {return arr[--size]};
+
+template&lt;typename T&gt;
+int Stack&lt;T&gt;::length() const { return size; }</code></pre><p id="6406e564-7bba-4687-8b23-10ba0a7b11af" class="">How to use it?</p><pre id="a17001ed-116a-4180-b149-02850e641914" class="code"><code>int main() {
+	Stack&lt;int&gt; s1;
+	Stack&lt;char&gt; s2;
+	Stack&lt;std::string&gt; s3;
+}</code></pre><ul id="b0a56371-73c6-48e4-b2d6-267383f3cb2f" class="bulleted-list"><li style="list-style-type:disc">Now our code supports three data types</li></ul><ul id="7928a118-40b1-4cae-afac-6981a7ad338d" class="bulleted-list"><li style="list-style-type:disc"><code>T</code> can be any data type that compiler recognizes, even <mark class="highlight-red">user-defined</mark> <mark class="highlight-red">structure or class</mark> is recognized</li></ul><h3 id="e382155e-f862-4837-b86f-947484f8ef3a" class=""><mark class="highlight-red">IMPORTANT:</mark></h3><ul id="acf37f9a-34a1-419f-bcb9-213f40373312" class="bulleted-list"><li style="list-style-type:disc">Template classes and member function <mark class="highlight-red">definitions</mark> must be in the <span style="border-bottom:0.05em solid"><mark class="highlight-red">header file</mark></span>!!!</li></ul><ul id="48812cef-928e-448c-bb1d-c60b06e841e0" class="bulleted-list"><li style="list-style-type:disc">Template declarations definitions must be in the <span style="border-bottom:0.05em solid"><mark class="highlight-red">same file</mark></span>! (No way to link templates from different files!)</li></ul><p id="d86d4017-b5fe-40e8-8d11-c29b8f7302b2" class="">
+</p><h1 id="9e75dc1d-49b1-4f7a-8ca6-d53024604acd" class="">Standard Template Library (STL)</h1><ul id="010a4492-2df3-41f5-8455-32c46908413f" class="bulleted-list"><li style="list-style-type:disc">A set of template classes to provide common programming data structures and functions. (C++ built-in libraries)</li></ul><ul id="1c75cf4e-8df2-49ba-b464-b077972c0221" class="bulleted-list"><li style="list-style-type:disc">A library of container classes, algorithms and iterators.</li></ul><h3 id="a55e70d2-7b65-44d0-ac3b-813fce680378" class="">Four components in STL:</h3><ul id="9646c2e7-8dd8-4976-8b1e-b09f3b91515f" class="bulleted-list"><li style="list-style-type:disc">Algorithms</li></ul><ul id="0087ad16-e88a-48f4-b993-a3c7b441f18b" class="bulleted-list"><li style="list-style-type:disc">Containers  → We mainly focused on this one in this lecture</li></ul><ul id="0f6c087e-2db6-4acf-b05f-42ab4d010bc9" class="bulleted-list"><li style="list-style-type:disc">Functions</li></ul><ul id="be831121-29a0-47a8-9d95-07b61e4041dd" class="bulleted-list"><li style="list-style-type:disc">Iterators</li></ul><h3 id="83774a44-50ee-40f8-b27b-9ecbba9350ac" class="">Containers:</h3><ul id="e1c7942e-b0f5-45c2-a7d5-878464ab87aa" class="bulleted-list"><li style="list-style-type:disc"><em><strong>Sequence containers</strong></em>: vector, list, deque, arrays, forward_list</li></ul><ul id="0d7a5962-e01f-4fdd-b254-acb806a120cb" class="bulleted-list"><li style="list-style-type:disc"><em><strong>Container adaptors</strong></em>: queue, stack, priority_queue</li></ul><ul id="30e28ad1-acb8-4fd8-8bb7-74852f2d699f" class="bulleted-list"><li style="list-style-type:disc"><em><strong>Associative containers</strong></em>: map, set, multiset, multimap</li></ul><ul id="a4a8293a-8568-4bfb-815d-f3fdcd7f802f" class="bulleted-list"><li style="list-style-type:disc"><em><strong>Unordered associative containers</strong></em>: unordered_map, unordered_set</li></ul><p id="4151e77c-d257-4c81-88d4-13f23e8bf619" class="">
+</p><h1 id="cc0db5ff-4f2a-4097-81f3-aaea52746446" class="">Vector</h1><ul id="323ea844-6f6c-4f3c-92c6-b65a3eb42cbd" class="bulleted-list"><li style="list-style-type:disc">A sequence container representing array that can change its size.</li></ul><ul id="c8eeffc2-f116-495b-8026-e7d1ee3b5dd7" class="bulleted-list"><li style="list-style-type:disc">Uses <mark class="highlight-red">dynamic array</mark> to store elements (provides <mark class="highlight-red">random access</mark>)</li></ul><ul id="1d7052c6-1c54-4f1a-8f24-638dcdbbb1c5" class="bulleted-list"><li style="list-style-type:disc">May allocate extra storage for possible growth (might be doubling strategy).</li></ul><p id="d4cb7e1c-33d3-4fcc-a871-255c875830bf" class="">
+</p><p id="5c9256eb-69b8-4f59-a18b-4401e97ae671" class=""><strong>How to use it?</strong></p><p id="5fa72f4a-c880-469a-8085-926f27d328f9" class=""><code>#include &lt;vector&gt;</code> allows us to use the template class <code>Vector</code>.</p><p id="219384c1-ec4e-4b1e-8039-705aa8db87d6" class="">Since vector is a template class, we need to tell compiler the specific data type when we create the object.</p><p id="b86ce34e-1199-470a-8061-1b5e186ab588" class="">e.g.: <code>std::vector&lt;int&gt; v;</code></p><p id="1495be16-de28-4ebb-ac00-1de07624a544" class="">
+</p><p id="5c51f29a-4cde-4644-997e-f927c5b05d08" class=""><strong>Vector documentation website: </strong><a href="https://cplusplus.com/reference/vector/vector/">https://cplusplus.com/reference/vector/vector/</a></p><p id="fc007647-36e4-439c-92a5-2151bf56bd9a" class="">
+</p><h2 id="4a3680e9-e704-4ca6-9496-bfcc5d30272b" class="">S<strong>ome commonly used functions:</strong></h2><ul id="3b1f200b-fe24-44db-9d84-05a19ca3d69f" class="bulleted-list"><li style="list-style-type:disc"><code>emplace_back( ... )</code> : insert element at the end of the array.</li></ul><ul id="a51956ce-1622-4d39-8302-39238fab6481" class="bulleted-list"><li style="list-style-type:disc"><code>pop_back()</code> : removes and returns the last element in array.</li></ul><ul id="a9052e7e-170f-41f4-825f-34c5a7ed22b4" class="bulleted-list"><li style="list-style-type:disc"><code>size()</code> : returns the number of elements in array.</li></ul><ul id="8991e3cd-f740-4f30-ab8a-22d0cc158a3a" class="bulleted-list"><li style="list-style-type:disc"><code>clear()</code> : removes all elements in vector.<p id="eca82f21-90c9-4ec9-aa52-ff76f78e299b" class=""><strong>Note:</strong> <code>clear()</code> only erases the elements, and that if the elements themselves are pointers, the pointed-to-memory is <mark class="highlight-red">not touched</mark> in any way. Managing the pointers is the user’s responsibility. Remember to deallocate heap memories the pointers point to before removing them from the vector!</p></li></ul><p id="7c384740-2bb7-4613-8e13-e267ab689d98" class="">
+</p><h2 id="933b4c07-6049-41db-9ab9-915ee30f922f" class="">Two Methods to Access Elements in Vector:</h2><h3 id="597d5634-36a4-4d54-a4de-90cb53963771" class="">Method 1: <code>operator[]</code></h3><pre id="0533b3e7-2ebd-4149-9c94-90ccbe6f593d" class="code"><code>for (unsigned int i = 0; i &lt; v.size(); i++) {
+	std::cout &lt;&lt; v[i] &lt;&lt; std::endl;
+}</code></pre><h3 id="c67a7eaf-d62f-4e9a-b327-0755084f60c2" class="">Method 2: <code>at( int )</code></h3><pre id="d97cf09b-5eb6-4c91-98fa-7a0bade8b5f4" class="code"><code>for (unsigned int i = 0; i &lt; v.size(); i++) {
+	std::cout &lt;&lt; v.at(i) &lt;&lt; std::endl;
+}</code></pre><h3 id="32e2c418-1f3c-43cb-b02d-4b0014fb0af6" class="">Difference between those 2 methods:</h3><div id="9ab21b87-1d87-4b53-a3e4-13f6188b77ec" class="column-list"><div id="63837ae6-274d-471b-bc83-f35d7eca428b" style="width:44.44444444444444%" class="column"><ul id="ba3b8774-e6d0-4e6e-841b-656ebf73bf3b" class="bulleted-list"><li style="list-style-type:disc">operator[] does not check boundaries and may cause undefined behaviors.</li></ul><p id="bde0656c-9f03-4fbb-93a6-fe20cc8718d5" class="">
+</p><p id="b93ace5c-d583-4738-9146-a04ddf0043ad" class="">
+</p><p id="e0d5d98f-272a-4cfe-a6f5-c279c2305473" class="">
+</p><p id="8fe648af-fcca-4321-9218-99ceb3f4066a" class="">
+</p><ul id="606c796d-88cf-4077-8445-8eb2cfb7f48d" class="bulleted-list"><li style="list-style-type:disc"><code>at()</code> checks boundaries</li></ul><ul id="1179d9f9-3270-4927-a054-2e2326720b18" class="bulleted-list"><li style="list-style-type:disc">It throws an <mark class="highlight-red"><strong>exception</strong></mark> as soon as the index i is out of bound.</li></ul><p id="a849cacd-87a8-41e3-a732-8a271819b396" class="">
+</p></div><div id="8660cd23-28ce-4945-a508-70a216ecad15" style="width:55.55555555555555%" class="column"><p id="ca2012b1-a6ce-4eb8-a0ca-be728bf43829" class="">Example:</p><figure id="21345205-d76a-46a0-aa63-86cc2606a382" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled.png"><img style="width:91px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled.png"/></a></figure><p id="1f73eb46-2c88-400d-98fc-6543903e2fd0" class="">
+</p><figure id="7d35f0a1-3e01-4b1e-bc0d-efeedcac4a41" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%201.png"><img style="width:802px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%201.png"/></a></figure><p id="dc97bf59-48ea-4d15-8f11-b07056c4de59" class="">
+</p></div></div><h1 id="b3444890-0158-477e-9b87-4dd1013094b8" class="">Exceptions</h1><p id="ea3d1c70-4c56-4c19-ab19-35606221c2b1" class="">Let’s take a closer look of the error message we just saw</p><figure id="b7d89ef0-1a29-4a83-8d6c-151ec1186e04" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%202.png"><img style="width:1050px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%202.png"/></a></figure><ul id="3fc4bea0-9b92-4555-8d37-4eb9e92f29b9" class="bulleted-list"><li style="list-style-type:disc">Program threw an exception.</li></ul><ul id="8042464b-defe-4c1c-8f3f-7ddb541023fb" class="bulleted-list"><li style="list-style-type:disc">Exceptions provide a way to transfer control from one part of a program to another.</li></ul><ul id="42457b0d-21a9-4e4a-9451-800b5e552904" class="bulleted-list"><li style="list-style-type:disc">Since our code could not handle exceptions, program is aborted.</li></ul><p id="ad696f67-8fc7-4357-9302-45158290db09" class="">
+</p><p id="007e31dc-b949-462e-8573-e8256e8bd005" class=""><strong>Basic control flow:</strong></p><ul id="888c534d-6545-4196-8d9d-de0d387a9af5" class="bulleted-list"><li style="list-style-type:disc">Conditions (if, else if, else)</li></ul><ul id="15c7f88f-bd4a-4cb2-b4cf-77ab3efe080e" class="bulleted-list"><li style="list-style-type:disc">Iterations (while-loops, for-loops)</li></ul><ul id="c41d5cdc-ec5b-4e80-a9eb-6298d762334f" class="bulleted-list"><li style="list-style-type:disc">Return / function calls</li></ul><ul id="44787b2f-8f80-4bab-b0b6-91037e978580" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">Exceptions</mark></li></ul><p id="138bc5db-aeab-4b54-aa24-e7f42d89ac3c" class="">
+</p><p id="ad096fb4-b329-467b-abbc-6a030e123004" class=""><strong>How do we handle exceptions?</strong></p><ul id="eb51efb1-cd69-4214-90c3-9450c1c4f090" class="bulleted-list"><li style="list-style-type:disc">If program <mark class="highlight-red"><strong>throws</strong></mark> an exception (basically an error)</li></ul><ul id="86554792-4db4-4803-ac4c-a6e5866266eb" class="bulleted-list"><li style="list-style-type:disc">we need to <mark class="highlight-red"><strong>catch</strong></mark> the exception, otherwise program terminates.</li></ul><p id="c7fea5d3-a45d-49c6-9390-16b3cbf85943" class="">
+</p><p id="f9150af0-f317-4ab6-af91-45ceb5eb5929" class=""><strong>How do we catch exceptions?</strong></p><p id="a3aa7158-6598-4414-9060-775114f32d32" class="">Example: catch the exception thrown by read fail</p><p id="b51741dc-0f10-4c17-925b-a0470655945f" class="">Instead of perform the operations directly, we have to “try” to perform the operations.</p><pre id="ace397d7-4ee0-422d-92ee-67f8b543f223" class="code"><code>#include &lt;iostream&gt;
+
+int main() {
+	int num;
+	
+	for ( ; ; ) {
+		// try to read integers
+		try {
+			std::cin &gt;&gt; num;
+			// throw exception if read fails
+			if (std::cin.fail()) {
+				// suppose we throw an interger
+				int num = -1;
+				throw num;
+ 		}
+	}
+}</code></pre><p id="dba2fb70-5d1c-4d95-8fdd-24a53a24cae9" class="">If read successes, we just print the integer. If read integer fails, we throw the exception. How do we catch the exception?</p><pre id="46bb9d77-42c7-43a5-a2bf-22ce30483b5e" class="code"><code>#include &lt;iostream&gt;
+
+int main() {
+	int num;
+	
+	for ( ; ; ) {
+		// try to read integers
+		try {
+			std::cin &gt;&gt; num;
+			// throw exception if read fails
+			if (std::cin.fail()) {
+				// suppose we throw an interger
+				int num = -1;
+				throw num;
+ 		} catch (int&amp; error) {
+			// int type exception will be caught
+			std::cin.clear();
+			std::cin.ignore();
+			if (std::cin.eof()) break;
+	}
+}</code></pre><p id="fcce5447-47d8-4d13-9980-ac309ffb10ce" class="">
+</p><p id="1688a638-98ba-4910-b673-a1da0a680deb" class="">An easier approach of handling read fail problem:</p><pre id="231a4564-5010-4d9b-890d-303fabb27a5e" class="code"><code>#include &lt;iostream&gt;
+
+int main() {
+	int num;
+	
+int main() {
+	int num;
+
+	// read will throw exceptions if fail
+	std::cin.exceptions(std::ios::failbit);
+
+	for ( ; ; ) {
+		try {
+			std::cin &gt;&gt; num;
+ 		} catch (std::ios::failure&amp;) {
+			// int type exception will be caught
+			std::cin.clear();
+			std::cin.ignore();
+			if (std::cin.eof()) break;
+	}
+}</code></pre><ul id="1ecbb382-bc5c-48fe-8a62-0d88385e4282" class="bulleted-list"><li style="list-style-type:disc">Explicitly let <code>std::cin</code> throws an exception if read fails</li></ul><ul id="e8f8c793-1eab-41ab-bd06-6985b71f838e" class="bulleted-list"><li style="list-style-type:disc">Catch the build-in error type <code>std::ios::failure</code></li></ul><ul id="7ae0e3f5-ee91-4009-b3bb-e3d7da448a79" class="bulleted-list"><li style="list-style-type:disc">If you are not familiar with C++ build-in exceptions, you can always write customized exception.</li></ul><p id="759144bb-8156-478c-8812-4b9ac1122fe3" class="">
+</p><h1 id="1b26e73e-ef29-4d4b-9121-e2fe2523aafc" class="">Exception Objects</h1><pre id="65f31113-77f8-4d1f-810f-58ac08753e06" class="code"><code>//.h file
+#include &lt;iostream&gt;
+
+class BaseException {
+public:
+	virtual void print() const {
+		std::cout &lt;&lt; &quot;exception from base class&quot; &lt;&lt; std::endl;
+	}
+};
+
+class DerivedException : public BaseException {
+public:
+	void print() const override{
+		std::cout &lt;&lt; &quot;exception from derived class&quot; &lt;&lt; std::endl;
+	}
+};
+
+//.cc file
+int main() {
+	DerivedException de;
+	
+	try {
+		throw de;
+	}
+	catch (BaseException be) {
+		be.print();
+	}
+	catch (DerivedException de) {
+		de.print();
+	}
+	std::cout &lt;&lt; &quot;finish executing&quot; &lt;&lt; std::endl;
+}</code></pre><ul id="ff3d1deb-5fbf-4548-abde-3b05ad93558a" class="bulleted-list"><li style="list-style-type:disc">The second catch block will <mark class="highlight-red">never</mark> be executed</li></ul><ul id="e7cf9339-0060-4d20-974b-fef45bff51a6" class="bulleted-list"><li style="list-style-type:disc">By definition of inheritance, we know that <code>DerivedException</code> is <code>BaseException</code>.</li></ul><ul id="304bbe28-108b-471d-bc3c-d9adf76c33fa" class="bulleted-list"><li style="list-style-type:disc">Code compiles but gives us warning, because this is not how C++ is designed.</li></ul><figure id="184b25da-5410-47a9-9c71-d461a3d0808d" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%203.png"><img style="width:998px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%203.png"/></a></figure><p id="89404aa3-493f-4574-948b-58bda734ee6a" class=""><em><strong><mark class="highlight-red">IMPORTANT:</mark></strong></em></p><p id="adf0b6b8-db27-4fbe-9d16-fc3389936666" class="">Always remember to catch <mark class="highlight-red">derived classes</mark> first, then <mark class="highlight-red">base class</mark>!</p><p id="205cf8d6-412e-4127-a608-fa32d87175a7" class="">
+</p><p id="b4a9e049-1ef8-44d5-adf3-ffe024043da0" class="">Correct implementation:</p><pre id="aed1f816-62ad-4b42-a665-209d58ec7277" class="code"><code>//.cc file
+int main() {
+	DerivedException de;
+	
+	try {
+		throw de;
+	}
+	catch (DerivedException de) {
+		de.print();
+	}
+	catch (BaseException be) {
+		be.print();
+	}
+	std::cout &lt;&lt; &quot;finish executing&quot; &lt;&lt; std::endl;
+}</code></pre><p id="c3a13aae-44d5-4e91-b897-0d7aacb44dfa" class="">
+</p><p id="2d995a86-26ae-4646-990c-db48ae53a198" class="">Recall object slicing:</p><figure id="64ea8ca6-5d7d-42f0-8cc5-dc746fa2870e" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%204.png"><img style="width:384px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%204.png"/></a></figure><figure id="0546f1c4-6162-45cc-8114-2e2ec850b47c" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%205.png"><img style="width:384px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%205.png"/></a></figure><p id="7a2f280e-a365-4afe-ab95-cc1efc0cd059" class="">Object slicing occurs at line 23, thus line 24 executes method in base class.</p><p id="0e87a828-c888-46fb-8110-707513b87a51" class="">Solution:</p><pre id="5acb994e-e4fc-415c-8727-8a2374a65ef0" class="code"><code> //.cc file
+int main() {
+	DerivedException de;
+	
+	try {
+		throw de;
+	}
+	catch (BaseException&amp; be) { // catch by reference
+		be.print();
+	}
+	std::cout &lt;&lt; &quot;finish executing&quot; &lt;&lt; std::endl;
+}</code></pre><figure id="2b15168e-061b-4de6-98e1-2c6633a38ae0" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%206.png"><img style="width:1040px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%206.png"/></a></figure><p id="bab18119-7753-4971-8353-dc8ecfd5c03b" class="">Now, after we throw by reference, we are using dynamic dispatch and there is no object slicing.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="441d4348-9fa1-4e78-8540-b95e1d824b1f"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><em><strong><mark class="highlight-red">IMPORTANT:</mark></strong></em><p id="ffa83b37-eee2-4f0e-af1f-eb068ae5ce7d" class="">Under any condition, always <span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>throw by value</strong></mark></span> and <span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">catch by reference</mark></strong></span>!!!</p><p id="96eca99b-f5cf-4a4d-a065-dd0299e7c73e" class="">And never throw an exception in destructors!</p></div></figure><p id="464cbe1d-2061-4990-9c08-e29ce324bf9f" class="">
+</p><h2 id="7cd6c39c-0a8f-41e9-b2eb-f67a8c5fa22f" class="">Stack unwinding:</h2><p id="8cef9228-57d6-42e6-9bc4-76eca450a639" class=""><em>Example:</em></p><pre id="a7c0f54a-881a-45c2-847d-da75c9e1a13c" class="code"><code>void goo() {
+	std::string str = &quot;error&quot;;
+	throw str;
+}
+
+void foo(int num) {
+	if (num % 2 == 0) {
+		goo();
+	}
+	std::cout &lt;&lt; &quot;foo is finished&quot; &lt;&lt; std::endl;
+}
+
+int main() {
+	int num = 10;
+	try {
+		foo(num);
+		std::cout &lt;&lt; &quot;foo finishes executing&quot; &lt;&lt; std::endl;
+	}  catch (std::string&amp;) {
+		std::cout &lt;&lt; &quot;exception from foo is caught&quot; &lt;&lt; std::endl;
+	}
+	std::cout &lt;&lt; &quot;program terminates&quot; &lt;&lt; std::endl;
+}</code></pre><p id="9bfcf2d8-ab3e-41a8-8062-b36337b63ae3" class=""><em>Results:</em></p><pre id="8468d852-d724-4c54-b19b-cfbafacbf4d5" class="code"><code>// when num = 9 (odd number):
+// output:
+&gt;&gt;&gt; foo is finished
+&gt;&gt;&gt; foo finishes executing
+&gt;&gt;&gt; program terminates
+
+
+// when num = 10 (even number):
+// output:
+&gt;&gt;&gt; exception from foo is caught
+&gt;&gt;&gt; program terminates</code></pre><p id="9ddb4ff9-a1ac-467d-a277-4794b8b2ba45" class="">
+</p><p id="d7c07eb7-dda8-4ac1-a4d0-59a8fe89f2c3" class="">If we change the code into the following:</p><pre id="4d3b2a11-1e18-416f-bc41-9bd9b1584408" class="code"><code>void goo() {
+	std::string str = &quot;error&quot;;
+	throw str;
+}
+
+void foo(int num) {
+	if (num % 2 == 0) {
+		try {
+			goo();
+		} catch {std::string&amp;) {
+			std::cout &lt;&lt; &quot;exception from goo is caught&quot; &lt;&lt; std::endl;
+			throw; // re-throw the same exception object
+		}
+	}
+	std::cout &lt;&lt; &quot;foo is finished&quot; &lt;&lt; std::endl;
+}
+
+int main() {
+	int num = 10;
+	try {
+		foo(num);
+		std::cout &lt;&lt; &quot;foo finishes executing&quot; &lt;&lt; std::endl;
+	}  catch (std::string&amp;) {
+		std::cout &lt;&lt; &quot;exception from foo is caught&quot; &lt;&lt; std::endl;
+	}
+	std::cout &lt;&lt; &quot;program terminates&quot; &lt;&lt; std::endl;
+}</code></pre><p id="ba2a9a54-1f3d-41a7-854a-2b3bcf477e76" class="">Now, the result becomes:</p><pre id="7c53558a-470c-4eb8-86de-0f359e40a0e9" class="code"><code>// when num = 10 (even number):
+// output:
+&gt;&gt;&gt; exception from goo is caught
+&gt;&gt;&gt; exception from foo is caught
+&gt;&gt;&gt; program terminates</code></pre><p id="e1b1841d-1e55-4bb9-b913-3e89d430f2c1" class=""><em><strong>Stack unwinding:</strong></em> part of the function commands in the stack frame are not executed because the program terminates early due to an exception thrown.</p><p id="da315453-e5af-4008-b6d4-3818e5531db1" class="">
+</p><p id="35f5f6db-3d6d-46b1-8b7f-b76ced068c6e" class="">
+</p><h1 id="7c5f61b8-cb41-4f96-a988-7fdd23abc715" class="">Map</h1><ul id="f1d8cea2-f715-465e-a207-ea45dfcba1ae" class="bulleted-list"><li style="list-style-type:disc">An associative container that store elements in a combination of <mark class="highlight-red">key-value pair.</mark></li></ul><ul id="ad294645-755e-4e6f-a08d-8a5abb352682" class="bulleted-list"><li style="list-style-type:disc">Keys are used to sort.</li></ul><ul id="e27780e8-28ac-4891-953f-17e3f4c16d6c" class="bulleted-list"><li style="list-style-type:disc">Map is always sorted in an <mark class="highlight-red">ascending order</mark>.</li></ul><p id="60f8c946-3ee8-4535-ac64-1f0b57c96635" class="">
+</p><p id="ebd89c65-11e5-442a-b9f1-f4e107fa68bd" class=""><strong>Map documentation website:</strong></p><p id="c98ce9f4-8938-49b1-b44b-e236a5a7a64f" class=""><em><span style="border-bottom:0.05em solid">https://cplusplus.com/reference/map/map/</span></em></p><p id="c8e1050f-eb71-4f19-ab03-5de14664bd47" class="">
+</p><p id="8db31fe0-6a41-48b9-bed5-467077481332" class=""><strong>Syntax</strong>: <code>#include &lt;map&gt;</code> allows us to use the template class map.</p><p id="73a3d97a-8a50-42c9-bf58-398e5bc1dab5" class="">
+</p><pre id="da282b74-6d43-4d0f-ae79-f1d3fff5c689" class="code"><code>#include &lt;iostream&gt;
+#include &lt;map&gt;
+
+int main() {
+	// each element in map is std::pair
+	std::map&lt;int, char&gt; m; // the first argument is the type of keys
+												 // the second argument is the type of values
+	// insert elements
+	m.emplace(3, &#x27;f&#x27;); // 1st arg is the key, 2nd arg is the value
+	m.emplace(1, &#x27;b&#x27;);
+	m.emplace(2, &#x27;z&#x27;);
+	m[5] = &#x27;k&#x27;; // another method to assign a value to a key
+	m[3] = &#x27;g&#x27;;
+
+	for (std::pair&lt;int,char&gt; elem : m) {
+		std::cout &lt;&lt; elem.first &lt;&lt; &#x27; &#x27; &lt;&lt; elem.second &lt;&lt; std::endl;
+	}
+}
+// elem.first retrieves the key in the pair.
+// elem.second retrieves the value in the pair.</code></pre><h2 id="508360c1-f111-4da6-a469-64c13a270fa0" class="">Map command: <code>find</code></h2><p id="aa5e4b0d-6c8d-48fb-a378-0a42e3014f49" class="">Finding elements in map:</p><pre id="93c0bfdb-8444-4537-a2e5-8d353aff93df" class="code"><code>std::map&lt;int, char&gt;::iterator it = m.find(3);
+if (it == m.end()) { // item is not found
+	std::cout &lt;&lt; &quot;element not found&quot; &lt;&lt; std::endl;
+} else {
+	std::cout &lt;&lt; &quot;element is found, value: &quot; &lt;&lt; it-&gt;second &lt;&lt; std::endl;
+}
+
+// m.find(key) find the iterator with key = 3.
+// Dereferencing a map iterator (within the range) will get a std::pair.
+// If no pair with key = 3 is found, then it == m.end() (end iterator).</code></pre><p id="ee91dc06-80f3-4d1e-9610-26c19c792ccc" class=""><strong>Command:</strong> <code>m.find(key)</code></p><ul id="926c7181-845a-4b34-bff8-eae99d3cee3c" class="bulleted-list"><li style="list-style-type:disc">Finding elements by searching the key</li></ul><ul id="785bca97-473b-4f13-9c07-520d3b7bc06f" class="bulleted-list"><li style="list-style-type:disc"><code>find</code> method returns an <span style="border-bottom:0.05em solid"><mark class="highlight-red">iterator type</mark></span>.</li></ul><p id="3d8d2d06-e1a0-4e6a-b91d-07e2b90e55d4" class="">
+</p><h2 id="9e149feb-c2c0-4d07-8e62-7c12bb7122a1" class="">Map command: <code>count</code></h2><pre id="6fc6f77c-8882-4e84-8784-9264ff4b097e" class="code"><code>if (m.count(5) == 0) { // if key = 5 is not found
+	std::cout &lt;&lt; &quot;element is not found&quot; &lt;&lt; std::endl;
+} else { // if key = 5 if found
+	std::cout &lt;&lt; &quot;element is found with value: &quot; &lt;&lt; m[5] &lt;&lt; std::endl;
+}</code></pre><p id="f469b6ff-0d3d-47aa-a445-fa07ee0cb61b" class=""><strong>Command:</strong> <code>m.count(key)</code></p><ul id="0c189f5f-2f40-4cc0-b09f-6485e08e97a1" class="bulleted-list"><li style="list-style-type:disc">Counts the number of existing keys matching with the argument key.</li></ul><ul id="5358183e-0c39-4886-8202-750528a9cd7b" class="bulleted-list"><li style="list-style-type:disc">Return type is <code>int</code> (only return <mark class="highlight-red">0</mark> or <mark class="highlight-red">1</mark>, since keys are all unique)</li></ul><p id="eb3ba6bf-0e00-47b5-bfce-18b3d4d7ab3f" class="">
+</p><p id="198f1a08-a818-4643-b031-2c56e02080fa" class="">
+</p><h1 id="a6bf3fdf-a27d-4c11-87ac-35c18517e3c9" class="">Compilation dependencies</h1><p id="d492af1f-3ca2-41af-9908-247d87caa85e" class="">We use <em>include guards</em> to avoid <em>multiple definitions</em> in header files. However, there is one risk condition using include guards. It occurs if there exists an <mark class="highlight-red"><strong>including cycle</strong></mark>.</p><p id="e6933779-f51c-482c-ae22-5bc4e140c797" class="">Example:</p><div id="afa7934f-fc4e-48af-af64-68cf8c861885" class="column-list"><div id="2b3bfb27-d118-4459-893f-c775e4b92ffb" style="width:50%" class="column"><pre id="4e4474cc-90ef-4e83-8f34-5d9316049e05" class="code"><code>// cell.h
+#ifndef __CELL_H__
+#define __CELL_H__
+
+#include &quot;list.h&quot;
+
+struct Cell {
+	List* l;
+};
+
+#endif
+</code></pre><pre id="7ef70dbd-ef1a-4a85-a3dd-f24bf4bb428d" class="code"><code>// list.h
+#ifndef __LIST_H__
+#define __LIST_H__
+
+#include &quot;node.h&quot;
+
+struct List {
+	Node* root;
+};
+
+#endif</code></pre></div><div id="04159733-d3e4-4b54-8013-e439ea536139" style="width:50%" class="column"><pre id="7007eeed-3466-44d9-87f4-37c679e45e06" class="code"><code>// node.h
+#ifndef __NODE_H__
+#define __NODE_H__
+
+#include &lt;vector&gt;
+#include &quot;cell.h&quot;
+
+struct Node {
+	std::vector&lt;Cell&gt; v;
+};
+
+#endif</code></pre><pre id="0493b435-6bd2-4aeb-a1cf-6ee2a74f0266" class="code"><code>// circle.cc (main file)
+#include &quot;cell.h&quot;
+#include &quot;node.h&quot;
+#include &quot;list.h&quot;
+
+int main() {
+
+}</code></pre><p id="a66a099b-6ede-4d7b-a4c3-c8ac2805bcb3" class="">Will this code compile?</p><p id="3b39d2c1-ea7f-493f-beef-f70bf43acb8c" class="">Answer: No.</p></div></div><p id="25826a8e-b674-40e5-adce-627ee6640a06" class=""><strong>Error message:</strong></p><figure id="d5bbefe1-1d8f-4a60-a9de-a826d1bc5741" class="image"><a href="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%207.png"><img style="width:726px" src="STL%20&amp;%20Exceptions%20c043e517f9f341c5aeb39c4720bfd322/Untitled%207.png"/></a></figure><p id="b20d4771-f18f-4185-8023-8ed959b20dd1" class=""><strong>Reason:</strong></p><p id="41be83e0-16c4-4088-9f38-3b7642ee3715" class=""><code>Node</code> is defined first. <code>Node</code> contains a vector of <code>Cell</code> but <code>Cell</code> is not defined。 Circular including occurs.</p><p id="9e2b5c94-2bc1-418e-b84e-4dc050028d72" class="">If we must define these three structures in this way, how should we fix it?</p><p id="85cfb9aa-3c63-45de-a5bd-d955a99d032f" class="">Answer: Instead of including the corresponding header files, we just add a <span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">forward declaration</mark></strong></span> (opaque structures).</p><p id="9fb11ca2-7cd4-4338-8c4c-33243f1cac4c" class="">
+</p><p id="68a503f9-a46a-4bd9-a03f-be14792648a1" class="">Example:</p><pre id="3d2bf22d-7e07-40d8-909e-5efaac789338" class="code"><code>// cell.h
+#ifndef __CELL_H__
+#define __CELL_H__
+
+class List; // using forward declarating instead
+					  // of including the header file
+
+struct Cell {
+	List* l;
+};
+
+#endif</code></pre><ul id="e73a4496-0d8b-4a0c-aa8f-299843246a5f" class="bulleted-list"><li style="list-style-type:disc">We use <span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">forward declarations</mark></strong></span> when deal with pointers/references, since pointers are always <mark class="highlight-red">8 bytes</mark>.</li></ul><ul id="50671b2e-2e5f-4f78-9e96-ef2c96883faa" class="bulleted-list"><li style="list-style-type:disc"><strong>Function declarations</strong> only needs <strong>forward declarations</strong>, however, must <strong>include</strong> corresponding header files when<strong> implementing functions</strong>.</li></ul><ul id="16886d0b-7e77-4afe-9dc5-93fddcadc5b0" class="bulleted-list"><li style="list-style-type:disc">In other cases, we must include header files.</li></ul><p id="52fefbcc-9afb-4466-8efc-3d7fe33a9144" class="">
+</p><h2 id="53c03c51-c967-44f1-8162-c3d3a6796b85" class="">Classical sample cases:</h2><pre id="f25a946c-9bc9-4ca5-8f1d-77754d22b24d" class="code"><code>// a.h
+class A {
+ ...
+};</code></pre><h3 id="5d02fbd2-9b67-4306-8230-35cb3adc1196" class="">Case 1:</h3><pre id="cfbc093a-6372-47e7-a33b-2ae046c579d0" class="code"><code>// b.h
+#include &quot;a.h&quot; // include header file
+
+class B {
+	A a;
+};</code></pre><p id="89c858eb-bf4a-4e18-b97d-6ba99b12739d" class="">When class B <mark class="highlight-red">contains a field of type A</mark> (or in cases that B needs to know exactly how many bytes a class A object takes to determine the size of class B objects), we <strong><mark class="highlight-red">must include A’s header file</mark></strong>.</p><p id="25d7e7d4-ea9c-4bc9-be3a-2dcd86059fef" class="">
+</p><h3 id="7799ce46-1cce-4365-9ede-7b4440b6e758" class="">Case 2:</h3><pre id="c34a13ce-87f8-4e37-800c-fb1da45c8072" class="code"><code>// b.h
+class A; // forward declaration
+
+class B {
+	A&amp; a1;
+	A* a2;
+};</code></pre><p id="57545eb0-4ca4-429d-83a0-88b7dd41ce0f" class="">When class B contains fields of class A <strong><mark class="highlight-red">reference</mark></strong> or <strong><mark class="highlight-red">pointer</mark></strong> to class A objects, (or in cases that B does not need to know exactly how many bytes a class A object takes), we can just simply use <strong><mark class="highlight-red">forward declarations</mark></strong>.</p><p id="dcc41372-cbcb-44eb-90ad-e362763874d7" class="">
+</p><h3 id="39743698-22d3-4f02-8b77-a262b75fd54b" class="">Case 3:</h3><pre id="5fc1ecd9-d05f-4b49-b5da-e8bd11239519" class="code"><code>// b.h
+class A; // forward declaration
+
+class B {
+	void foo(A a);
+};</code></pre><p id="0d75bdb2-0267-4930-b280-5c23ba249c5b" class="">When class B contains <strong><mark class="highlight-red">function </mark></strong><span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">declarations</mark></strong></span> with class A object as parameters, we can simply use <strong><mark class="highlight-red">forward declaration</mark></strong>, since parameter types in function declarations does not take memories.</p><p id="4caaba19-6978-4f5c-9006-defcfc713adc" class="">
+</p><h3 id="33793ed7-a1bd-470d-8bb4-c0676b840884" class="">Case 4:</h3><pre id="c4b3b9d3-9046-4f59-9fcb-3d0dbacc590c" class="code"><code>// b.h
+#include &quot;a.h&quot; // include header file
+
+class B {
+	void foo(A* a) { // function definition
+		...
+	}
+};</code></pre><p id="7a3f811e-acd0-45bf-84f5-ccfbd9713076" class="">When class B contains <strong><mark class="highlight-red">function </mark></strong><span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">definitions</mark></strong></span> with class A objects as parameters, it depends:</p><ol type="1" id="3a7ad34a-5115-4667-a301-8db48abdbc49" class="numbered-list" start="1"><li>if it’s passing <mark class="highlight-red">by value</mark>, then we must <strong><mark class="highlight-red">include the corresponding header file</mark></strong>!</li></ol><ol type="1" id="4f07fd75-b446-4e46-b4ec-fbe3bed28591" class="numbered-list" start="2"><li>if it’s passing <mark class="highlight-red">by reference or by pointer</mark>, if we access memories through the pointer or the reference, then we must <strong><mark class="highlight-red">include the corresponding header file</mark></strong>! If we don’t access the corresponding memories, then we can simply use <strong><mark class="highlight-red">forward declaration</mark></strong>.</li></ol><p id="0e0b0a5f-d551-4da3-8f72-8c9a56d6e467" class="">
+</p></div></article></body></html>

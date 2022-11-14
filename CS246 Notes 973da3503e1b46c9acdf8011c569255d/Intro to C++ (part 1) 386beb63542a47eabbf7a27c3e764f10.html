@@ -1,0 +1,793 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Intro to C++ (part 1)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="386beb63-542a-47ea-bbf7-a27c3e764f10" class="page sans"><header><h1 class="page-title">Intro to C++ (part 1)</h1></header><div class="page-body"><h1 id="97693d58-1ec4-43b4-b68d-f3f70aa51df7" class="">C++ Background</h1><ol type="1" id="6d5c4a0f-a41d-4a9d-bc5d-7f74d23b9d2e" class="numbered-list" start="1"><li>Static programming</li></ol><ol type="1" id="2d3f1c93-3837-4a05-bd79-f0ec63e4e8c0" class="numbered-list" start="2"><li>Originally created as an extension of C (named as “C with classes” （含“类”的C语言）)</li></ol><ol type="1" id="77f3c896-67b4-4d2e-9258-0d7cb3b8dac8" class="numbered-list" start="3"><li>C++的设计偏重于系统编程和嵌入式，资源受限的软件和大型系统，注重性能、效率、和灵活性</li></ol><ol type="1" id="926d0721-ebcc-49de-8891-cc518196bb41" class="numbered-list" start="4"><li>当前最新版本：C++20</li></ol><ol type="1" id="0c4ae785-3f08-4d86-a74d-f8cc3208e945" class="numbered-list" start="5"><li>该课程使用版本：C++14</li></ol><ol type="1" id="f5b32e33-6c09-4b8e-bc66-2d762413f72a" class="numbered-list" start="6"><li>Object-oriented programming （面对对象编程）</li></ol><h1 id="6ccae6f1-997b-4525-87ba-2ffd13f86ef8" class="">Standard Input &amp; Output &amp; Error Stream</h1><p id="6002ef33-4117-4426-9cdb-edd91de83fea" class=""><code>&lt;iostream&gt;</code>: access to 3 stream variables:</p><ol type="1" id="e385b706-f1fc-4073-b431-61929c88aa3e" class="numbered-list" start="1"><li><span style="border-bottom:0.05em solid"><strong>Standard input</strong></span>: <code>std::cin</code>
+<strong>Type</strong>: <code>std::istream</code> (i stands for input)
+<strong>Input operator</strong>: <code>&gt;&gt;</code>
+<mark class="highlight-red"><strong>Note: </strong></mark><mark class="highlight-red">By default, </mark><mark class="highlight-red"><code>std::cin</code></mark><mark class="highlight-red"> ignores whitespace</mark>
+example: <pre id="2a0dab12-0d52-4013-8a37-2cb2030310a4" class="code"><code># include &lt;iostream&gt;
+int main() {
+	int x;
+	char c;
+	std::cin &gt;&gt; x &gt;&gt; c;
+	// A integer will be read from input and will be stored in x,
+	// then a character will be read from input and will be stored in c.</code></pre></li></ol><ol type="1" id="1977bcd8-6cb7-47db-a9b6-642a11c03859" class="numbered-list" start="2"><li><span style="border-bottom:0.05em solid"><strong>Standard output</strong></span>: <code>std::cout</code>
+<strong>Type</strong>: <code>std::ostream</code> (o stands for output)
+<strong>Output operator</strong>: <code>&lt;&lt;</code>
+example:<pre id="fa1fa667-1abc-4713-bf5a-c5e1f5d3613f" class="code"><code>#include &lt;iostream&gt;
+int main() {
+	int x = 5;
+	char c = &#x27;a&#x27;;
+	std::cout &lt;&lt; x &lt;&lt; c &lt;&lt; endl;
+	// Value of x is sent to output stream, then the value of c is
+	// sent to the output stream. Then a newline is sent and the cashe
+	// is cleared.</code></pre></li></ol><ol type="1" id="a80b0ea7-9fb0-493a-bf2d-0031d8112596" class="numbered-list" start="3"><li><span style="border-bottom:0.05em solid"><strong>Standard error</strong></span>: <code>std::cerr</code></li></ol><figure id="1bef3ae2-3ce9-4e55-a0d2-2f9be6811346" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled.png"><img style="width:680px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled.png"/></a></figure><div id="ef1f7390-8512-4394-9850-c6ef8a6c76a8" class="column-list"><div id="f5d7608e-6e69-4a10-9fb7-aa9198422669" style="width:50%" class="column"><h1 id="f15c8a78-b6c5-4b4d-8e01-97e9b45fda45" class="">Using namespace std</h1></div><div id="f852bb36-1934-41ee-adb0-e398e582a024" style="width:50%" class="column"><p id="9d44cc7c-c2be-46ea-9ab0-89f92feb1700" class="">
+</p></div></div><p id="ea2cd659-61b7-424a-a75c-d27b743f205c" class=""><code>std</code> stands for standard. After calling, objects, variables, functions in standard library can be directly used.</p><p id="7a0429b3-71df-4009-8170-30d509921e00" class="">
+</p><h3 id="b0fdf445-3576-4b55-9a94-1803c9220414" class=""><strong>Purpose of</strong> <code>using namespace std</code>:</h3><ol type="1" id="c9eaef2f-b442-4755-9d24-6eef3d6d6b0b" class="numbered-list" start="1"><li>objects/variables/functions in standard library now become global scope</li></ol><ol type="1" id="fcab46b2-f8be-48c0-972b-24cf59bc9625" class="numbered-list" start="2"><li>can be directly used</li></ol><ol type="1" id="64f9f065-3699-4001-92ed-fca6ecc6794b" class="numbered-list" start="3"><li>omit the prefix <code>std::</code></li></ol><p id="7feffe06-3e2f-4c24-b377-702beb67492f" class="">Example:</p><pre id="8603f593-0951-410b-8f97-207f561b7163" class="code"><code>#include &lt;iostream&gt;
+using namespace std;
+int main() {
+	int x;
+	cin &gt;&gt; x;
+}
+// Now we can use cin directly without including the prefix std::</code></pre><p id="a6a76923-cae5-4291-9388-c9a392868512" class="">
+</p><h3 id="de4786bc-6bdf-4e17-8e63-08d6314d6998" class="">Advantages &amp; Disadvantages of <code>using namespace</code>:</h3><ol type="1" id="d9b53692-ba43-4abe-ac66-8a284528d175" class="numbered-list" start="1"><li>save time such as less typing</li></ol><ol type="1" id="3fdecde9-aab4-4de0-ab9a-8f9235a1b216" class="numbered-list" start="2"><li>but considered as bad behavior (but ok for this course)</li></ol><ol type="1" id="116b6e63-d4d8-4ce3-9726-fadae9fd9658" class="numbered-list" start="3"><li>might lead to name collisions</li></ol><p id="da577199-e496-4392-88fd-513ca011e072" class="">Example:</p><pre id="5ef9b07e-df0c-457d-bd67-b770c0c10f7c" class="code"><code>#include &lt;iostream&gt;
+using namespace std;
+extern istream cin;
+int main() {
+	int x;
+	cin &gt;&gt; x; // Error occurs: compiler doese not know which cin to use
+}</code></pre><figure id="b9616645-2dce-4938-b4be-4221973e4a03" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%201.png"><img style="width:1160px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%201.png"/></a><figcaption>(Error message of collision)</figcaption></figure><p id="6f1cd088-c209-436b-a9b4-dcc085412a7d" class="">
+</p><h1 id="fd157f25-db6f-4678-8bb5-50b26e7cb1ac" class="">How to detect whether input was successful</h1><h3 id="3c4c716d-607a-4148-aa43-c1e8fb9f065f" class="">Method 1:</h3><p id="a255400e-dc2d-4959-af07-6c6212de0952" class=""><code>std::cin.eof()</code>: If it’s end of file, then this function returns <code>true</code>, otherwise, <code>false</code>.</p><h3 id="f480aff3-7b59-4ccd-9d67-f979c5c17110" class="">Method 2:</h3><p id="7b8ff08b-cf13-4706-9c53-baab9da2a723" class=""><code>std::cin.fail()</code>: If it failed to read in input or fail to store the input into variable, then this function returns <code>true</code>, otherwise, <code>false</code>.</p><h3 id="f8dbb0e5-d32a-40c9-8d30-62c1d3df1c48" class="">Method 3:</h3><p id="0612b0ad-c979-44f6-a425-53d2cc8b296b" class=""><code>std::cin &gt;&gt; x</code>: This command’s return value is a Boolean. If the input &amp; storage is successful, then it returns <code>true</code>, otherwise, <code>false.</code></p><p id="e9446d61-7303-4108-8649-b22f766189cd" class="">
+</p><p id="58e521a1-afdd-4bd5-92a9-c307311f17e8" class="">Exercise: Write a C++ program to read in integers from input (ignore other inputs), and print all integers read successfully separated by whitespace. (You program should be able to handle invalid input (not integer))</p><p id="675b8529-f010-4a7e-9504-913e37bdb87b" class="">Solution:</p><pre id="c07e4bf5-cc43-4f91-9dcb-43b26dac8886" class="code"><code>#include &lt;iostream&gt;
+
+int main () {
+	int x;
+	while (true) {
+		if (std::cin &gt;&gt; x) {
+			std::cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+		} else { // if read fails
+			// if reaching the end of file, then break
+			if (std::cin.eof()) {
+				break;
+			} else { // if it&#x27;s an invalid input (not integer)
+				// clear error flag
+				std::cin.clear();
+				// once an invalid input is read, the error flag is on
+				// and will not be turned off automatically
+				std::cin.ignore(); // discard the char will be read
+			}
+		}
+	}
+}</code></pre><p id="c4a39d98-59ad-4bc6-a1c7-c965443a56a1" class="">
+</p><h3 id="5851019d-e3b2-430a-b23e-03091f21ef4d" class="">Additional Comments:</h3><ol type="1" id="f9cad662-a395-4f4a-b003-a1e0c00b18dd" class="numbered-list" start="1"><li>In this course we won’t be dealing with invalid inputs (we may assume that all inputs are valid while doing assignments)</li></ol><ol type="1" id="a1f3455f-abcf-4760-8877-5dc8a283a3ba" class="numbered-list" start="2"><li>As soon as a library is introduced, we may use any functions in that library (even though it’s not taught in class).</li></ol><p id="029a5ec0-9f63-4c07-b031-0a4ccaac75dd" class="">
+</p><h3 id="58b2864b-0a24-42b8-bed9-20a4932e6af0" class="">Some Other Useful Functions/Variables from <code>&lt;iostream&gt;</code>:</h3><p id="409e23d3-1a8b-4bf5-949c-b444dff06aa1" class=""><code>std::endl</code>: send a newline character to the stream and clear all cache</p><p id="da32cea0-64da-4cd0-94dd-a97d0278730a" class=""><code>std::cin.get()</code>: get the next character in the input stream</p><p id="1b0caa8b-f140-48a9-b0c2-760f7788515a" class=""><code>std::cin.peek()</code>: peek the next character in the input stream, but do not read it in</p><p id="bdc23ad5-5f3b-4275-b010-7d01940e29b1" class=""><code>std::noskipws</code>: do not skip whitespaces</p><p id="80a384d1-c93b-4e7c-b835-5d543285c1af" class=""><code>std::skipws:</code> skip whitespaces</p><p id="77404913-4aa1-4e68-98e8-ca3b55418a03" class="">
+</p><h1 id="47c8cf31-c413-4045-8908-72ce82ac2741" class="">String</h1><h3 id="538657e3-39c2-4b3a-a09a-1ed8e31676aa" class="">C vs C++:</h3><div id="cb1dd541-9dbc-42d1-83c4-e70b81457e3e" class="column-list"><div id="7ea3e15b-535b-4c96-8969-b8b3ab088aff" style="width:50%" class="column"><h3 id="2c230c8e-992c-432f-9418-14e7a0003980" class=""><details open=""><summary>String in CS136: (C)</summary></details></h3><div class="indented"><ol type="1" id="0678486b-2b7c-4be6-821c-ed4136f7fa26" class="numbered-list" start="1"><li>string: an array of characters ending with a null terminator</li></ol><ol type="1" id="1e10990a-d717-427a-a865-b38532949497" class="numbered-list" start="2"><li>library <code>#include &lt;string.h&gt;</code></li></ol><ol type="1" id="94fa9b3b-e652-417f-b2b3-3089b7c595ed" class="numbered-list" start="3"><li>string literals: using double quotes, cannot be mutated once created</li></ol><ol type="1" id="c707ba0e-808b-4abb-85cf-794979d1edfb" class="numbered-list" start="4"><li>string functions: <code>strcmp</code>, <code>strcat</code>, <code>strlen</code>, <code>strcpy</code></li></ol></div></div><div id="782255d9-e465-4699-adcd-22a4d7572c1f" style="width:50%" class="column"><h3 id="3fc8de1d-0e63-469b-8095-db56c90f1a75" class=""><details open=""><summary>Strings in CS246: (C++)</summary></details></h3><div class="indented"><ol type="1" id="202f9796-2aaa-452e-935e-5277ee12c2c5" class="numbered-list" start="1"><li>library <code>#include &lt;string&gt;</code></li></ol><ol type="1" id="e8d63433-2b4a-4f68-a6c2-65b02850f514" class="numbered-list" start="2"><li>a variable type, inside the standard library, need prefix <code>std::</code></li></ol><ol type="1" id="fcefb120-e794-4c5e-a8d6-f9bda82638ad" class="numbered-list" start="3"><li>can omit the prefix <code>std::</code> by <code>using namespace std</code></li></ol></div><p id="d7d782f8-4e60-4ed4-98ad-a3be2a0eefb2" class="">
+</p></div></div><h3 id="39dea135-2716-481f-874e-186985845fdd" class="">Characteristics of Strings in C++:</h3><ul id="d6fbf653-74f8-49b6-a56e-38f82f221791" class="bulleted-list"><li style="list-style-type:disc">string definition: <mark class="highlight-red">double quotes</mark></li></ul><ul id="09269ac1-be97-4bef-8bc0-ce2ba8b4d47d" class="bulleted-list"><li style="list-style-type:disc">string assignments: <mark class="highlight-red">=</mark></li></ul><ul id="1a06152c-ecd0-4034-848d-6afc45b31b12" class="bulleted-list"><li style="list-style-type:disc">string in C++ <mark class="highlight-red">resizes automatically</mark></li></ul><ul id="db8c5512-8f6c-4c53-b620-a4ad0520d206" class="bulleted-list"><li style="list-style-type:disc">string concatenation: <code>a = b + c;</code>  /  <code>a += c;</code></li></ul><ul id="23c7f982-44d3-4185-9963-4a42b99e015b" class="bulleted-list"><li style="list-style-type:disc">string length: <code>x.length()</code></li></ul><ul id="bf2e7226-491f-482a-9d25-6c59874acd8f" class="bulleted-list"><li style="list-style-type:disc">string comparison: <code><mark class="highlight-red">==</mark></code></li></ul><ul id="be3f427b-1987-47b0-821f-a6ae5298f41b" class="bulleted-list"><li style="list-style-type:disc">substring: <code>destination = src.substr(start_index, length);</code></li></ul><p id="1ffc319a-5d0a-4c47-8c45-d0edeb80fa49" class="">
+</p><h3 id="91562b3b-0b08-452b-96f6-b6835bb7932f" class="">3 Ways to Read in a String:</h3><ul id="5c9b9d41-2c72-43de-903e-2eeb33aaa0aa" class="bulleted-list"><li style="list-style-type:disc">read from <strong>standard input</strong> (most frequently used)</li></ul><ul id="6f44e70f-c57f-4187-985c-6a0b1e8d452e" class="bulleted-list"><li style="list-style-type:disc">read from <strong>an existing file</strong> (sometimes used)</li></ul><ul id="dbe282a4-5c74-47f5-bd5f-0278ba351bb3" class="bulleted-list"><li style="list-style-type:disc">convert string into a <strong>string stream</strong> and then read from the <strong>string stream</strong> (sometimes used)</li></ul><p id="d2205393-4c20-42ea-89e8-072fb66bfafd" class="">
+</p><h1 id="99d77df7-d3ff-4e7a-880d-0a76067f98c8" class="">File Stream</h1><ul id="66fff493-2972-4153-9fb0-c678f023e853" class="bulleted-list"><li style="list-style-type:disc">library: #include <code>&lt;fstream&gt;</code></li></ul><ul id="3cb07313-0091-4924-ae4c-c7e596179600" class="bulleted-list"><li style="list-style-type:disc">variable type:<ul id="1ef13b0d-cc9e-44d5-b246-06d9c86d4ddf" class="bulleted-list"><li style="list-style-type:circle"><code>std::ifstream</code> (input file stream)</li></ul><ul id="3d6d85db-2b2d-440b-8772-31d368966bb2" class="bulleted-list"><li style="list-style-type:circle"><code>std::ofstream</code> (output file stream)</li></ul></li></ul><h3 id="56a35045-b5ac-4d75-b4e4-6fcdc62505e0" class="">Syntax for initialization:</h3><div id="0ea741dc-1a07-4b76-af61-c119d419a946" class="column-list"><div id="4eea3cbf-8590-4b65-b6a2-c21706fe305e" style="width:50%" class="column"><figure id="0ef699f4-e5be-43b8-bfde-fa366e0bc110" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%202.png"><img style="width:480px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%202.png"/></a></figure></div><div id="cb6b70dd-0f4e-4025-b646-878e248c58ed" style="width:50%" class="column"><figure id="1c8a0d7b-13b6-441b-9920-dbb0d43abbac" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%203.png"><img style="width:750px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%203.png"/></a></figure></div></div><div id="5f382007-a93c-4345-a055-f9187d8309e7" class="column-list"><div id="bfc396de-6acf-4085-b740-cbca1671e850" style="width:50%" class="column"><h3 id="85233485-033c-4301-a665-1ef997477a86" class=""><details open=""><summary>Note:</summary></details></h3><div class="indented"><ul id="100717b5-2127-4ec5-bd22-0b199c21b15b" class="bulleted-list"><li style="list-style-type:disc">When reading from standard input, we use <code>std::cin</code></li></ul><ul id="cc6da720-ed6e-44ec-ae8a-be8b743f2cf8" class="bulleted-list"><li style="list-style-type:disc">When reading from a file, we use the <mark class="highlight-red">identifier</mark> instead:
+(<code>identifier &gt;&gt; …</code>)</li></ul><ul id="805c7589-e522-4f7e-adf9-a096828b2dae" class="bulleted-list"><li style="list-style-type:disc">Other behaviors work the same as standard input</li></ul></div></div><div id="5b552e4e-ce49-40e6-8e79-0c3d8edc2cb4" style="width:50%" class="column"><h3 id="f80b01e8-3cf5-498d-a9ba-def7acb1fc0e" class=""><details open=""><summary>Note:</summary></details></h3><div class="indented"><ul id="89820d59-23fe-4161-8ac1-b45de29696c5" class="bulleted-list"><li style="list-style-type:disc">When output to standard output, we use <code>std::out</code></li></ul><ul id="ff2c6382-13c4-41aa-9b11-e9559fc659f9" class="bulleted-list"><li style="list-style-type:disc">When output to a file, we use the <mark class="highlight-red">identifier</mark> instead:
+(<code>identifier &lt;&lt; …</code>)</li></ul><ul id="ec3f35ab-1422-4aaf-8279-b7f7b4cc618c" class="bulleted-list"><li style="list-style-type:disc">File contents will be overwritten</li></ul><ul id="3ff863e6-b824-4cb2-be71-83565dab6e98" class="bulleted-list"><li style="list-style-type:disc">Change to append of:
+(<code>std::ofstream file{filename, std::fstream::app};</code>)
+(barely used in this course…)</li></ul></div></div></div><p id="a80e31bf-beef-4a80-921b-b75c9067709c" class="">Exercise: </p><p id="e1fde229-cd74-49c6-b080-24702f62e59a" class="">Write a program that reads from an existing file called “in.txt” and copies the contents of even line numbers to another existing file “out.txt”.</p><p id="47523442-5996-4839-9694-1e727802b8dc" class="">Solution:</p><p id="a5b587da-f46e-4894-8e28-16be1410572a" class="">Step1:</p><ul id="2e988913-d671-466c-b56b-0488f1f5345d" class="bulleted-list"><li style="list-style-type:disc">create a new file for C++ program with file extension <code>.cc</code> or <code>.cpp</code> (we use <code>.cc</code> in this course)<p id="85b7b7c6-ca4d-445a-91ba-99a0297f5d3f" class=""><mark class="highlight-red">vim copy.cc</mark></p></li></ul><p id="753bb1fb-1ec6-424c-adb5-97aad53f75ed" class="">Step 2:</p><ul id="cad9536f-fe30-462b-9281-05e1ec36b49a" class="bulleted-list"><li style="list-style-type:disc">Include needed libraries: <code>&lt;iostream&gt;</code>, <code>&lt;fstream&gt;</code>, <code>&lt;string&gt;</code></li></ul><p id="c1dd1861-1878-4961-9605-0d8e110106fb" class="">Step 3:</p><ul id="59436133-9587-425d-84f0-1c3188480a0c" class="bulleted-list"><li style="list-style-type:disc">error checking</li></ul><ul id="37f4f46e-fff2-40a8-9072-afa82341d349" class="bulleted-list"><li style="list-style-type:disc">if both files exist, we proceed</li></ul><ul id="a4f1f9ca-6298-4efe-86bd-25ab4804df6d" class="bulleted-list"><li style="list-style-type:disc">if any one of the two files does not exist, print a message to standard error (<code>std::cerr</code>) and exit with status code 1</li></ul><ul id="d7b2b0c3-c8d4-4595-99b4-d9605f363aee" class="bulleted-list"><li style="list-style-type:disc">check if the files are opened successfully by using function <code>.is_open()</code></li></ul><p id="31e4bf22-34aa-4648-a58b-72e408ba1e74" class="">Step 4:</p><ul id="bbd8345b-c394-4499-9100-815b1961d804" class="bulleted-list"><li style="list-style-type:disc">start to read from in.txt and output to out.txt</li></ul><p id="3d640e99-7fea-40a0-94c8-b8ee881e3e74" class="">Step 5:</p><ul id="77459530-36b4-4ab6-8280-ea85c096dad1" class="bulleted-list"><li style="list-style-type:disc">first compile program:<ul id="1120513a-fd1f-4b02-9fb4-f90438555b74" class="bulleted-list"><li style="list-style-type:circle">Linux command: <code>g++ -std=c++14
+</code> (Too complicated, we can simplify this process by adding an alias:)</li></ul><ul id="23406fba-2d8c-4749-8252-c246e9142be5" class="bulleted-list"><li style="list-style-type:circle"><code>alias g++14=&quot;g++ -std=c++14 -Wall -g&quot;</code></li></ul><figure id="f6e132bd-8e4e-433c-80f4-6b05603242a3" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%204.png"><img style="width:362px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%204.png"/></a></figure></li></ul><ul id="ca937374-7e21-4a88-978b-71ac88aa1b37" class="bulleted-list"><li style="list-style-type:disc">then run the program:<ul id="2191ccb6-dab9-4d00-8d58-f5e792caabd4" class="bulleted-list"><li style="list-style-type:circle">Method 1: <ul id="53949243-7ff6-4981-a218-3612efb97c06" class="bulleted-list"><li style="list-style-type:square">Linux command: <code>g++14 copy.cc</code></li></ul><ul id="d461e154-a49e-4d07-a688-ecce51baf5bb" class="bulleted-list"><li style="list-style-type:square">If compiled successfully, we will see a new executable named “<code>a.out</code>” under the current directory</li></ul><ul id="6e511304-6806-41a2-b569-11c78b7a1b67" class="bulleted-list"><li style="list-style-type:square">Execute the program: <code>./a.out</code></li></ul></li></ul><ul id="c49ed430-e733-4518-bb93-54ac5d6b92ba" class="bulleted-list"><li style="list-style-type:circle">Method 2:<ul id="c0b5bc52-6a00-44f9-92d2-b021993ad043" class="bulleted-list"><li style="list-style-type:square">Linux command: <code>g++14 copy.cc -o copy</code></li></ul><ul id="ae4b05be-7106-475c-aa1f-1a6bea8ff2fa" class="bulleted-list"><li style="list-style-type:square">“<code>a.out</code>” is the default name for compiled program, we can customize the name of executable by running the above Linux command</li></ul><ul id="28783517-9508-419c-9566-faf5a9a7eb37" class="bulleted-list"><li style="list-style-type:square">We will see an executable file named “<code>copy</code>” under the current directory</li></ul><ul id="87cec591-b564-4f80-8c5a-c5f79299eba8" class="bulleted-list"><li style="list-style-type:square">Execute the program <code>./copy</code></li></ul></li></ul></li></ul><ul id="ea81ba72-fe5b-40e9-a4a3-3f5a0f3927c6" class="bulleted-list"><li style="list-style-type:disc">In this course, we need to compile and run manually.</li></ul><p id="e52e7f60-094b-4dcf-ba9c-2461cdf4733c" class="">Step 6:</p><ul id="fad9456c-7526-4170-b576-ac4dcaeff443" class="bulleted-list"><li style="list-style-type:disc">Test to check if program performs correctly: <code>cat out.txt</code></li></ul><p id="dabf06ab-6121-4863-81e9-97698b0839a6" class="">
+</p><p id="249a07f4-d011-4285-ac70-56341ab5e2e0" class=""><span style="border-bottom:0.05em solid"><strong>The completed program:</strong></span></p><pre id="76ee0ccb-4742-4437-bfa0-ffe014d85670" class="code"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+int main() {
+	std::ifstream in{&quot;in.txt&quot;};
+	std::ofstream out{&quot;out.txt&quot;};
+	
+	// check if both files exist
+	if (!in.is_open() || !out.is_open()) {
+		//print an error message to standard error
+		std::cerr &lt;&lt; &quot;file missing!&quot; &lt;&lt; std::endl;
+		return 1;
+	}
+	std::string line;
+	int count = 0;
+	while (std::getline(in, line)) {
+		// update line number
+		count += 1;
+
+		// if even line number, then output to file
+		if (count % 2 == 0) {
+			out &lt;&lt; line &lt;&lt; std::endl;
+		}
+	}
+}</code></pre><p id="cd543af0-c3cc-45d9-b29c-328e6debb259" class="">
+</p><h1 id="f38f1e82-60a3-4ee4-bd65-5c5d81d7d7dc" class="">String Stream</h1><ul id="d3effc67-bbd9-47fa-864c-ac64230efce1" class="bulleted-list"><li style="list-style-type:disc">library: <code>#include &lt;sstream&gt;</code></li></ul><ul id="83c77eab-58e6-435b-aa7f-b2bd331ecde9" class="bulleted-list"><li style="list-style-type:disc">variable type:
+<code>std::istringstream</code> (standard input string stream)
+<code>std::ostringstream</code> (standard output string stream)</li></ul><ul id="82ece6ca-5fb6-4518-966e-70b53fcff97d" class="bulleted-list"><li style="list-style-type:disc">syntax for initialization:</li></ul><div id="f934ed1d-7ac4-46c8-b6de-a20002bb1373" class="column-list"><div id="605654e1-fcda-4df7-9cbf-4dc87b221869" style="width:50%" class="column"><figure id="428d2e03-04da-48af-8bb4-080dd85cc2b4" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%205.png"><img style="width:585px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%205.png"/></a></figure></div><div id="4ca049e6-a08c-4b16-b70f-de438913ad23" style="width:50%" class="column"><figure id="60cc7922-cc9a-45f2-9877-4e822fdd5d54" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%206.png"><img style="width:596px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%206.png"/></a></figure></div></div><div id="69500587-b4f5-4bc5-91ec-a3e62c29caca" class="column-list"><div id="3996c576-22a3-43ca-941f-ffdbecb01dd9" style="width:50%" class="column"><figure id="e0911fd1-4ee5-45a4-b334-e0e822538385" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%207.png"><img style="width:650px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%207.png"/></a></figure></div><div id="f267136b-2873-448b-9704-513efa51b5e4" style="width:50%" class="column"><figure id="5b306084-8220-4845-9888-4715bbad9e56" class="image"><a href="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%208.png"><img style="width:727px" src="Intro%20to%20C++%20(part%201)%20386beb63542a47eabbf7a27c3e764f10/Untitled%208.png"/></a></figure></div></div><p id="9f1ed6a4-4105-4547-bb0b-8e683c6a7b20" class="">
+</p><h1 id="433272f1-efbe-4d25-b83a-7ee5057dbba3" class="">Input / Output manipulators</h1><ul id="768ac79c-27ee-46c3-b9ea-4ad7af84fc3c" class="bulleted-list"><li style="list-style-type:disc">library: <code>#include &lt;iomanip&gt;</code></li></ul><ul id="265132fa-08db-4edc-abd4-9844e2887dc1" class="bulleted-list"><li style="list-style-type:disc">when printing integers, C++ prints integers in decimal format by default</li></ul><ul id="97d452a2-a27f-485c-bfbf-329cd795b814" class="bulleted-list"><li style="list-style-type:disc">we can change it to other formats, such as hexadecimal</li></ul><ul id="375d9e2b-94a8-4d75-9c2d-0783d3c73dbe" class="bulleted-list"><li style="list-style-type:disc">once changed format, we need to change it back to decimal format manually</li></ul><ul id="2fd15b56-931c-43a9-bae8-f663fafd220f" class="bulleted-list"><li style="list-style-type:disc">(barely used in this course)</li></ul><p id="62e6f731-465f-4da2-907a-1ebb0e9c5a1c" class="">Example:</p><pre id="7dd53c5b-c09e-4b17-869e-ae1bcbcb264d" class="code"><code>#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+int main() {
+	int x = 16;
+	// print x in decimal format
+	std::cout &lt;&lt; x &lt;&lt; std::endl;
+	// change decimal to hexadecimal
+	std::cout &lt;&lt; std::hex;
+	// now print x in hexadecimal format
+	std::cout &lt;&lt; x &lt;&lt; endl;
+	// change back to decimal format manually
+	std::cout &lt;&lt; std::dec;
+	// now it will print x in decimal format
+	std::cout &lt;&lt; x &lt;&lt; std::endl;
+}</code></pre><p id="3dbd5e55-06e2-46a2-8355-5b3044ec2511" class="">
+</p><h1 id="9e8deac9-88e6-483a-b46a-b32e3a530143" class="">C++ with Command Line Arguments</h1><ul id="c97e47dc-77b6-48ad-8213-dbb4bc02d7d7" class="bulleted-list"><li style="list-style-type:disc">Function <code>main</code> usually takes no parameters</li></ul><ul id="f34984d7-bb0a-41e0-b2ec-b0b3095769d6" class="bulleted-list"><li style="list-style-type:disc">When C++ program interacts with command line arguments, arguments will be taken as parameters of <code>main</code></li></ul><p id="5e5420d5-fc9c-4c41-916b-62ec0133a191" class="">Example:</p><pre id="84d60588-4943-4696-b277-f3f176160733" class="code"><code>#include &lt;iostream&gt;
+
+int main(int argc, char* argv[]) { // identifier names can be different
+	std::cout &lt;&lt; &quot;Number of arguments: &quot; &lt;&lt; argc &lt;&lt; std::endl;
+	for (int i = 0; i &lt; argc; i++) {
+		std::cout &lt;&lt; argv[i] &lt;&lt; std::endl;
+	}
+}
+// Note: the first item in argv is always the name of the program
+// That&#x27;s why in most cases, we start the iteration from i = 1</code></pre><p id="5b0793f4-327b-4a3c-9cc0-caf5f95a9618" class="">
+</p></div></article></body></html>

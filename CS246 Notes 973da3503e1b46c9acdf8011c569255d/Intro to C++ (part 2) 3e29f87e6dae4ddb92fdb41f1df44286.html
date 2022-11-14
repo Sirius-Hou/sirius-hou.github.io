@@ -1,0 +1,892 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Intro to C++ (part 2)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="3e29f87e-6dae-4ddb-92fd-b41f1df44286" class="page sans"><header><h1 class="page-title">Intro to C++ (part 2)</h1></header><div class="page-body"><h1 id="b4c3c309-4b03-42a1-a31d-0c8c8487be6a" class="">C++ Constants</h1><ul id="64693560-a9ae-4c30-abbf-2d59f1bf9a5e" class="bulleted-list"><li style="list-style-type:disc">Specifies that the object or variable is not mutable</li></ul><ul id="4a93b0f0-10b3-43a0-ae32-dd8cc4c8b420" class="bulleted-list"><li style="list-style-type:disc">Behaves the same as C</li></ul><pre id="56778e43-139b-46d5-92fc-4d0117442823" class="code"><code>// read-only
+const int x = 5;
+
+// global variables
+int y = 10;
+
+int main() {
+	const int a = 5; // a is not mutable
+	a = 10; // error
+	a++; // error
+	int b = 15;
+	int* ptr1 = &amp;b;
+
+	int* const ptr2 = &amp;b;
+	// ptr2 always points to b, and cannot be modified to point to other int&#x27;
+	// can modify b via (*ptr2)
+
+	const int* ptr3 = &amp;b;
+	// ptr3 can point to any mutable integer
+	// cannot mutable b via (*ptr3)
+
+	const int* const ptr4 = &amp;b;
+	// ptr4 always points to b, and it cannot point to other integers
+	// cannot mutable b via (*ptr4)</code></pre><p id="97444b11-efe1-479f-b3f1-5170ca47b91f" class="">
+</p><h1 id="b8360b45-98fb-4bbc-9f3a-d8c19a0cc19d" class="">Default Arguments</h1><blockquote id="55a51801-6a59-4530-b8e4-de3cdec03ea2" class=""><strong>Definition:</strong> 
+A <strong>default argument</strong> is a value provided in a function declaration/definition that is automatically assigned by the compiler if the caller of the function does not provide a value for the argument with a default value.</blockquote><p id="ef721c6a-9db3-46af-bd1e-1c6214b1e72e" class="">Example:</p><pre id="20a1d215-ce09-42b1-9a11-3534731dc478" class="code"><code>#include &lt;iostream&gt;
+
+int foo(int x, int y = 2) {
+	return x + y;
+}
+
+int main() {
+	std::cout &lt;&lt; foo(1, 3) &lt;&lt; std::endl;
+	// pass in arguments: x=1 and y=3, return 4
+	std::cout &lt;&lt; foo(1) &lt;&lt; std::endl;
+	// pass in only x=1, then foo is run with default argument y=2, return 3
+}</code></pre><p id="d956152d-2d76-4d0e-b639-a2c189ed231d" class="">
+</p><p id="45411988-ef00-41d3-82d0-77eb460b85d2" class=""><strong>Note: </strong></p><ul id="c551ce95-ca09-4838-8b21-c97b9d4053ac" class="bulleted-list"><li style="list-style-type:disc">Once a default argument appears in a function’s declaration, then all subsequent arguments must be default arguments. (In other words, all default arguments should only appear <strong>at the end</strong>.)</li></ul><p id="6e18f91d-e7b4-4fa7-b46e-0cf0a6aaf98a" class="">For example:</p><p id="c0189dc7-6318-4c15-84b0-225a9d11a72a" class=""><code>int foo(int x, int y = 2);</code> → this is correct</p><p id="4c776c25-6058-4a78-93d9-b2a4b5042215" class=""><code>int foo(int x = 2, int y); </code>→ this is incorrect and will cause an error (failure during compilation)</p><p id="5131178d-975d-40a7-88c4-809fd541871e" class="">This error occurs because when we’re calling <code>foo(2)</code>, the compiler doesn’t know that should 2 be assigned to x or y.</p><ul id="f5f28d29-446a-4883-997f-eef0809c2751" class="bulleted-list"><li style="list-style-type:disc">Compiler will know the difference by the number of values passing or by the type of parameters.</li></ul><ul id="60285352-fa0f-48c3-af3b-112f27e385d0" class="bulleted-list"><li style="list-style-type:disc">Compiler recognizes functions by <strong>function signatures</strong>.</li></ul><p id="39c6a1ce-9f05-479f-a64b-ba6bd20b0d91" class="">
+</p><p id="ef533463-89ce-4101-94b9-f775cd939a5a" class=""><strong>Concept Check Question:</strong></p><p id="ba7b9236-b7de-4794-9a7e-3b354a917761" class="">Consider the following function declaration:</p><p id="94eec01a-a45f-4fba-9b0a-8debd17888bd" class=""><code>void goo(int x, char c = ‘a’, std::string str = “CS”);</code></p><p id="c306e3d7-95b7-4b86-a42d-5a6dc4a759c7" class="">Does each of the following function call work?</p><p id="d8a64457-bc14-4c7f-acee-ea8147bfe69f" class=""><strong>Solution:</strong></p><table id="b933bbe6-d8b4-4cc2-ad59-3a3ae351a017" class="simple-table"><tbody><tr id="d64e8861-300f-4698-946e-89fc1f8e97a6"><td id="Y`qd" class=""><strong>Function calls</strong></td><td id="&lt;wuF" class="" style="width:122px"><strong>Would it work?</strong></td><td id="jJN;" class=""><strong>Reason</strong></td></tr><tr id="94b06f9a-a928-47d1-bb22-1c132141bbac"><td id="Y`qd" class=""><code>goo();</code></td><td id="&lt;wuF" class="" style="width:122px">No</td><td id="jJN;" class="">Missing a required variable <code>int</code></td></tr><tr id="ec8ca0b5-ceb3-41db-82e8-0c8a43f6e8cd"><td id="Y`qd" class=""><code>goo(5);</code></td><td id="&lt;wuF" class="" style="width:122px">Yes</td><td id="jJN;" class="">——</td></tr><tr id="2c72030c-0143-49f6-b940-42cb6bd96520"><td id="Y`qd" class=""><code>goo(5, “b”);</code></td><td id="&lt;wuF" class="" style="width:122px">No</td><td id="jJN;" class="">Skipped a <code>char</code> argument</td></tr><tr id="8c64a7cd-c834-45f1-be88-5146cb64c6ec"><td id="Y`qd" class=""><code>goo(’z’, “computer”);</code></td><td id="&lt;wuF" class="" style="width:122px">No</td><td id="jJN;" class="">‘z’ can be converted into an <code>int</code>, but “computer” is a <code>std::string</code>, not a <code>char</code></td></tr><tr id="125d0b86-fe29-43f4-b393-25fb14c51087"><td id="Y`qd" class=""><code>goo(10, ‘y’);</code></td><td id="&lt;wuF" class="" style="width:122px">Yes</td><td id="jJN;" class="">——</td></tr><tr id="a61439be-9e3d-41f8-bd0e-6d43b085c3d1"><td id="Y`qd" class=""><code>goo(10, ‘b’, “science”);</code></td><td id="&lt;wuF" class="" style="width:122px">Yes</td><td id="jJN;" class="">——</td></tr></tbody></table><h1 id="76ce907a-9d8f-482d-a192-e6f3f53ca280" class="">Function Signatures</h1><ul id="e69c4fb1-c09a-42d3-84d5-3ec6ae948f42" class="bulleted-list"><li style="list-style-type:disc">Compiler recognizes functions by <strong>function signatures</strong>.</li></ul><ul id="6625932e-9fbf-4262-b1b0-5d185fce9cd4" class="bulleted-list"><li style="list-style-type:disc">Includes the <strong>function name</strong>, and <strong>number/order/type of its parameters</strong>.</li></ul><ul id="f375c91c-6b87-4acb-923e-13afa5cfdcc0" class="bulleted-list"><li style="list-style-type:disc">Does <strong>not</strong> include return type.</li></ul><p id="7cf37fe0-c04e-4c4f-8aad-9f88ceb7963b" class="">
+</p><p id="61587546-b6d0-47c9-9e7e-742a1ba61fd3" class="">Example: </p><p id="63f9d557-9b7b-45cc-ab5e-f89a814767a3" class=""><code>void goo(int x, char c = ’a’, std::string str = &quot;CS&quot;)；</code></p><p id="deb3595d-d492-4d43-9f0c-e2839f7153a6" class="">Three function signatures are generated:</p><p id="0ed2744d-265c-4298-8d84-9862735125b4" class=""><code>goo(int);</code></p><p id="822aae86-cac5-4b3c-8766-cff93baa53e8" class=""><code>goo(int, char);</code></p><p id="082e7c83-f815-4a05-bd4b-4c032be72316" class=""><code>goo(int, char, std::string);</code></p><p id="01e7c902-be63-4938-a5f9-49bc54e3b5dc" class=""><mark class="highlight-red"><strong>Note: </strong></mark><mark class="highlight-red">We must not write any other functions whose signatures match any of the above three signatures!</mark></p><p id="3e491d6e-6ac5-4fcc-a7ce-dff7cfa98c2c" class="">
+</p><h3 id="42cffdd7-38ea-45f5-b40e-135f3939f2ee" class="">Unambiguity:</h3><ul id="6584b8f4-e470-4ab3-9b4a-1bc7090ff54e" class="bulleted-list"><li style="list-style-type:disc">Compiler is not smart enough when ambiguity of function signature occurs, thus error will occur at compiling time.</li></ul><ul id="c091f809-9819-430b-a9fc-36b611d65cd7" class="bulleted-list"><li style="list-style-type:disc">Make sure that our code has the unambiguity of function signatures.</li></ul><ul id="081fabcb-c2a7-4fbd-a663-f1fc235eb54c" class="bulleted-list"><li style="list-style-type:disc">We can have functions with the same name in C++, as long as they don’t have the same function signatures. (Discussed in the following section)</li></ul><h1 id="397e6930-4a38-49ce-b00f-a45820e68e12" class="">Function Overloading</h1><ul id="5996075b-8988-487a-b5ea-9dc74a6b37a5" class="bulleted-list"><li style="list-style-type:disc">Two or more functions that share the same name with different parameters (<strong>different function signatures</strong>)</li></ul><ul id="01bd59ea-f972-49b8-9c61-6989e4f78eec" class="bulleted-list"><li style="list-style-type:disc">Considered as <mark class="highlight-red"><strong>polymorphism</strong></mark> feature in C++ (will be taught later in this course)</li></ul><ul id="de40ab22-316e-4ae3-8f64-e619837df515" class="bulleted-list"><li style="list-style-type:disc">Not allowed in C</li></ul><p id="159af5a3-3ad4-4b79-a4b1-b4b5627dc45f" class="">
+</p><p id="a4ae9451-2837-40f5-9619-2920ba6002f3" class="">Example:</p><pre id="7796c934-17c5-4314-9610-0b104f2fa4d2" class="code"><code>#include &lt;iostream&gt;
+
+void goo(int x, char c = &#x27;a&#x27;) { }
+void goo(int x, int y) { }
+
+int main() {
+	goo(5, 5);
+	goo(5);
+}
+// This is correct because their function signatures are different</code></pre><p id="770fd590-4fb8-465b-ad99-de2747d48ac9" class="">
+</p><h1 id="78edc438-37a7-4be7-9636-a5b61eaf5937" class="">Structure</h1><p id="0d62ee0d-b50f-4d88-b595-5138ce5069a5" class="">Structure definition in C vs in C++</p><div id="2df057f7-6cc9-4f08-a4ca-08c88f2422b0" class="column-list"><div id="bfe3495d-a35e-468a-9f03-d3a4eeb1fb54" style="width:50%" class="column"><h3 id="1bc55866-8f4b-442d-8168-74b5243ebebd" class="">Structure definition in C</h3><pre id="a53498db-0643-4901-9bbc-cd0857477142" class="code"><code>struct student {
+	int id;
+	int age;
+	char gender;
+}; // must have a semicolon
+
+// Method 1
+int main(void) {
+	// without field initialization
+	struct student a;
+	// with field initialization
+	struct student b = {123, 12, &#x27;M&#x27;};
+}
+
+// Method 2
+typedef struct student student;
+// omit prefix struct in C
+int main(void) {
+	// without field initialization
+	student a;
+	// with field initialization
+	student b = {123, 12, &#x27;M&#x27;};
+}</code></pre></div><div id="fc430154-234f-4879-b3de-d2c95a21c1fe" style="width:50%" class="column"><h3 id="5d8d9577-0059-4cc4-a474-0f0bc83865ce" class="">Structure definition in C++</h3><pre id="f70dcddf-efa5-4f75-9cbd-1d36603a145d" class="code"><code>struct student {
+	int id;
+	int age;
+	char gender;
+}; // same as C: must have a semicolon
+
+int main() {
+	// without field initialization
+	student a;
+	// with field initialization
+	student b = {123, 12, &#x27;M&#x27;};
+}</code></pre><ul id="7e4462b2-b0a1-4943-b0f7-af94684fe530" class="bulleted-list"><li style="list-style-type:disc">We don’t need <code>typedef</code> to omit the prefix <code>struct</code></li></ul><ul id="02f880c2-493d-4945-9f13-059c1d455354" class="bulleted-list"><li style="list-style-type:disc">Always need to add the semicolon at the end for structure definition.</li></ul></div></div><p id="bd356977-9b84-43d7-b21a-2db53f973a10" class="">
+</p><h1 id="c99138d2-6cac-48db-91d2-04c9158b4d87" class="">Parameter Passing</h1><h3 id="d9226e73-5c06-40bc-8945-14d9015a33ff" class="">Passing by value:</h3><ul id="74738d43-b890-4bb7-b792-606fe25a1126" class="bulleted-list"><li style="list-style-type:disc">make a copy of the argument</li></ul><ul id="6b09b9b0-0009-41d1-8621-765315631936" class="bulleted-list"><li style="list-style-type:disc">pass the <strong>copied value</strong> to the called function</li></ul><p id="68bc47bc-bb18-4090-b8c3-612cd9cebacb" class="">
+</p><h3 id="5b092df0-03f0-4d8d-8877-7d11e542cbbb" class="">Passing by Address:</h3><ul id="7c7cfdef-24ea-4b71-8dab-1d5440af63c2" class="bulleted-list"><li style="list-style-type:disc">Passing by value is not a good idea if the value passed costs too much stack memory</li></ul><ul id="2ee64f7b-13cd-4d1b-b1b1-3a9f931f0666" class="bulleted-list"><li style="list-style-type:disc">Address is always 8 bytes</li></ul><ul id="65b0e218-5ab9-4a81-899a-c05f30953be4" class="bulleted-list"><li style="list-style-type:disc">We can <strong>pass by address</strong> to avoid copy of the passing value</li></ul><p id="e24bac28-108a-4165-8b2f-5b02a3200338" class="">
+</p><h3 id="3fce39ea-6442-4aa4-8d09-d7c7f780fdd1" class="">Passing by Reference:</h3><p id="5ea9b971-b3fe-4d94-b151-7d99180a3de6" class=""><strong>Syntax:</strong></p><ul id="bb9a2bbe-74cf-489b-b100-9f36b3d87e2f" class="bulleted-list"><li style="list-style-type:disc">Variable type followed by ampersand <mark class="highlight-red">&amp;</mark></li></ul><ul id="b9afc2bf-616c-4cd4-8c77-bb1b46da805e" class="bulleted-list"><li style="list-style-type:disc">Reference is an <strong>alias</strong>, another name of the existing variable/object</li></ul><p id="b2be6d65-b56e-4980-9f68-d1ccac57e2ac" class="">Example:</p><pre id="9924f050-016e-465d-b92e-16b1b718353e" class="code"><code>int main() {
+	int a = 5;
+	int&amp; b = a;
+}
+// b is a reference of a
+// we can even say that b is a</code></pre><p id="cf1dd7c2-be14-409b-bdd9-fe3bf600d957" class="">Example:</p><pre id="b112934f-14b8-4782-a1f2-232c0da257d9" class="code"><code>void foo(student&amp; a) { // define that the type of parameter is a reference of student
+	a.id = 2005;
+	a.age = 30;
+	std::cout &lt;&lt; &quot;address of a: &quot; &lt;&lt; &amp;a &lt;&lt; std::endl;
+}
+
+int main() {
+	student a = {123, 12, &#x27;M&#x27;};
+	student&amp; s = a;
+	std::cout &lt;&lt; &quot;address of s: &quot; &lt;&lt; &amp;s &lt;&lt; std::endl;
+	foo(a); // only pass the reference of s to function foo
+}</code></pre><ul id="bda40ede-a995-456c-9d61-67f945f4dd3e" class="bulleted-list"><li style="list-style-type:disc">function foo takes reference of student as parameter</li></ul><ul id="3f2b464a-7e4e-4a81-ac6f-5ea0416ee8bf" class="bulleted-list"><li style="list-style-type:disc">we call this process <strong>passing by reference</strong> (avoid copy)</li></ul><ul id="90d4ad99-e559-466c-acae-e416124d38ad" class="bulleted-list"><li style="list-style-type:disc"><em>a</em> is mutated in function <em>foo</em>, which means that <em>s</em> is mutated since <em>a</em> is an alias of <em>s</em></li></ul><ul id="b887234c-7fb1-4f5f-ad25-521d03df6588" class="bulleted-list"><li style="list-style-type:disc"><em>s</em> and <em>a</em> have the same address</li></ul><p id="8c51e0f6-06ad-4ef7-a587-64d361c0119c" class="">
+</p><p id="0402c725-77cb-47df-91e8-224e44ee1586" class="">
+</p><h1 id="32acdef7-9803-49b7-a23c-dfe431f343ff" class="">Reference vs Pointer</h1><div id="a47c24a5-a847-477d-9027-86a966f14db5" class="column-list"><div id="7810be96-f999-469f-b47d-d17a0c78dc83" style="width:50%" class="column"><h3 id="5b3bb9a1-a15b-4d1a-9628-95dad8e8b992" class="">Pointers:</h3><ul id="96b531c2-c375-4657-989a-af66020c4c32" class="bulleted-list"><li style="list-style-type:disc">can be NULL</li></ul><ul id="ff2ecf31-8981-437d-abb4-4db1561ac943" class="bulleted-list"><li style="list-style-type:disc">can be initialized at anytime</li></ul><ul id="41237379-8b06-47ba-9bdb-dd0eb03849bb" class="bulleted-list"><li style="list-style-type:disc">can point to other objects</li></ul><ul id="44b02d73-c48b-44ab-80a4-3f54a40367b1" class="bulleted-list"><li style="list-style-type:disc">needed to be dereferenced</li></ul></div><div id="30fc0ccd-b3dc-4dd8-b58d-740a72a03e8b" style="width:50%" class="column"><h3 id="8d05565c-f7aa-45a2-8ae6-d78c563ce5b8" class="">References:</h3><ul id="20bfbb26-f71e-48d7-9417-8479981f43c8" class="bulleted-list"><li style="list-style-type:disc">cannot be NULL</li></ul><ul id="da3355b3-fc2e-4b4a-b0cb-56426c519e58" class="bulleted-list"><li style="list-style-type:disc">must be initialized when created</li></ul><ul id="f5278c42-bff4-40bb-8201-1a55691c84eb" class="bulleted-list"><li style="list-style-type:disc">once initialized, cannot be changed</li></ul><ul id="57cd869b-a048-42cc-8ad6-91530fa5a3b7" class="bulleted-list"><li style="list-style-type:disc">automatic dereferencing</li></ul><ul id="153bb660-6f15-439c-bf94-6fed3c50f105" class="bulleted-list"><li style="list-style-type:disc">act as <code>const</code> pointer, but is NOT <code>const</code> pointer</li></ul></div></div><p id="d02c9790-916e-4400-9622-f8c1f75ff88f" class="">
+</p><figure id="7cc9991d-f8d4-4113-aef6-c717543ded21" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled.png"><img style="width:528px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled.png"/></a><figcaption>Pointers</figcaption></figure><p id="6605ad0b-3d68-4020-a04e-28a04fbb580c" class="">
+</p><figure id="cdb6c2db-ef20-4baf-bc79-81a30f411cee" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%201.png"><img style="width:624px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%201.png"/></a><figcaption>References</figcaption></figure><p id="2dd11791-8b06-41f7-8559-6f899b6504ac" class=""><strong>Note:</strong></p><ul id="faebfa21-cb55-4377-b69d-340207bfd897" class="bulleted-list"><li style="list-style-type:disc">When <span style="border-bottom:0.05em solid"><strong>passing by pointers</strong></span> pointing to structures, to avoid dereferencing, we need to use arrow <code>-&gt;</code> to access or mutate fields.</li></ul><ul id="e90df08d-6e5b-47dc-9a97-9dd56edb8b75" class="bulleted-list"><li style="list-style-type:disc">When <strong><span style="border-bottom:0.05em solid">passing by reference</span></strong> , we can just use <code>.</code> to access or mutate fields.</li></ul><h1 id="037796aa-7c4f-44d2-b83d-2aa3e795ecbd" class="">Lvalue &amp; Rvalue</h1><h3 id="75e23dee-b51c-4c07-a145-5105d83436de" class="">Lvalue:</h3><ul id="d27354f3-397f-4312-bfb1-6eec4f6f0f0e" class="bulleted-list"><li style="list-style-type:disc">has memory location that we can access.</li></ul><ul id="47fc58fa-5ea2-4012-bcf9-57058cd2c30a" class="bulleted-list"><li style="list-style-type:disc">“anything” that can appear on the left-hand side of assignment operator ‘=’.</li></ul><ul id="37a55dad-6e1f-4aa7-bf4e-9c0881a66205" class="bulleted-list"><li style="list-style-type:disc">if <span style="border-bottom:0.05em solid"><strong>passing by reference</strong></span> (not constant reference), then the reference <mark class="highlight-red"><strong>MUST BE</strong></mark> <span style="border-bottom:0.05em solid">lvalue.</span></li></ul><ul id="7fcfc798-46ab-485a-86b1-70ba126c736f" class="bulleted-list"><li style="list-style-type:disc">if <span style="border-bottom:0.05em solid"><strong>passing by const reference</strong></span>, then reference <mark class="highlight-red"><strong>CAN</strong></mark> be <span style="border-bottom:0.05em solid">rvalue.</span></li></ul><h3 id="830f7beb-9e00-4cee-8ed6-ea353bc03cc8" class="">Rvalue:</h3><ul id="67993fea-f8df-46ea-866d-54674e476608" class="bulleted-list"><li style="list-style-type:disc">has memory location, but we cannot access.</li></ul><ul id="bc081a16-817d-47b8-bde6-6a3e9e5e9ae9" class="bulleted-list"><li style="list-style-type:disc">if returned by value, then returned values from functions are <mark class="highlight-red"><strong>ALWAYS</strong></mark> rvalues.</li></ul><p id="c9490f74-ac32-4f17-b74c-94118f55a09d" class="">
+</p><p id="2a46cf52-5aa7-4f8d-81d2-baa03411e35f" class="">Example 1:</p><div id="764b2358-e2ed-4ccc-bc45-a9864aa5c271" class="column-list"><div id="8b2e79fb-ce44-4878-a274-966ada108831" style="width:50%" class="column"><figure id="be456190-0ced-47a3-afae-3569f8007d15" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%202.png"><img style="width:438px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%202.png"/></a></figure></div><div id="a215ad9a-2627-4d46-874f-7f0291954ec1" style="width:50%" class="column"><p id="5597cc07-3e1b-426a-90a6-04aa11662863" class="">Error:</p><ul id="3920f2f6-cc0c-4bc3-a694-72f259fec923" class="bulleted-list"><li style="list-style-type:disc">passing by reference must be lvalue, but 5 is a rvalue.</li></ul><ul id="c7306124-2af7-4713-b34a-f54cc1a76819" class="bulleted-list"><li style="list-style-type:disc">resulting in a compiling error.</li></ul></div></div><figure id="e067ce75-e2fe-4917-97b5-83ee56a0434f" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%203.png"><img style="width:1111px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%203.png"/></a></figure><p id="5d71c5d1-e170-4c38-ad26-f29749519e45" class="">
+</p><p id="c1007ccc-be4f-4647-822f-0f11f96442f0" class="">Example 2:</p><div id="4846134e-6366-4e41-85ac-cfdac7c3fe5c" class="column-list"><div id="2318f1c0-3ab2-4dd0-85cb-78455735fa26" style="width:50%" class="column"><figure id="ff819b40-4592-405c-a405-ba416cdc2884" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%204.png"><img style="width:476px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%204.png"/></a></figure></div><div id="28ba9b54-491e-4650-82eb-820a23375402" style="width:50%" class="column"><p id="14a9546d-d3bc-47ab-b315-de89f8f161ea" class="">Error:</p><ul id="4ea96732-1718-4c48-b602-65d2d03d27e3" class="bulleted-list"><li style="list-style-type:disc">12 is a rvalue, contradicts with lvalue definition.</li></ul><ul id="d6ac4d29-ed21-46ca-9f75-22cb436ed964" class="bulleted-list"><li style="list-style-type:disc">resulting in a compiling error.</li></ul></div></div><figure id="cea64212-68d7-480a-9635-57f5480c04a9" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%205.png"><img style="width:909px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%205.png"/></a></figure><p id="20eebb71-6779-4616-a244-9cd6139ea15a" class="">
+</p><p id="140a82a4-04fe-4d4e-ad02-867520f57c5a" class="">Example 3: lvalue-to-rvalue convertions</p><div id="c8151d76-dd7e-42e7-9c3d-40e29bf3e4a0" class="column-list"><div id="8e0e3df9-95c8-475e-9a82-a383ed1cea3e" style="width:50%" class="column"><figure id="fb4e1764-40b2-4d44-8250-d8c16f2c3184" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%206.png"><img style="width:528px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%206.png"/></a></figure></div><div id="0174133b-9931-41d4-9486-e9dff102f592" style="width:50%" class="column"><ul id="d6b30d8a-ec0b-416a-a43e-502edc75b1d4" class="bulleted-list"><li style="list-style-type:disc">Both x and y are lvalues (have memory locations).</li></ul><ul id="1572dbc2-7fd0-41e4-a4a8-8b7c8de0e159" class="bulleted-list"><li style="list-style-type:disc">Operand <code>+</code> requires rvalues and returns a rvalue.</li></ul><ul id="f61b227b-2297-49d6-a1b1-edca8853dc04" class="bulleted-list"><li style="list-style-type:disc">x and y are converted to rvalues.</li></ul></div></div><p id="315d69ea-6dc1-4f1c-8d43-55aeb6aa8bc7" class=""><strong>Note:</strong></p><p id="9e34ddad-87a2-450f-9d19-86fba307b537" class=""><mark class="highlight-red">lvalues can be converted to rvalues, but rvalues can </mark><mark class="highlight-red"><strong>NEVER</strong></mark><mark class="highlight-red"> be converted to lvalues!</mark></p><p id="99c36d11-19e1-41dd-9035-e432892994bb" class="">
+</p><p id="c3e3ccf0-8553-4124-88d4-c6bc4ca59d2b" class="">Example 4: constant reference</p><div id="782e7371-cecc-420d-a1b2-04a867c4b663" class="column-list"><div id="66dd2ae5-8059-425b-b805-5596d1bcbeba" style="width:50%" class="column"><figure id="9865fb3d-5146-414e-9c1c-1a7b5828663b" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%207.png"><img style="width:802px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%207.png"/></a></figure></div><div id="e44fabe2-1342-4530-b168-eccbc485744d" style="width:50%" class="column"><ul id="1047964c-148d-46ee-a436-48b57a519a9d" class="bulleted-list"><li style="list-style-type:disc">function foo takes a constant reference to integer</li></ul><ul id="f3b8d869-38ef-4fd4-a665-784a123a2a74" class="bulleted-list"><li style="list-style-type:disc">it promises not to mutate the integer (literal reference)</li></ul><ul id="2debe3c3-79f3-47b6-85fb-7fe1001c49ef" class="bulleted-list"><li style="list-style-type:disc">rvalue result is located at a temporary memory location</li></ul><ul id="65f058ce-630e-44a8-84d7-4c29834d99a8" class="bulleted-list"><li style="list-style-type:disc">then rvalue reference is acceptable as parameter of foo</li></ul><ul id="d1fd0570-8b32-41d2-8792-8419a507e595" class="bulleted-list"><li style="list-style-type:disc">only works for <mark class="highlight-red"><strong>constant references</strong></mark>!</li></ul></div></div><p id="bb6a5cad-288c-474e-8df9-ca2a9f861b87" class=""><strong>Note:</strong></p><p id="8cbc0744-12bf-4d4e-bba4-7d8d5cc6cd8a" class=""><code>const int&amp; n = 5;</code> is almost equivalent to <code>const n = 5;</code></p><p id="f011d0de-df72-4b74-91e3-37b9d5e01705" class=""><span style="border-bottom:0.05em solid"><strong>IMPORTANT:</strong></span> if the parameter type is <code>const</code> reference, then rvalue is acceptable. (only under this condition!)</p><p id="65b5abc1-d699-4939-a2bb-5c5508e5ab6d" class="">
+</p><h3 id="f264e05d-26ce-4a73-89bc-d5737581a36f" class="">Summary of Lvalue &amp; Rvalue:</h3><ul id="3434e9a9-29fa-4612-87d7-6787f095a819" class="bulleted-list"><li style="list-style-type:disc">lvalue reference must be initialized with a lvalue</li></ul><ul id="09262a37-acd7-45af-a796-b46b19e0d47a" class="bulleted-list"><li style="list-style-type:disc">cannot create a reference to a reference</li></ul><ul id="2c34b030-021a-4bd6-931e-1cdd2e588fbe" class="bulleted-list"><li style="list-style-type:disc">cannot create a pointer to a reference</li></ul><ul id="0bd851ac-f193-490b-8ae2-26547f6de1ef" class="bulleted-list"><li style="list-style-type:disc">cannot create an array of reference</li></ul><ul id="afbb8be5-62b5-4a71-8fa9-b6626f68ee69" class="bulleted-list"><li style="list-style-type:disc">pass arguments as references for anything bigger than integers</li></ul><p id="b767c161-9d03-4050-83d9-4d8ab3a42525" class="">
+</p><p id="6295e201-8dad-4b49-bb31-7f5cfd922fe6" class=""><strong>Side notes:</strong></p><ul id="d0f59d30-018b-4ca4-ba33-2080a593ff26" class="bulleted-list"><li style="list-style-type:disc"><code>a++</code> returns a rvalue reference (return its original value first, then augment by 1)</li></ul><ul id="710b2e30-1825-42b1-8d15-afd02e80b5df" class="bulleted-list"><li style="list-style-type:disc"><code>++a</code> returns a lvalue reference (augment by 1 first, then return its value)</li></ul><p id="e9328254-7d44-4bf5-9983-a530dd726618" class="">
+</p><h1 id="fa4b9c01-11f9-49cc-a6c4-2036ebb05a23" class="">Operator Overloading</h1><p id="6d7a1bc9-b7c6-4b1a-97dd-124d9c3e1054" class="">Some operators serve for more than one purpose. They can do different things under different circumstances.</p><p id="097266c5-cc73-42eb-9f28-e0f6c5b40999" class=""><strong>Example:</strong></p><div id="a1772574-2658-4622-b40c-17173d1cde96" class="column-list"><div id="82186990-d024-4e7f-9c0b-5c760fc82b37" style="width:50%" class="column"><figure id="a3c95f97-7ab7-4bd2-8d62-81ecb41b3252" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%208.png"><img style="width:864px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%208.png"/></a></figure></div><div id="0a2508fc-8b5d-4c73-a042-63420df8619a" style="width:50%" class="column"><ul id="f276e4f6-7da6-4f84-82ad-b9df23686a36" class="bulleted-list"><li style="list-style-type:disc">We can use operator <code>+</code> to add integers</li></ul><ul id="6de3481f-508e-4158-af3b-795d3eeca0ac" class="bulleted-list"><li style="list-style-type:disc">We can also use operator <code>+</code> to add two strings</li></ul><ul id="229aac65-63c1-4e9d-9626-aa60f7e35a18" class="bulleted-list"><li style="list-style-type:disc">This is called <mark class="highlight-red"><strong>operator overloading</strong></mark></li></ul></div></div><ul id="4fb82016-bfd9-4219-9c37-e9432bedeeef" class="bulleted-list"><li style="list-style-type:disc">Operator overloading allows more than one definition of an operator in the same scope.</li></ul><ul id="effbd194-b709-45e0-8cac-72ad610f42b3" class="bulleted-list"><li style="list-style-type:disc">Compiler decides the most appropriate definition to use.</li></ul><ul id="1444ff77-bcb5-4153-822f-4d59645aeda3" class="bulleted-list"><li style="list-style-type:disc">Syntax: the keyword <code>operator</code> followed by the symbol of the operator.</li></ul><ul id="6d75567c-be8f-4a68-80dc-178c521d2980" class="bulleted-list"><li style="list-style-type:disc">Has a return type and a parameter list (often passed by constant reference).</li></ul><p id="c43236f7-e7fd-424a-8455-5b149eef2f88" class=""><strong>Example:</strong> In the screenshot above, we redefine the <code>+</code> operator:</p><p id="a4a00762-ec2e-413b-a3a7-7e86039ca19a" class="">Line 5: <code>int operator+(const int&amp; n, const int&amp; m);</code></p><p id="29bcb4f3-9316-41b7-a9dd-a6642604350a" class="">Line 8: <code>std::string operator+(const std::string&amp; str1, const std::string&amp; str2);</code></p><p id="f4808eac-ae42-4346-b56d-7b21a38f2b52" class="">
+</p><h3 id="8252fe76-dee2-42d3-a4f2-e013aefdfbdd" class="">Operator overloading with structures:</h3><p id="a19d8e4f-7122-492d-b04e-add0e2746c01" class="">Example 1: implement the overloaded input operator for a defined structure</p><pre id="f5564a84-fd0e-4868-b184-3bf19fbf2d20" class="code"><code>// structure student definition
+struct student {
+	std::string name;
+	int id;
+	int age;
+};</code></pre><figure id="15bd356c-4c21-45fb-8efb-a4be122ab136" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%209.png"><img style="width:1029px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%209.png"/></a></figure><p id="81e02d54-d6f7-4ca5-9e59-aaecb804deb7" class="">
+</p><p id="8c88d6ae-9e23-45e6-a003-c6cf45c818af" class="">Example 2: overload operator <code>+</code> for structures and integers</p><pre id="2a2728d1-3337-4f60-badb-e51089e756fa" class="code"><code>// structure posn definition
+struct posn {
+	int x;
+	int y;
+};</code></pre><div id="0e5a20d2-1317-4ea9-a4a4-448feb20e381" class="column-list"><div id="ae5aeed4-fff7-4c22-b610-5531ec2f7320" style="width:62.5%" class="column"><figure id="88f38a3c-0aff-40ac-abbd-8f1f909b5476" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2010.png"><img style="width:480px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2010.png"/></a></figure></div><div id="c79e28c6-fa8f-4250-a990-875244a6e82a" style="width:37.5%" class="column"><p id="b1c99c7c-7eb4-48d5-bbe2-7ce00ac6bf30" class="">Now can we performance reading into posn and additions for <strong>posn structures</strong></p></div></div><p id="8f7c6dd2-6a7c-49cc-9baf-a51298c82bcf" class="">
+</p><h1 id="0acfcb2b-62fe-46e8-951e-2cf617dcd72b" class="">Dynamic Memory</h1><div id="27a39969-d010-4fcb-b9e4-03c2e46ecac4" class="column-list"><div id="82bd82ee-e41b-47cb-b455-605d605b1ba6" style="width:50%" class="column"><h3 id="e120d6ed-88ad-4bde-acdf-31b9fe917aa9" class="">Dynamic memory in C:</h3></div><div id="d20156d3-071c-4062-b708-44d4cffb6490" style="width:50%" class="column"><h3 id="15f02c98-2d97-4293-b5fd-9fa1ebb2dfe3" class="">Dynamic memory in C++:</h3></div></div><div id="2e6780d7-ac97-4808-9e23-1af80938fd9d" class="column-list"><div id="c4e4330a-fca5-47da-ab68-0f1eab786ba0" style="width:50%" class="column"><ul id="712615f1-117e-46d4-b275-9b3c25f1039c" class="bulleted-list"><li style="list-style-type:disc">three methods: <code>malloc()</code>, <code>realloc()</code>, <code>free()</code></li></ul><ul id="23a60d1e-921f-4050-ac34-393de522e0e0" class="bulleted-list"><li style="list-style-type:disc"><code>malloc()</code>: memory allocation</li></ul><ul id="5b2c2159-815c-4789-a7e3-b28e79264db0" class="bulleted-list"><li style="list-style-type:disc"><code>realloc()</code>: memory re-allocation</li></ul><ul id="7c10776a-b1f4-437b-bbc6-5c25e1ef8493" class="bulleted-list"><li style="list-style-type:disc"><code>free()</code>: release memory allocation</li></ul><figure id="5390581b-dff6-426a-bc33-2fd63d459b86" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2011.png"><img style="width:701px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2011.png"/></a></figure></div><div id="3d4d5a01-a23c-4a95-862d-e014321b0c20" style="width:50%" class="column"><ul id="3af5553d-921b-4434-8ac0-4aa0595a74b2" class="bulleted-list"><li style="list-style-type:disc">three methods: <code>malloc()</code>, <code>realloc()</code>, <code>free()</code> are <mark class="highlight-red">BANNED</mark></li></ul><ul id="920de441-dbae-43b0-b80b-514b9797539a" class="bulleted-list"><li style="list-style-type:disc"><code>new</code>: memory allocation</li></ul><ul id="a33f8e0b-7e1b-49ea-9231-40b0e9fbbde9" class="bulleted-list"><li style="list-style-type:disc"><code>delete</code>: release memory</li></ul><ul id="397b52c7-72cc-4736-892c-2435ff59af36" class="bulleted-list"><li style="list-style-type:disc"><code>nullptr</code>: NULL pointer</li></ul><figure id="a13b76c1-3e46-4f76-a61f-0d18479ae095" class="image"><a href="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2012.png"><img style="width:648px" src="Intro%20to%20C++%20(part%202)%203e29f87e6dae4ddb92fdb41f1df44286/Untitled%2012.png"/></a></figure></div></div><p id="850ca740-a215-4b44-92fd-68d9e669b148" class="">
+</p><h1 id="0d980e2c-70d9-4d40-ac8c-1c6ca853f1dd" class="">Include Guard</h1><blockquote id="75d7fb5c-3b3f-4efb-9aea-b91eee15a228" class=""><strong>Include Guard:</strong> A construct used to avoid problem of double or more inclusion when dealing with <code>#include</code> directive.</blockquote><p id="f087dfcf-861d-41d0-97d3-d9d1b1bf4138" class="">
+</p><p id="1e1b9608-1cd5-49eb-a434-8f8d905aef34" class=""><strong>Functions:</strong></p><p id="b0705e0e-62e3-497b-a67c-d0bf0c10e9a9" class=""><code>#ifndef</code>: if a MACRO is not defined</p><p id="ce2511e0-c26d-4965-9a30-b6fc6a3eb62e" class=""><code>#ifdef</code>: if a MACRO is defined</p><p id="3e8ce468-8f2d-4b6f-8dfb-b36fa1ee8367" class=""><code>#define</code>: define a MACRO</p><p id="03ddd01e-b509-40cb-a7e7-de48920ffbd8" class=""><code>#endif</code>: finish defining</p><p id="d85fc949-8286-40a9-b49c-78eec013c355" class="">
+</p><p id="7b8e3e01-65dd-4acc-a53a-5b3742d111a1" class="">Sample guard.h:</p><pre id="93df96ac-b93f-4edd-a8b7-b632408a88d2" class="code"><code>#ifndef __GUARD_H__ // the variable name can be anything
+#define __GUARD_H__ // by tradition, it&#x27;s the header file name, all caps, separated
+										// by underscore characters
+
+int add(int x, int y) {
+	return x + y;
+}
+
+#endif</code></pre><p id="534e7182-90a8-4b75-8873-896e362eab1f" class="">
+</p><h1 id="c3693332-101b-40b3-a057-af929af54e4f" class="">Conditional Compilation</h1><blockquote id="d7104146-bdd3-40db-850b-97b7730208bf" class=""><strong>Conditional Compilation directives</strong> are type of directives which helps to compile a specific portion of the program or to skip compilation of some specific parts of the program based on some conditions.</blockquote><p id="32f8204b-6bb2-42e4-9621-e8a4d8fbd3b8" class="">
+</p><p id="3072b66a-e444-408e-b4fa-7dfc0abe3647" class=""><strong>Sample main.cc:</strong></p><pre id="797d479b-9289-4c65-b8bd-e3be51242baa" class="code"><code>#include &lt;iostream&gt;
+
+#ifndef VALUE // will be executed if VALUE if not defined
+#define VALUE 5
+#endif
+
+#define NUM 100 // define NUM with value 100
+// no assignment operator, no semicolon
+
+int main() {
+	int a = VALUE + 3 + 4;
+	
+	#ifdef NUM // will be executed if NUM if defined
+	std::cout &lt;&lt; a &lt;&lt; std:: endl;
+	#endif
+}</code></pre><p id="c65bd4e6-0950-40d9-bd08-bc9d0492b6f6" class=""><strong>Linux command</strong>: <code>g++14 -D VALUE=10 main.cc</code>, which is equivalent to <code>#define VALUE 10</code></p><p id="ae235fa1-34ea-45e3-8a77-3969ea9b2a9c" class="">
+</p><h1 id="f9a7beb8-04d5-4c41-ae98-9cb5b0458458" class="">Compiling</h1><p id="cb6b1d28-f100-4050-a867-7e10f2b848d2" class=""><strong>Question:</strong> If our program consists only one file, then we only need to compile one file, but what should we do if our program consists of more than one file?</p><p id="54059d51-0d91-4a61-9788-0a063d2e647b" class="">
+</p><p id="30bbb3f9-bf84-4c96-a4a7-fbaa55c186a7" class="">For example<strong>:</strong></p><div id="11b5f3bd-8297-4948-9dc3-b24fce8ffd1a" class="column-list"><div id="4301ac50-282c-4e05-8cb0-8fb52eb7ffcc" style="width:50%" class="column"><p id="877fa39b-4396-4879-91ed-51bc60b6f4a4" class=""><strong>calculateLine.h</strong></p></div><div id="51c850b1-dab7-4e96-b266-dea5999d6fe1" style="width:50%" class="column"><p id="4201c212-4934-4bef-b383-e65e0a3bbef2" class=""><strong>sum.cc</strong></p></div></div><div id="95f4a579-0dda-40da-9cd5-0d558734b594" class="column-list"><div id="572e413c-61f7-49f5-a1d5-84ca46045925" style="width:50%" class="column"><pre id="86112af1-c3cb-412e-b7f6-22470eb7169f" class="code"><code>#ifndef __CALCULATELINE_H__
+#deinfe __CALCULATELINE_H__
+
+#include &lt;string&gt;
+
+void calculateLine(std::string line);
+
+#endif</code></pre></div><div id="caa8ab24-3581-46d5-8e40-4ebdb8827fe4" style="width:50%" class="column"><pre id="fefb63aa-d75a-4874-9e1f-fbf14d11dc60" class="code"><code>#include &lt;iostream&gt;
+#include &quot;calculateLine.h&quot;
+
+int main() {
+	std::string line;
+	while (std::geline(std::cin, line)) {
+		calculateLine(line);
+	}
+}</code></pre></div></div><p id="b98574c2-4d02-41a6-b47c-272b77bdb00b" class=""><strong>calculateLine.cc</strong></p><pre id="04fd9d09-9e35-4345-bd4f-f3ea5cacb0e7" class="code"><code>#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &quot;calculateLine.h&quot;
+
+void calculateLine(std::string line) {
+	std::istringstream iss{line};
+	int num, sum;
+	char op;
+	iss &gt;&gt; sum;
+	while (iss &gt;&gt; op &gt;&gt; num) {
+		if (op == &#x27;+&#x27;) {
+			sum += num;
+		} else {
+			sum -= num;
+		}
+	}
+	std::cout &lt;&lt; sum &lt;&lt; std::endl;
+}</code></pre><p id="3fde71de-a2ff-42a2-9b99-bf40caf67eb9" class="">How do we compile the three files above into a program?</p><p id="4238df23-bc72-4077-ba43-6764f8f71b60" class="">
+</p><h3 id="c71656a6-e23a-4266-b988-5e0059761ee1" class="">Method 1: Compile manually (use this for debugging)</h3><ul id="575d0cab-17d2-4a34-823e-ce7c48d30219" class="bulleted-list"><li style="list-style-type:disc">Compile all the <code>.cc</code> files at the same time by executing the following command:<p id="bc20fee9-a838-4323-93a2-92a5c19c6e5d" class=""><code>g++14 sum.cc calculateLine.cc</code></p></li></ul><p id="07edd496-0b77-4f69-a260-fb6c0f9a680c" class="">or   <code>g++14 sum.cc calculateLine.cc -o sum</code> (<code>-o</code> renames the generated file into <code>sum</code>)</p><p id="b0a9f3a7-1ef1-4982-a21a-443e383be16b" class="">or   <code>g++14 *.cc -o sum</code> (using globbing pattern)</p><ul id="de73e209-7b0d-45d8-8951-48392047280f" class="bulleted-list"><li style="list-style-type:disc">Every time we make a change to any file, we need to re-compile everything.</li></ul><ul id="0752c24d-b866-4bf3-8861-f20d2ff24250" class="bulleted-list"><li style="list-style-type:disc">If the program is large, this might take a long time to compile.</li></ul><h3 id="1df7a6a3-81b9-4928-8c7b-471ceaf0a73f" class="">Method 2: Create object files</h3><ul id="cb79d77f-705b-442c-a31d-ebff11013c3e" class="bulleted-list"><li style="list-style-type:disc">Create objects depending on file dependencies.</li></ul><ul id="3bfb6299-19fe-4c8e-b1c6-130fc1b3b3b7" class="bulleted-list"><li style="list-style-type:disc"><code>calculateLine.cc</code> depends on <code>calculateLine.h</code>, then one object (file extension <code>.o</code>) will be created.</li></ul><ul id="c57d488e-4e15-406c-8d45-e6cdd65f0293" class="bulleted-list"><li style="list-style-type:disc"><code>sum.cc</code> depends on <code>calculateLine.h</code>, then another object will be created.</li></ul><ul id="107dadb4-faee-469f-9a6c-10c694f67c11" class="bulleted-list"><li style="list-style-type:disc">Compile the two objects to create the executable:<pre id="3a42580a-be83-481a-be3a-d3164e76eb43" class="code"><code>g++14 -c calculateLine.cc calculateLine.h   (calculateLine.o is created)
+g++14 -c sum.cc calculateLine.h           (sum.o is created)
+g++14 sum.o calculateLine.o -o sum     (create the executable based on two objects)</code></pre></li></ul><ul id="f5b61ecd-681c-4e97-bba3-9ec8f4a22dc2" class="bulleted-list"><li style="list-style-type:disc">If making changes, we only need to re-create the object associated.</li></ul><ul id="269fac9b-6892-4feb-940c-2f4a58ba002f" class="bulleted-list"><li style="list-style-type:disc">If many files are changed, it would be hard to keep track of objects and it would be better to just re-compile everything again.</li></ul><ul id="f24fa142-0890-4874-b926-8ac8dc3d4b3a" class="bulleted-list"><li style="list-style-type:disc">Still too complicated!</li></ul><h3 id="462174d1-ef6c-4e68-9848-07cd625e0029" class="">Method 3: Makefile</h3><h1 id="72c09546-9ee0-437b-8ce8-00a5dd432fb6" class="">Makefile</h1><p id="25e03878-3616-4c32-9cc2-f2bbb4ad04ad" class="">Linux command: <code>make</code></p><ul id="b51511e8-0a71-463d-ba00-4d8773868580" class="bulleted-list"><li style="list-style-type:disc">a Unix tool to simplify building program executables from arbitrary number of modules.</li></ul><ul id="cf4d848c-abd3-40d2-84b5-edd4275b78ac" class="bulleted-list"><li style="list-style-type:disc">automatically update objects that need to be re-built since last time.</li></ul><ul id="982078b8-1a4e-4b56-8679-3d9788ceadac" class="bulleted-list"><li style="list-style-type:disc">must have a file named “<mark class="highlight-red"><strong>Makefile</strong></mark>” under the same directory.</li></ul><ul id="df2db6eb-1f3d-4caa-91e6-4a9e65be1bda" class="bulleted-list"><li style="list-style-type:disc">we will need to write “Makefile” manually.</li></ul><ul id="fbb0e0d8-ed55-4c50-8006-26a8c4f4db72" class="bulleted-list"><li style="list-style-type:disc">type Linux command <code>make</code> will then automatically compile the program based on what we write in <mark class="highlight-red"><strong>Makefile</strong></mark>.</li></ul><p id="03e3e4fe-b50b-4168-8575-5e55e49318eb" class="">
+</p><h3 id="b30fd78f-8294-4940-8b0b-e6efaac651cc" class="">Makefile template:</h3><pre id="1af5a974-e509-488b-8e5e-e11a65ca6cdd" class="code"><code>CXX = g++
+CXXFLAGS = -std=c++14 -Wall
+OBJECTS = sum.o calculateLine.o
+EXEC = sum
+
+${EXEC}: sum.o calculateLine.o
+				${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+
+sum.o: sum.cc calculateLine.h
+
+calculateLine.o: calculateLine.cc calculateLine.h
+
+.PHONY: clean
+
+clean: rm ${OBJECTS} ${EXEC}</code></pre><p id="bc99180c-7543-4112-a604-856dec1b84ae" class="">Side notes:</p><ul id="b7a30ce3-0ee7-4212-9b17-ea0e2b983cc1" class="bulleted-list"><li style="list-style-type:disc"><code>-Wall</code>: all the warnings will be treated as error messages</li></ul><ul id="805f230e-c4a7-4b01-8485-a5f4fcfaec24" class="bulleted-list"><li style="list-style-type:disc"><code>sum</code>: the generated executable file if <code>make</code> is successful</li></ul><ul id="e023d7e1-c906-48bd-8a85-7b1072e0429f" class="bulleted-list"><li style="list-style-type:disc">another flag (but not often used here): <code>-g</code>: enables using gdb</li></ul><ul id="d033dc69-ec56-401a-ba1c-1c3efeb6ecf3" class="bulleted-list"><li style="list-style-type:disc"><code>make clean</code> command: deletes all files created by <code>Makefile</code></li></ul><ul id="a14c5cd5-6833-474c-b6aa-9b79ebda3ae9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red"><strong>IMPORTANT</strong></mark>: There are <span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>TWO TABS</strong></mark></span> before ${CXX}! (It must be 2 tabs! Otherwise it won’t compile! (”missing tab” error will occur))</li></ul><p id="34c71546-ebc5-4552-be0a-e144aa57fb34" class="">
+</p><h3 id="a85a80f2-f095-468a-8e5a-a2b395d67d0b" class="">UW’s Makefile template (Best version):</h3><pre id="b193b25b-f353-468a-bc65-0cb726e628ef" class="code"><code>CXX = g++
+CXXFLAGS = -std=c++14 -Wall -MMD
+# -MMD generates the dependencies of each object files
+EXEC = exec
+SOURCES = $(wildcard *.cc)
+OBJECTS = ${SOURCES:.cc=.o}
+DEPENDS = ${OBJECTS:.o=.d}
+
+${EXEC}: ${OBJECTS}
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
+
+-include ${DEPENDS}
+
+#PHONY target
+.PHONY: clean
+clean:
+	rm ${OBJECTS} ${EXEC} ${DEPENDS}</code></pre><p id="2c36ad1c-6b67-42a4-9d2a-967a131d3dc5" class="">Underlined parts are all we need to modify for each project.</p></div></article></body></html>

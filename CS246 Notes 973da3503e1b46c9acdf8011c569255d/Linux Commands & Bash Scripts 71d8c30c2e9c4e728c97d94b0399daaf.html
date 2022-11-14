@@ -1,0 +1,894 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Linux Commands &amp; Bash Scripts</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="71d8c30c-2e9c-4e72-8c97-d94b0399daaf" class="page sans"><header><h1 class="page-title">Linux Commands &amp; Bash Scripts</h1></header><div class="page-body"><h1 id="7a910855-eb3d-453e-90ec-7d9bb554c4d1" class="">Linux Shell</h1><ul id="28f639c5-61fe-41b2-bb2c-21aa3076be4b" class="bulleted-list"><li style="list-style-type:disc">The command interpreter in Linux operating system</li></ul><ul id="f3171c75-ce4b-4fde-83bd-3eac9413d658" class="bulleted-list"><li style="list-style-type:disc">A program that executes other programs</li></ul><ul id="5cc44306-fe1c-4c33-b899-b0113ff835ed" class="bulleted-list"><li style="list-style-type:disc">Provides computer users an interface to Linux system</li></ul><ul id="d2b3a204-e7a4-4967-94ea-a94830771c2e" class="bulleted-list"><li style="list-style-type:disc">Users can run different commands with some input</li></ul><p id="56dac42e-2fa3-46fb-b74e-883487fc3c4b" class="">
+</p><h1 id="42ede7e4-b385-497d-9e81-7504d07297a3" class="">Linux Commands</h1><h3 id="d261e566-941e-4c7d-8ae7-f9218e7fbaaa" class="">Command: <code>ls</code></h3><p id="1ea728b7-f102-4626-963f-13ef7031b67f" class="">List all contents in the current directory (<span style="border-bottom:0.05em solid">excluding hidden files</span>)</p><figure id="e16f0680-1147-4b2d-8000-5198a9859d6f" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled.png"><img style="width:1732px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled.png"/></a></figure><p id="9466fa38-bf1e-4b77-b957-b62ace140548" class="">
+</p><h3 id="1a9e32cb-dfff-4260-b9ae-19ad7487acf6" class="">Command: <code>ls -a</code></h3><p id="30f85bbe-4ca7-466b-990a-c76f8246f2cd" class="">List all contents of the current directory (<span style="border-bottom:0.05em solid">including hidden files</span>)</p><figure id="5bb33887-fcdb-47ce-bcda-29ccbde4145d" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%201.png"><img style="width:1896px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%201.png"/></a></figure><p id="d500d287-4e1a-47a3-ab86-de38183feb59" class="">The first “.” represents the current directory.</p><p id="7f949a26-7a36-44f8-8faa-79af7e76fb38" class="">The “..” represents the parent directory.</p><p id="797b80d6-9f42-4931-9522-9e0f992d3240" class="">
+</p><h3 id="7c7dcaf4-1b98-49ae-a3d6-098c89e2ac6a" class="">Command: <code>ls -l</code></h3><p id="18c05108-62d2-4ddf-9618-64af7b3c2e5c" class="">List all contents of current directory in long format.</p><p id="65d7e0db-1bd1-4ec6-9bc0-e2ac5d789b6b" class="">
+</p><h3 id="0d7e46c6-c74f-43dd-b9da-b88205b6cec6" class="">Command: <code>cd</code> (change directory)</h3><p id="76da81ad-de42-4b7e-b317-806aa4c6655c" class=""><code>cd</code>: go to default / home directory</p><p id="67d15872-c586-4600-a375-0d02bffc2d19" class=""><code>cd ~</code>: go to default / home directory</p><p id="9f169d6a-f421-43ac-bcf3-d7c74a3c8472" class=""><code>cd </code><code><em>path</em></code>: follow the path</p><p id="43599727-d5d3-41f6-a54f-0c1b37363254" class=""><code>cd ..</code>:  go to the parent directory</p><p id="612514e4-56cd-4c4d-97c4-4b619c9afa55" class=""><code>cd -</code>: go to the previous directory</p><p id="be7b64c1-5cc6-4934-bd63-d3e1096653c0" class="">
+</p><h3 id="fae6858c-c001-475b-8a5e-8857e05ed8b5" class="">Command: <code>mkdir dirName</code></h3><p id="1d29579b-2129-40a6-a695-f6983e15e657" class="">Create new directory named <code>dirName</code> in the current directory.</p><p id="8f9cbdf5-e8ed-4531-b725-a5a07803a63c" class="">
+</p><h3 id="63043ed1-4441-4f94-8aa9-ebaae4deda25" class="">Command: <code>rmdir dirName</code></h3><p id="3b527c77-bdb7-4048-84b6-ff74d3541965" class="">Remove directory <code>dirName</code> in the current directory, <strong>only</strong> works if <code>dirName</code> is <strong>empty.</strong></p><p id="8327bb7c-cc06-4f1d-95dd-8ef526bbf8c1" class="">
+</p><h3 id="3e82f2bc-f946-4534-bbf9-005f1f75ad3e" class="">Command: <code>rm filename</code></h3><p id="fe07235d-25df-4f43-9470-8757d17594a0" class="">Remove <code>filename</code> in the current directory.</p><p id="7892d996-31b6-45b6-b84c-1cc1f1ea72bc" class="">
+</p><h3 id="072b41b2-f1a0-4ee7-b861-913429e683a2" class="">Command: <code>cp filename1 filename2</code></h3><p id="863935f9-e348-49a1-b0ef-1d50d8837940" class=""><strong>Copy</strong> contents in <code>filename1</code> and <strong>paste</strong> them into <code>filename2</code>. Contents in <code>filename2</code> will be overwritten.</p><p id="a07dfa76-b1f9-4e80-ae2a-b165e9df4fef" class="">
+</p><h3 id="8c5e8255-c535-4cf0-9def-e26e68d334ba" class="">Command: <code>mv filename1 filename2</code></h3><p id="18b8d051-1622-44c5-ac88-81b954baa06f" class=""><strong>Cut</strong> <code>filename1</code> and <strong>paste</strong> its contents in <code>filename2</code>. <code>filename1</code> does not exist any more. This command is usually used to <strong>re-name</strong> files.</p><p id="c7b8ea4e-65b9-47da-8b5f-568ace0aa21a" class="">
+</p><h3 id="ea5269a0-52e3-44c7-97f8-ece3e4b00511" class="">Command: <code>mv filename1 dir</code></h3><p id="54bcfeaa-b692-4129-aa25-f6ef5e268f6d" class="">Move <code>filename1</code> under <code>dir</code>.</p><p id="edef8924-aa41-453c-864e-d57bb91d0d41" class="">
+</p><h3 id="bf2eb6c2-3e3c-410e-9563-b5d23180dd08" class="">Summary:</h3><table id="f85ab93a-5fa5-4b59-bb49-f30ee160b1c0" class="simple-table"><tbody><tr id="c55a5612-14c2-4356-ad96-a50f934a0bef"><td id="&lt;id|" class="">Command</td><td id="Sb|O" class="" style="width:536.2307739257812px">Functionality</td></tr><tr id="dbf4bf7d-4d46-4757-a5f2-b776f187f46b"><td id="&lt;id|" class=""><code>ls</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">List all contents in the current directory (<span style="border-bottom:0.05em solid">excluding hidden files</span>)</td></tr><tr id="95638437-87f2-4918-81eb-9aa4f7b3175b"><td id="&lt;id|" class=""><code>ls -a</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">List all contents of the current directory (<span style="border-bottom:0.05em solid">including hidden files</span>)</td></tr><tr id="bebfdc38-9fcb-4435-b710-24162a200d2b"><td id="&lt;id|" class=""><code>ls -l</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">List all contents of current directory in long format.</td></tr><tr id="9ed2d756-258f-478a-a262-0f9fea222c53"><td id="&lt;id|" class=""><code>cd</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Change directory</td></tr><tr id="40f896e7-af84-4570-bb5d-63e07c6d8c92"><td id="&lt;id|" class=""><code>mkdir dirName</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Create new directory named <code>dirName</code> in the current directory.</td></tr><tr id="f4d70533-ba54-43ef-b19c-8a418bb6a86e"><td id="&lt;id|" class=""><code>rmdir dirName</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Remove directory <code>dirName</code> in the current directory, <strong>only</strong> works if <code>dirName</code> is <strong>empty.</strong></td></tr><tr id="5a93abda-f777-45e8-b3df-9377be91ed9f"><td id="&lt;id|" class=""><code>rm filename</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Remove <code>filename</code> in the current directory.</td></tr><tr id="d907f127-991b-4039-b3f2-b0ab861f6b69"><td id="&lt;id|" class=""><code>cp filename1 filename2</code></td><td id="Sb|O" class="" style="width:536.2307739257812px"><strong>Copy</strong> contents in <code>filename1</code> and <strong>paste</strong> them into <code>filename2</code>. Contents in <code>filename2</code> will be overwritten.</td></tr><tr id="d817819a-3802-40e9-84e4-2c004402b167"><td id="&lt;id|" class=""><code>mv filename1 filename2</code></td><td id="Sb|O" class="" style="width:536.2307739257812px"><strong>Cut</strong> <code>filename1</code> and <strong>paste</strong> its contents in <code>filename2</code>. <code>filename1</code> does not exist any more. This command is usually used to <strong>re-name</strong> files.</td></tr><tr id="6b076887-77b7-448c-9ef8-808dfeabe79e"><td id="&lt;id|" class=""><code>mv filename1 dir</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Move <code>filename1</code> under <code>dir</code>.</td></tr><tr id="ece6330e-afa8-47e9-ad05-5ad68a40fe45"><td id="&lt;id|" class=""><code>cat filename1 filename2 …</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Display file contents in order.
+(Note: the <strong>arguments</strong> are <mark class="highlight-red"><strong>ALWAYS</strong></mark> the <mark class="highlight-red"><strong>paths</strong></mark>!)</td></tr><tr id="a7d5e2d6-d4a8-47a3-8803-df630e68b6b6"><td id="&lt;id|" class=""><code>cmp filename1 filename2</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Compare two files and output the first position they differ, output nothing if
+contents are the same.</td></tr><tr id="5efc4769-f8f0-4300-8c49-cdaa4d3f128c"><td id="&lt;id|" class=""><code>diff filename1 filename2</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Compare two files and output instructions for converting <code>filename1</code> to <code>filename2</code>,
+output nothing if contents are the same, used for CS 136 marmoset test results</td></tr><tr id="6af94280-b604-4345-8bfa-944aafb28c92"><td id="&lt;id|" class=""><code>wc filename</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Output the number of <strong>lines, words, characters</strong> of <code>filename</code> in order.</td></tr><tr id="75a10d0d-d075-4e00-b9f2-d5780534337f"><td id="&lt;id|" class=""><code>wc -l filename</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Output the number of <strong>lines</strong> of <code>filename</code>.</td></tr><tr id="3a32009b-df90-45dc-95a6-5b0be6aee340"><td id="&lt;id|" class=""><code>wc -w filename</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Output the number of <strong>words</strong> of <code>filename</code>.</td></tr><tr id="b8bece98-e93d-4c41-8efd-782e9567c828"><td id="&lt;id|" class=""><code>wc -c filename</code></td><td id="Sb|O" class="" style="width:536.2307739257812px">Output the number of <strong>characters</strong> of <code>filename</code>.</td></tr></tbody></table><p id="b61ba64b-daf5-4f67-a6a8-517d62516175" class="">
+</p><h1 id="9e5ded3b-4163-476d-8fe2-95babeec0e7b" class="">Input &amp; Output Redirection</h1><figure id="7a288fff-d1b3-4dfc-9863-6cfadd3af1b8" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%202.png"><img style="width:288px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%202.png"/></a></figure><p id="1c6b268a-f266-460a-b952-43808b3dd23f" class="">If argument is not provided, shell will wait for input ( no more argument ).</p><figure id="882fb42d-ae3c-4b2b-b7e1-032dbd19ac0b" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%203.png"><img style="width:288px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%203.png"/></a></figure><p id="16de68c2-b45b-4947-81a5-1892225c21fc" class="">By default, shell reads inputs from keyboard. If we use input redirection symbol, shell will read from the designated file instead.</p><p id="c5ae5370-a244-496e-9881-4f3b5bb3ac4b" class="">
+</p><figure id="e957f0f3-7758-4d91-9acd-d6b054d180b0" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%204.png"><img style="width:336px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%204.png"/></a></figure><p id="b2f7fca8-643e-4846-becb-1a6824329376" class="">Similarly, by default, shell prints outputs to the screen. If we use output redirection symbol, contents will be written into <code>fillename2</code>.</p><p id="4b04c259-f0a6-4a68-ac0d-b4859285a3ec" class="">
+</p><p id="c5128c6b-7d77-4a5c-a224-ef7a084ec15a" class=""><strong>Summary:</strong></p><table id="fa1c8f19-56b1-4910-b72b-0c916516f8fb" class="simple-table"><tbody><tr id="49d5a66f-99c6-48c8-ab6d-ffb0491a0708"><td id="[U&lt;P" class="">Symbol</td><td id="KPZ&lt;" class="" style="width:308.6923065185547px">Meaning</td></tr><tr id="3af315c3-e89d-4035-bbee-0c97fc073095"><td id="[U&lt;P" class=""><code>&lt;</code></td><td id="KPZ&lt;" class="" style="width:308.6923065185547px">Reads inputs from file</td></tr><tr id="49e9a34d-fe24-4f93-94b5-808da9211a4b"><td id="[U&lt;P" class=""><code>&gt;</code></td><td id="KPZ&lt;" class="" style="width:308.6923065185547px">Produces outputs to file 
+(<strong>overwrites</strong> the original file content)</td></tr><tr id="19708ebc-6c83-4b18-934f-e497d5119d03"><td id="[U&lt;P" class=""><code>&gt;&gt;</code></td><td id="KPZ&lt;" class="" style="width:308.6923065185547px">Produced contents will be <strong>appended</strong> to the file</td></tr><tr id="6acda73a-8b40-4e9f-a0b0-202029e013bf"><td id="[U&lt;P" class=""><code>2&gt;</code></td><td id="KPZ&lt;" class="" style="width:308.6923065185547px">Errors are written in the file</td></tr></tbody></table><p id="851d6f51-6cd8-48e7-ac35-1224fef53f10" class="">
+</p><h1 id="95cdce56-a214-420d-8e59-8b8d528265f5" class="">Text Editor - VI / VIM / EMACS</h1><h3 id="fcb5ab24-2512-47a0-91c9-5b8458ae625e" class="">Command: <code>vim filename</code></h3><p id="379771ef-ed68-4292-b828-339583ee09b8" class=""><strong>Open</strong> <code>filename</code>, if <code>filename</code> does not exist, <strong>create</strong> <code>filename</code>.</p><table id="bffee232-f59e-4963-bd35-18a72f0c4d88" class="simple-table"><tbody><tr id="83836814-0eea-4e10-8003-01284744793d"><td id="`@e\" class=""><strong>Commands</strong></td><td id="&gt;&lt;UF" class=""><strong>Function</strong></td></tr><tr id="2d0ab8f6-2fd9-445f-abc9-ff5930f5f3a9"><td id="`@e\" class=""><code>i</code></td><td id="&gt;&lt;UF" class="">Edit (insert mode)</td></tr><tr id="b13afe6d-3e37-43cd-ba44-d831e0783d70"><td id="`@e\" class=""><code>ESC</code></td><td id="&gt;&lt;UF" class="">Quit editor mode</td></tr><tr id="5b5a1515-6924-4597-aaad-6ac8374623e2"><td id="`@e\" class=""><code>:wq</code></td><td id="&gt;&lt;UF" class="">Save edition and quite</td></tr><tr id="f24fff12-aa9c-4ce4-866f-eacb41a4a793"><td id="`@e\" class=""><code>ENTER</code></td><td id="&gt;&lt;UF" class="">Confirm command</td></tr></tbody></table><p id="9e9c8257-2f0d-46f3-aac6-6cc7edd25936" class="">
+</p><h1 id="ee2121c2-0e6e-4070-bcf0-8980ea47fd9a" class="">Downloading files from Remote to your Local machine</h1><p id="072d11df-9049-48cf-9913-a7d6719bd209" class="">Downloading files from remote to local machine, you can download assignments, course materials, etc.
+Downloading directory is the current directory of local machine, so make sure you are in the right directory before downloading, otherwise you need to move files around
+Make sure you are <mark class="highlight-red"><strong>not connected to remote</strong></mark> when you are downloading, so in other words, you need to memorize the relative path of the files you want to download.</p><p id="d25d607e-a6e2-424b-86f9-517e47ab97dd" class="">
+</p><p id="e2b90d4f-fcfc-474b-8f86-f76d88d80baf" class=""><strong>Command: 
+</strong><strong><code>scp userid@linux.student.cs.uwaterloo.ca:cs246/1225/dir/dir/filename . </code></strong></p><p id="3049d734-e498-4693-a125-c08da0fb97fe" class="">Note: The last <code>.</code> means that downloading file to the current directory.</p><p id="b6d0c335-7ec2-47ba-9826-28dc24eda61b" class="">
+</p><figure id="b998a79b-f616-4210-911c-622f07b3c0a2" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%205.png"><img style="width:823px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%205.png"/></a></figure><figure id="a12f3d3d-b681-470a-8d1a-1691cb20917f" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%206.png"><img style="width:962px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%206.png"/></a></figure><p id="6973a2d0-00e1-469a-8410-5080f2198edb" class="">
+</p><h1 id="7bf3a9ce-c151-45ac-b9a8-66b6531e20a4" class="">Uploading files from Local machine to Remote</h1><p id="0d0502e1-56e7-4fd1-91fb-b20a7da3f281" class="">Uploading files from local to remote machine, you can upload codes, etc.
+Make sure you are in the directory of your local machine that contains the file you want to upload
+Make sure you are <strong>not connected to remote when you are uploading</strong>, so in other words, you need to memorize the relative path of the directory where you want to upload.</p><p id="5bd07f13-6721-4e39-b625-24e2493381d7" class="">
+</p><p id="b3d21838-0d2f-4884-b298-2e51e3f603b6" class=""><strong>Command: </strong></p><p id="8748ce2a-7973-4eb4-b1be-f6482d1817b2" class=""><strong><code>scp filename userid@linux.student.cs.uwaterloo.ca:cs246/1203/dir/dir</code></strong></p><p id="d897a635-a005-444f-9b3d-3cde896d4a67" class="">
+</p><figure id="04b1bdf3-f38b-4665-840e-00024bb15bae" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%207.png"><img style="width:996px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%207.png"/></a></figure><p id="e18717db-18ab-468c-9975-e8811b666107" class="">
+</p><p id="d5bf2dd8-c2c4-41ba-b5aa-52bfa01fef1b" class="">
+</p><h1 id="8e862327-2d5f-4c36-b76f-841ecaeb9c90" class="">Linux Stream</h1><p id="917f545c-b612-4e31-836d-14d91dfd3fdb" class=""><code><em>stdin</em></code>: standard input</p><p id="b0037819-f59b-4954-8559-af9cba1b5f91" class=""><code><em>stdout</em></code>: standard output (the first output stream [1] )</p><p id="7d563757-8295-46d7-ac19-27643812ae9e" class=""><code><em>stderr</em></code>: standard error (the second output stream [2] )</p><p id="85ddf9f1-0a66-4ec6-84b9-4cef2d6d1693" class="">
+</p><figure id="bc62f566-12ed-44d3-9040-6b3a7aae7d95" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%208.png"><img style="width:752px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%208.png"/></a></figure><p id="c7afe226-7531-4a90-8921-2c6bb06071b7" class="">
+</p><p id="33126628-27cd-4b1c-8321-f5438b27bce3" class=""><strong>Note:</strong></p><p id="b46a85a6-aa84-4ce7-a3de-6c4f4ef834ee" class=""><code>stdout</code> is <mark class="highlight-red">not</mark> real-time. It’s buffered. <code>stderr</code> is real-time.</p><p id="59ee7186-4d45-496a-8479-7b580c16e609" class="">
+</p><h3 id="39dc09ea-6fe6-4860-9db2-5c6cda787f04" class="">Stream Redirection Symbol: <code>&gt;&amp;</code></h3><p id="02776f6f-2293-49e9-8d83-5553ad4477ae" class="">Syntax for redirecting a stream to another stream.</p><p id="bcfeafae-9c16-4f79-856e-4cf5aa8b07a9" class=""><code>stdin</code>: 0</p><p id="b08a66bb-ccc7-4df7-8da2-f5f695c5935c" class=""><code>stdout</code>: 1</p><p id="7df1e386-d3b7-41d3-aeae-40aea15f3551" class=""><code>stderr</code>: 2</p><p id="c9f515cd-bf02-41e6-a6c7-a8454ccb1d77" class="">Example:</p><p id="79fb7be0-66ca-4193-8a0c-16055fb59741" class=""><code>2&gt;&amp;1</code>: Change <code>stderr</code> to <code>stdout</code>. Now all output written to <code>stderr</code> will be written to <code>stdout</code>.</p><p id="e41b5754-8729-42a5-8acf-f2c29bfc86ea" class=""><code>1&gt;&amp;2</code>: Similarly, change <code>stdout</code> to <code>stderr</code>. Now all output written to <code>stdout</code> will be written to <code>stderr</code>.</p><p id="d83d4079-4055-4ada-9bd9-8f283bcbe733" class="">
+</p><h1 id="0c221b04-323e-42d4-aa86-3602c9136cf2" class="">Wildcard Matching (Part 1)</h1><h2 id="07a0f129-b58b-43ea-8654-29196c83c49e" class="">Globbing patterns:</h2><ul id="4f0290a8-ac5e-4ebd-8585-7254e5485787" class="bulleted-list"><li style="list-style-type:disc">The standard wildcard matching.</li></ul><ul id="af805abb-7702-4b46-82d3-11b2df630f01" class="bulleted-list"><li style="list-style-type:disc">Used by various command-line utilities to work with multiple files.</li></ul><ul id="d0dd7a75-6819-4393-a22a-850b6dcab0ad" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red"><em><strong>Pattern</strong></em></mark>: a <strong>string</strong> that contains <code>*</code> or <code>?</code> or <code>[ ]</code>. (appears as an <strong>argument</strong> of command)</li></ul><ul id="18ec92ef-5695-4e45-ac06-a398d95f4968" class="bulleted-list"><li style="list-style-type:disc"><em><strong><mark class="highlight-red">Globbing</mark></strong></em>: an <strong>operator</strong> that expends the pattern into a list of the path names matching the pattern.</li></ul><p id="fb85fafd-2adc-4aab-9e09-baf4698ce400" class="">
+</p><h3 id="c152345e-bdf8-457f-95b3-db5a0ad475c0" class="">Patterns:</h3><p id="21716542-d921-48ed-b491-98ae3ef64c4d" class=""><code>?</code> : matches any single character</p><p id="e51dfe49-3f95-45eb-9098-921485ff7f29" class=""><code>*</code> : matches any string (with any length)</p><p id="6e1975e2-038d-488b-b6d4-eb9e1a1a6f39" class=""><code>[…]</code> : matches any one of the characters inside the brackets.</p><p id="ae484b8f-33f7-4e2a-8912-0741e470bd9c" class=""><code>[… - …]</code> : matches any one of the characters within the range of characters in the brackets.</p><p id="e66d16a1-c74b-4ffd-a11c-66794c4cc0f5" class=""><code>[!…]</code> : matches any character that is <strong><mark class="highlight-red">NOT</mark></strong> inside the brackets.</p><p id="a778a8dc-3705-4829-a727-14712a38edfc" class=""><code>[!… - …]</code> : matches any character that is <strong><mark class="highlight-red">NOT</mark></strong> within the range of characters in the brackets.</p><p id="57af36c5-5d0c-44a1-8d77-91cbfa9d14cd" class=""><code>{ }</code> : recognize multiple patterns. (separated by comma <code>,</code>) <strong><mark class="highlight-red">NO WHITESPACES!!!</mark></strong><div class="indented"><p id="ec81ae2a-b717-42b1-b5b9-cc10c99d1541" class="">(i.e.: <code>{pattern1,pattern2}</code>)</p></div></p><p id="82ebd831-58a5-4355-b9fb-171fe04d98d7" class="">
+</p><p id="124d7ecf-cc7a-4c32-9ad6-eeb931eae540" class=""><mark class="highlight-red"><em><strong>Note: </strong></em></mark></p><ul id="cd650ab4-3d66-49da-a12a-0c89b440ec0c" class="bulleted-list"><li style="list-style-type:disc"><code>*</code> and <code>?</code> must be used <mark class="highlight-red"><strong>OUTSIDE</strong></mark> the brackets <code>[ ]</code> to perform the correct matching.</li></ul><ul id="30891725-12a9-4eb5-aae3-6a52ba4ec0fa" class="bulleted-list"><li style="list-style-type:disc">And they do not match <code>/</code>.</li></ul><ul id="8c031feb-5128-49bb-a577-e54473e28311" class="bulleted-list"><li style="list-style-type:disc"><code>[… - …]</code> denotes a range (in ASCII order) &amp; left and right <mark class="highlight-red"><strong>cannot be empty</strong></mark>.</li></ul><p id="e36b4432-8f63-487f-89db-e4a5b2494a72" class="">
+</p><p id="c251c9f2-d4a8-4e07-83b7-57fc88fee4ec" class=""><strong>Examples:</strong></p><p id="970793bc-8ae2-423a-85ea-5ef74c688ba8" class="">(1) Write a pattern that contains the file extension <strong>.txt</strong> at the end.</p><p id="76aea7d7-c57d-4d1a-be63-e44aaed04d82" class="">Answer: <code>*.txt</code></p><p id="f99e198e-f9b0-40bd-aa6a-c0dc9bad6b4c" class="">(2) Write a pattern that <strong>ends</strong> with string <strong>“ab”</strong> with a string length of <strong>3.</strong></p><p id="0a9bb9be-4adb-45aa-8041-a642b9e6e125" class="">Answer: <code>?ab</code></p><p id="575056bc-8af2-41ff-85cb-43eb27d27d5f" class="">(3) Write a pattern that <strong>starts</strong> with character <strong>‘a’</strong>.</p><p id="3dff18a1-56f1-4ae7-98fa-f2f66a558946" class="">Answer: <code>a*</code></p><p id="ef96732d-a173-4db8-ad64-8b9f493b3518" class="">(4) Write a pattern that <strong>starts</strong> with character <strong>‘a’ </strong>and <strong>ends</strong> with file extension <strong>.txt.</strong></p><p id="5824d154-ea85-4e36-9579-5c2ee7d7fd66" class="">Answer: <code>a*.txt</code></p><p id="0508a6a3-7cae-4e23-9675-1ee6016e1f7b" class="">(5) Write a pattern that contain a single digit (0 to 9) <strong>at the end</strong>.</p><p id="7ef4c332-811a-4675-a9ce-452ab491e1fe" class="">Answer: <code>*[0123456789]</code> OR <code>*[0-9]</code></p><p id="a6b0a5c4-7cbf-451d-ae67-e7fb95ce9a5c" class="">(6) Write a pattern that does <strong><mark class="highlight-red">not</mark></strong> contain a single digit (0 to 9) <strong>at the end</strong>.</p><p id="e0f485d6-bf3e-4332-b2d3-343fbc2fc1eb" class="">Answer: <code>*[!0123456789]</code> OR <code>*[!0-9]</code></p><p id="1bf198f4-8791-4adf-b61c-bf3084ded87b" class="">(7)* Tricky question 1: What does the pattern <mark class="highlight-red">[][!]</mark> represent?</p><p id="6c73e1e2-d5db-44f3-93af-087bc8356e0c" class="">Answer: matching <code>]</code>, <code>[</code>, and <code>!</code> (brackets cannot be empty!)</p><p id="925ee13d-81ee-47a3-b3b2-642d3d14cd43" class="">(8)* Tricky question 2: What does the pattern <mark class="highlight-red">[1-]</mark> represent?</p><p id="24db33f3-2b43-4977-8d2b-14e1a28cc44c" class="">Answer: matching <code>1</code> and <code>-</code>.</p><p id="497be021-78e4-40c2-a784-14aaf5caab6c" class="">(9) Write a pattern that starts with an uppercase letter and ends with either a uppercase or lowercase letter.</p><p id="5105f2ef-1ad1-484e-a07d-5d8ca5d5e3cd" class="">Answer: <code>[A-Z]*[A-Za-z]</code> (<code>[ ]</code> can have multiple ranges)</p><p id="74744ced-7b12-4aee-9bc1-8cac3d15f6bb" class="">
+</p><h1 id="78edc83d-76f5-4b4c-8144-736ff3701b8a" class="">Linux Pipeline <code>|</code></h1><p id="9d5f1742-98f8-40b6-9b28-4e9d67164639" class=""><strong>Definition</strong>: Linux pipeline allows 2 or more commands such that the output from the current command will be used as the input of the next command.</p><p id="1c9a8504-a651-4b24-964e-fb7fa34876fe" class="">We use the character ‘<code>|</code>’ to separate different commands.</p><p id="55ec92d9-5650-494c-93e6-087548ed6d74" class="">
+</p><figure id="69bde23d-57f1-4afe-9782-27e8ba6953d7" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%209.png"><img style="width:827px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%209.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f10f39dd-927d-43fe-a5f0-19526bedc111"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><mark class="highlight-red"><strong>IMPORTANT!</strong></mark> Arguments have <mark class="highlight-red"><strong>higher priorities</strong></mark> than inputs.</div></figure><p id="e74236d1-1bee-4a03-a5c8-4831ba2d32c0" class="">
+</p><h1 id="4d0b7065-f661-4e1e-8721-e26de8197bc7" class="">Command Embedded</h1><p id="9a80ce78-1036-4147-9d83-2765c806a509" class="">In bash, we use the syntax <code>$(…)</code> to let bash know that what is inside the parentheses is a Linux command.</p><p id="7679014d-3163-4e96-ac05-64c99c054558" class="">
+</p><h1 id="98cb94af-d267-4f7e-8327-8f83bbb48a60" class="">Command: <code>echo</code></h1><p id="177aa6c5-9fda-4540-bfe4-cd8e73e5de21" class=""><code>echo</code> writes <strong>arguments</strong> to standard output (do not take inputs) (separate by <strong>one whitespace</strong>)</p><p id="c7a5f5ec-825d-44df-bf4d-04b029c344d8" class="">
+</p><table id="438cf2eb-b94d-4d22-9fc2-affe571f6df7" class="simple-table"><tbody><tr id="1d991b6e-bfe2-4c3a-8206-a2c6d98d582f"><td id="tZtH" class=""></td><td id="Xs[o" class="" style="width:135.61538696289062px"><strong>Double quotes “”</strong></td><td id=":KOU" class="" style="width:130px"><strong>Single quotes ‘’</strong></td><td id="XNc@" class=""><strong>No quotes</strong></td></tr><tr id="a0e338d1-2d18-42d5-a2ce-efbe6eb296e4"><td id="tZtH" class=""><strong>Spacing</strong></td><td id="Xs[o" class="" style="width:135.61538696289062px">preserve spacing</td><td id=":KOU" class="" style="width:130px">preserve spacing</td><td id="XNc@" class="">does not preserve spacing</td></tr><tr id="272d03fc-b83e-4b1b-b38a-c6eabe837dc7"><td id="tZtH" class=""><strong>Expansion / Substitution</strong></td><td id="Xs[o" class="" style="width:135.61538696289062px">Allows</td><td id=":KOU" class="" style="width:130px">Does not allow</td><td id="XNc@" class="">Allows</td></tr><tr id="94329efd-9989-4974-9d10-a013a23a6d44"><td id="tZtH" class=""><strong>Globbing</strong></td><td id="Xs[o" class="" style="width:135.61538696289062px">Does not allow</td><td id=":KOU" class="" style="width:130px">Does not allow</td><td id="XNc@" class="">Allows</td></tr></tbody></table><h3 id="57b78d10-ef92-4204-9c67-f337f1330746" class="">Side note: Enable newline character</h3><p id="74f5a576-d69a-4b59-bf32-fdb865fd44c2" class=""><code>echo -e</code> enables the newline characters in the following arguments.</p><p id="31ba94c7-cd4b-46fc-884f-c286e20fd009" class=""><strong>Example:</strong></p><p id="b260c16a-fa99-4c40-8cbd-1e813abf178b" class=""><code>echo -e “1 2 3\n4 5 6”</code>: the line of command will print “1 2 3” and “4 5 6” in 2 separate lines.</p><p id="11515eed-2f3f-46d7-8139-0ae9fdbbb76c" class="">
+</p><h1 id="172a66b6-f875-41c6-b0b2-c7dd7f18b2d0" class="">Wildcard Matching (Part 2)</h1><p id="135e6bbd-f200-4717-acda-d90610b7741a" class="">We can use globbing patterns to deal with arbitrary number of files by writing patterns that match all the filenames, can we use patterns to deal with the contents in a file?</p><p id="6132fbd1-95ca-415e-ad08-168b6944aadd" class="">Answer: YES!</p><h3 id="27c7e1c3-6b33-490e-8b45-92baa8aca416" class="">Command: <code>egrep [pattern] [paths to file(s)]</code></h3><ul id="6da4f840-219a-4478-9d54-891caba0e996" class="bulleted-list"><li style="list-style-type:disc">Output lines that contain a match for the pattern</li></ul><ul id="730e07ca-e250-44c6-b5e2-d5e9dd7f4085" class="bulleted-list"><li style="list-style-type:disc">Be able to handle multiple patterns, as long as there exists a match for one pattern, the corresponding line will be displayed.</li></ul><ul id="d1c0b54b-7d26-4b9f-9b6b-931b0025981c" class="bulleted-list"><li style="list-style-type:disc">Corresponding lines will be displayed.</li></ul><p id="9ced9fd1-c079-4d7a-b20a-6ba705d56d18" class="">
+</p><h3 id="77ae9510-d915-49fc-9662-3672cee973e2" class="">Regular Expression:</h3><table id="aef798fe-bb8d-4931-beba-27f9528d6686" class="simple-table"><tbody><tr id="89cea83e-b9c7-47bd-987f-735a15773efe"><td id="WMIC" class=""><strong>Commands</strong></td><td id="sKJt" class="" style="width:276.6153869628906px"><strong>Meaning</strong></td><td id="zMLl" class="" style="width:146px"><strong>Example</strong></td><td id="ukQo" class=""><strong>Interpretation</strong></td></tr><tr id="38ee07d2-5ce0-4bfe-9f80-2cadd42fda29"><td id="WMIC" class=""><code>|</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Separate different patterns</td><td id="zMLl" class="" style="width:146px"><code>egrep “(abc)|(de)” file.txt</code></td><td id="ukQo" class="">matching “abc” or “de”</td></tr><tr id="2d8d4572-bf98-4e02-9f20-6f8ab1718469"><td id="WMIC" class=""><code>\</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Escape special characters (<code>.</code>, <code>*</code>, <code>?</code>, <code>+</code>, <code>[]</code>,<code>^</code>, <code>$</code>)</td><td id="zMLl" class="" style="width:146px"><code>egrep “a\.cc” file.txt</code></td><td id="ukQo" class="">matching “a.cc”</td></tr><tr id="3cdcaecb-f7c4-4fd0-9cab-584c23532732"><td id="WMIC" class=""><code>?</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Preceding pattern exists <strong>0</strong> or <strong>1 </strong>times.</td><td id="zMLl" class="" style="width:146px"><code>egrep “(ab)?c” file.txt</code></td><td id="ukQo" class="">matching “abc” or “c”</td></tr><tr id="4d2fb89e-ad62-4f1c-abf2-533f99305c9b"><td id="WMIC" class=""><code>*</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Preceding pattern exists <strong>0</strong> or <strong>more </strong>times.</td><td id="zMLl" class="" style="width:146px"><code>egrep “(ab)*c” file.txt</code></td><td id="ukQo" class="">matching “c”, “abc”, “ababc” etc.</td></tr><tr id="06bea494-c244-4d7f-97a7-6c843b2039f9"><td id="WMIC" class=""><code>+</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Preceding pattern exists <strong>1</strong> or <strong>more </strong>times.</td><td id="zMLl" class="" style="width:146px"><code>egrep “(ab)+c” file.txt</code></td><td id="ukQo" class="">matching “abc”, “ababc” etc.</td></tr><tr id="a991007f-51a7-45f6-a94a-7bf242c1c5e6"><td id="WMIC" class=""><code>.+</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Matching <strong>1</strong> or <strong>more</strong> any character.</td><td id="zMLl" class="" style="width:146px"><code>egrep “a.+b” file.txt</code></td><td id="ukQo" class="">matching “axb”, “ayb”, “axxxxxb”, etc.</td></tr><tr id="73ead462-e6e5-47be-ba69-7d091365f9d6"><td id="WMIC" class=""><code>.*</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Matching <strong>0</strong> or <strong>more</strong> any character.</td><td id="zMLl" class="" style="width:146px"><code>egrep “a.*b” file.txt</code></td><td id="ukQo" class="">matching “ab”,“axb”, “ayb”, “axxxxxb”, etc.</td></tr><tr id="e0c03c83-611e-49ca-9fbc-c433ad548796"><td id="WMIC" class=""><code>.?</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Matching <strong>0</strong> or <strong>1</strong> any character.</td><td id="zMLl" class="" style="width:146px"><code>egrep “a.?b” file.txt</code></td><td id="ukQo" class="">matching “ab”,“axb”, “ayb”, etc.</td></tr><tr id="6d585354-9bc2-4b69-b0bd-f738b569f197"><td id="WMIC" class=""><code>[]</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Matching any one of the characters inside the brackets.</td><td id="zMLl" class="" style="width:146px"><code>egrep “[abc]” file.txt</code></td><td id="ukQo" class="">matching “a” or “b” or “c”</td></tr><tr id="4ff267d9-b6f8-4ae6-afe6-cf4caacbe9a4"><td id="WMIC" class=""><code>[^ ]</code></td><td id="sKJt" class="" style="width:276.6153869628906px">Matching any characters that are <strong>NOT</strong> inside the brackets.</td><td id="zMLl" class="" style="width:146px"><code>egrep “[^abc]” file.txt</code></td><td id="ukQo" class="">matching any characters that are not “a” or “b” or “c”</td></tr><tr id="e50f6b2d-1cac-49e0-b637-0e4083203a0b"><td id="WMIC" class=""><code>^</code> (outside [ ])</td><td id="sKJt" class="" style="width:276.6153869628906px">The following character is the leading character</td><td id="zMLl" class="" style="width:146px"><code>egrep “^(abc)” file.txt</code></td><td id="ukQo" class="">matching the line starting with “abc”</td></tr><tr id="6df1c259-4f04-468f-b197-3ddd6ce558d3"><td id="WMIC" class=""><code>$</code></td><td id="sKJt" class="" style="width:276.6153869628906px">The preceding character is the ending character</td><td id="zMLl" class="" style="width:146px"><code>egrep “(abc)$” file.txt</code></td><td id="ukQo" class="">matching the line ending with “abc”</td></tr></tbody></table><p id="43e8c9a2-7909-4b4a-9016-8862eb1b2d94" class="">
+</p><h1 id="e8b4865e-c0cb-4fe6-8b44-b62ca676a81a" class="">File Permissions</h1><h3 id="a5eaad74-8682-49b9-a76e-9f2c9a94cf2a" class="">Command: <code>chmod</code></h3><div id="3039451b-3e21-4fee-b1fb-feb1cba74bb4" class="column-list"><div id="05bd46c5-4bc7-4f1d-a04b-14e6d784f1bd" style="width:50%" class="column"><ul id="e0333eae-8458-450e-92cd-ddd4a10082f8" class="bulleted-list"><li style="list-style-type:disc"><code>u</code>: user</li></ul><ul id="f84a1d6b-9f74-4046-b502-7605bc460f18" class="bulleted-list"><li style="list-style-type:disc"><code>g</code>: group</li></ul><ul id="abfc08ad-849c-4da8-8040-f39c9a19a794" class="bulleted-list"><li style="list-style-type:disc"><code>o</code>: other</li></ul><ul id="1b2f1bac-2a2d-4f64-bc6e-0d63b87e4cc0" class="bulleted-list"><li style="list-style-type:disc"><code>a</code>: all</li></ul><ul id="ff4c8a69-98b9-4091-85c8-abadf037c50d" class="bulleted-list"><li style="list-style-type:disc"><code>+</code>: add permission</li></ul><ul id="9d0e5647-2a78-4c2e-8d42-2805c9779766" class="bulleted-list"><li style="list-style-type:disc"><code>-</code>: remove permission</li></ul><ul id="f4fd56e6-6ff3-4bfa-ad43-1779a73a59d0" class="bulleted-list"><li style="list-style-type:disc"><code>r</code>: read</li></ul><ul id="e0521bdb-0b7a-4df4-a86b-5ff372795956" class="bulleted-list"><li style="list-style-type:disc"><code>w</code>: write</li></ul><ul id="7c847aeb-0001-4dde-84c6-cafc4386715c" class="bulleted-list"><li style="list-style-type:disc"><code>x</code>: execute</li></ul></div><div id="5779b0f3-b142-441a-9647-6c356f6bd7ca" style="width:50%" class="column"><figure id="179845ce-6467-47b6-98b0-0a3812cdb294" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%2010.png"><img style="width:771px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%2010.png"/></a></figure></div></div><h3 id="14938ea5-1214-4b6d-9b0d-b25be66fce0e" class="">Syntax:</h3><p id="f952b267-f350-4d58-8e50-99081251721c" class=""><code>chmod [target] [+/-] [permission] [filename]</code></p><p id="17b38c42-31d7-4451-9430-722720d38c65" class="">
+</p><p id="60b6f9ad-542d-4f3f-872b-10bd49abb574" class=""><strong>Examples:</strong></p><ul id="54f89a44-07f6-4bed-9154-9327449a841b" class="bulleted-list"><li style="list-style-type:disc">Allow group to read : <code>chmod g+r in.txt</code></li></ul><ul id="32e7e2e6-9f76-4415-b969-3590ab49b879" class="bulleted-list"><li style="list-style-type:disc">Allow others to execute : <code>chmod o+x in.txt</code></li></ul><ul id="236c49ae-dd55-4cbb-9425-94820c81c381" class="bulleted-list"><li style="list-style-type:disc">Deny user to write : <code>chmod u-w in.txt</code><ul id="3c6e8f7f-22f4-4206-96ec-5822e04f4781" class="bulleted-list"><li style="list-style-type:circle">Deny everyone to execute : <code>chmod a-x in.txt</code></li></ul></li></ul><p id="7d488c5b-1668-420d-a9f9-2e5b031f19ea" class="">
+</p><h1 id="b7b00553-ddf9-44b6-95f8-9722295d53bb" class="">Shell Variables</h1><p id="e8b70e98-b4d1-4e1c-82bf-49323d4f8249" class="">Variable definition: <code>x=5</code> (<strong>NO</strong> whitespace!!!)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="35828035-8363-499e-be63-e704a8a583ca"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">Do not need ‘$’ to assign variables!
+But we need ‘$’ to retrieve variables (same as dereferencing pointer)</div></figure><p id="f9e22a31-3048-456e-9b44-8552e271710b" class=""><strong>Note:</strong></p><ul id="e0baaa66-4712-4972-967a-c41a970b9fc3" class="bulleted-list"><li style="list-style-type:disc">Shell variable holds strings, without ‘$’, variable is just a string<p id="3f2defa0-e6eb-430a-99d5-338cbf366284" class="">e.g.: <code>echo x</code> will just display “x”</p></li></ul><ul id="b43aff9d-5a5a-402f-b480-07625d581767" class="bulleted-list"><li style="list-style-type:disc">Double quotes allow retrieving variables<p id="f96a4392-3816-418b-80b1-a2383e36a833" class="">e.g.: <code>echo “${x}”</code> will display the value of x</p></li></ul><ul id="56e61f10-d1cd-43f1-aa86-97968deda9bf" class="bulleted-list"><li style="list-style-type:disc">Single quotes does not allow retrieving variables<p id="3be831ed-c88f-4428-8785-32720a1840a0" class=""><code>echo ‘${x}’</code> will just display ${x}</p></li></ul><p id="374b4bbb-3aa8-4bcf-83c0-a03a91ba2226" class="">
+</p><h1 id="2377f16e-c873-4b56-b50c-1161af296b76" class="">Bash/Shell Scripts</h1><p id="0ae2851c-c18b-42c1-a6e4-be3076f959e2" class="">Test files containing Linux commands executed as a program.</p><h3 id="ee7fb2a9-461f-4522-8b66-2c9ac0c1abf4" class="">2 methods to receive input data from user:</h3><ol type="1" id="595c91c2-2751-412d-a77e-dfb102de222c" class="numbered-list" start="1"><li>command line arguments</li></ol><ol type="1" id="8c935de8-9b4a-4c2b-be07-046d43f69ab9" class="numbered-list" start="2"><li>standard input</li></ol><h3 id="6c8b0f1f-fe40-4c68-9279-ddc2adaf95c2" class="">Command: <code>#!/bin/bash</code></h3><p id="e6b9d597-f2c5-4747-9350-0d21cef479dd" class="">This line is telling the interpreter that the following lines are written for <strong>bash</strong>, so the file will be executed as <strong>bash script.</strong></p><h3 id="14ef03e3-d344-46ef-a2a1-65ee28fea686" class="">Arguments:</h3><ul id="5a1a0495-28cc-432c-a010-2e84d23c8569" class="bulleted-list"><li style="list-style-type:disc"><code>$0</code>: represents the script itself</li></ul><ul id="21b2de30-cac2-4b8c-a53c-595f042cbb55" class="bulleted-list"><li style="list-style-type:disc"><code>$1</code>: represents the first argument</li></ul><ul id="1b6cb628-e18e-4098-be60-a0b646b6ceca" class="bulleted-list"><li style="list-style-type:disc"><code>$2</code>: represents the second argument</li></ul><ul id="95e76e55-4163-49df-9a3f-31ef9d1e0c05" class="bulleted-list"><li style="list-style-type:disc">same for <code>$3</code>, <code>$4</code>, …</li></ul><ul id="b7b845e7-d5f2-435f-947f-e3086c975876" class="bulleted-list"><li style="list-style-type:disc"><code>$#</code>: represents the number of arguments inputted</li></ul><ul id="222e5231-0346-4a52-a1c4-e2b863f6efec" class="bulleted-list"><li style="list-style-type:disc"><code>$?</code>: represents the exit status of previous Linux command<ul id="3c1d01c1-62c6-4016-8ced-96b804e4e2f1" class="bulleted-list"><li style="list-style-type:circle"><strong>0</strong>: represents successful/true</li></ul><ul id="0e276612-1159-4bf5-851a-cd3dd007ef71" class="bulleted-list"><li style="list-style-type:circle"><strong>1</strong>: represents unsuccessful/false</li></ul></li></ul><ul id="de4753ce-55f4-4dc4-98ad-f0d4d76208e3" class="bulleted-list"><li style="list-style-type:disc"><code>$@</code>: represents an array of arguments<p id="a429617a-9bce-41ff-854f-fbf397ae3beb" class="">e.g.:</p><pre id="444ca69f-f924-429c-8ce3-f3a4cdf26e17" class="code"><code>for i in &quot;${@}&quot;; do
+	echo ${i}
+done</code></pre></li></ul><h3 id="8411ea48-62c9-413a-8974-b6714b0a2ae5" class="">Integer comparison:</h3><ul id="5550ad82-5490-495f-8712-a1d816819a0c" class="bulleted-list"><li style="list-style-type:disc"><code>-eq</code>: equals to</li></ul><ul id="b85ab1c5-2c45-47f9-8abc-5fce0c0f7ba4" class="bulleted-list"><li style="list-style-type:disc"><code>-lt</code>: less than</li></ul><ul id="1097cbc4-7156-4038-8aa9-5d9f37bfa2c8" class="bulleted-list"><li style="list-style-type:disc"><code>-le</code>: less than or equal to</li></ul><ul id="9e100d86-1230-4104-85b1-33f6cf94b552" class="bulleted-list"><li style="list-style-type:disc"><code>-gt</code>: greater than</li></ul><ul id="9db3641d-634f-47c6-bd21-bfb942d29a63" class="bulleted-list"><li style="list-style-type:disc"><code>-ge</code>: greater than or equal to</li></ul><ul id="c8f61fb7-341c-47d6-a912-16d0917ea623" class="bulleted-list"><li style="list-style-type:disc"><code>-ne</code>: not equal to</li></ul><h3 id="1502f1c4-4830-4bc8-a862-f37e6c96188b" class="">String Comparison:</h3><p id="b9ccffab-e468-4a5f-91c9-4397b2f65ca3" class="">Comparing ASCII values (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>)</p><h3 id="2ef13efb-c3d2-4639-9cb8-b6dc50f1f4fe" class="">Whitespaces:</h3><p id="49f05e0e-8dc9-4ab8-b7f3-ba6ac639f984" class="">Used for <strong>if</strong> statements:</p><p id="04eb5c41-5ec4-4f5d-841e-4c0d85ccfa34" class=""><strong>Syntax:</strong></p><pre id="4e9185e4-65c4-4c34-bb23-36f2e2331c6d" class="code"><code>if [ ${#} -lt 1 ]; then
+	echo &quot;hello&quot;
+elif [ ${#} -eq 1 ]; then
+	echo &quot;world&quot;
+else
+	echo &quot;apple&quot;
+fi</code></pre><figure id="24502add-bda7-4f25-9b35-6ec26abe716c" class="image"><a href="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%2011.png"><img style="width:480px" src="Linux%20Commands%20&amp;%20Bash%20Scripts%2071d8c30c2e9c4e728c97d94b0399daaf/Untitled%2011.png"/></a></figure><h3 id="1678d0a1-2a07-4e08-b0e0-64743b32505a" class="">Other Bash keywords:</h3><ul id="04b75ce3-cf82-4ebb-b59f-194c197704d7" class="bulleted-list"><li style="list-style-type:disc"><code>-e</code>: returns whether the file exists<p id="6e28dd39-dfd4-4c0c-a13a-b5a59ac42bd2" class="">e.g.: <code>if [ file.txt -e ]; then</code></p></li></ul><ul id="b7103dd0-ace2-48f6-bfcf-f4222074a57c" class="bulleted-list"><li style="list-style-type:disc"><code>-r</code>: returns whether the file is readable<p id="fad68e1d-2dec-4724-b8dc-7ad14a1c62cb" class="">e.g.: <code>if [ file.in -r ]; then</code></p></li></ul><ul id="dd735901-a4ed-47ca-9080-af73680e79bb" class="bulleted-list"><li style="list-style-type:disc"><code>-x</code>: returns whether the file is executable<p id="c7b57f48-3d14-47be-b662-e3835de0fac8" class="">e.g.: <code>if [ file.cc -x ]; then</code></p></li></ul><ul id="c14a3419-e11d-49c9-834a-fda504f1bd42" class="bulleted-list"><li style="list-style-type:disc"><code>-w</code>: returns whether the file is writable<p id="6a65ed25-8092-4b8c-b662-898cf3d367ae" class="">e.g.: <code>if [ file.out -w ]; then</code></p></li></ul><h3 id="105ef290-de7d-495f-ad8a-50740277f11b" class="">Command embedded:</h3><p id="8c32926a-0add-45f6-b306-b3246400cb1b" class=""><strong>Syntax:</strong> <code>$(</code><em><code>command</code></em><code>)</code></p><p id="fd446d76-c250-48f1-add7-19e4f1079e50" class=""><strong>Example:</strong> <code>$(cat &quot;$1&quot;)</code> : return the result from command <code>cat “$1”</code></p><h3 id="f3b3f497-c9c6-4522-8a52-478896098744" class="">Loops in Bash:</h3><p id="cbfca487-935d-4f2c-a372-95bb1ffe42cf" class=""><strong>Syntax:</strong></p><pre id="c065311e-f01b-49bf-a997-334e6115bb82" class="code"><code>## Type 1
+for identifier in $(cat &quot;$1&quot;); do
+	...
+done
+
+## Type 2
+for i in {0..9}; do; OR 0 1 2 3 4 (with whitespaces)
+	...
+done
+
+## Type 3
+while [ ${i} -lt 0 ]; do
+	...
+done</code></pre><h3 id="dce68d53-4eac-461e-8f51-593402f394ab" class="">Temp files:</h3><p id="ad167bde-d400-4944-b9db-fd55890db5bc" class=""><strong>Command for making temp files: </strong><code>mktemp</code></p><p id="57a8a199-f302-4871-8edf-53d5c45432d4" class="">Example: <code>x=$(mktemp)</code></p><p id="70eea2cf-ccf6-4ffb-98c7-ec0c3850f56f" class="">x is now a string that stores the <strong>ABSOLUTE PATH</strong> of the temp file created.</p><p id="63c4ad42-cc17-4e52-8dbc-bcb676afa6f9" class=""><strong>Command for removing the created temp files:</strong> <code>rm</code></p><p id="f862c4ca-1e2f-46fb-8bc2-5f7d0719b662" class="">
+</p><h3 id="82bb1b6e-7da6-4784-85da-ebf832452e7e" class="">Content discarding:</h3><p id="f6b1415c-5ebf-4222-a6ef-9e127d4bf346" class=""><strong>Command: </strong>output direction to <code>/dev/null</code></p><p id="22422b66-21a2-45f2-b571-30a4ca92ace3" class="">Example: </p><p id="412ae9f8-00e4-458a-bad3-1647ad043a8a" class=""><code>cmp $1 $2 &gt;/dev/null</code>: compares the first and second argument, and discard the result to the “garbage can”.</p><p id="d4d3722f-4aad-41d6-a412-f6d9e7344e81" class="">Reason:</p><p id="035b6e32-7175-495b-a135-a28cb09c5745" class="">Sometimes, we only want the status of the last command instead of the exact result. We don’t really care about the outputs. Therefore, we simply redirect the result to /dev/null and use command $? to get the status of the previous command result.</p><p id="4a9289bb-7f9e-460e-9566-8f04e5a999ae" class="">
+</p><p id="fcd81968-75e4-465d-8778-5536784d1c46" class="">
+</p><h1 id="56a44a22-4a09-4cd1-8b73-e7cb8b1f3abe" class="">My Bash Scripts from A1</h1><h3 id="0b0f5047-d9a3-4d19-abee-a34983ea21cc" class="">produceOutputs</h3><pre id="11091fcf-e46d-4399-99a8-8d9fdb35d2b3" class="code"><code>#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo &quot;ERROR: Incorrect number of arguments. 2 expected, got $#.&quot; 1&gt;&amp;2
+    exit 1
+fi
+if [ ! -r $1 ]; then
+    echo &quot;ERROR: Suite file $1 is not readable.&quot; 1&gt;&amp;2
+    exit 1
+fi
+if [ ! -x $2 ]; then
+    echo &quot;ERROR: Program $2 is not executable.&quot; 1&gt;&amp;2
+    exit 1
+fi
+
+for file in $(cat $1); do
+    argsExist=0
+    argsReadable=0
+    outExist=0
+    outEditable=0
+    inExist=0
+    inReadable=0
+    if [ -e ${file}.args ]; then
+        argsExist=1
+        if [ -r ${file}.args ]; then
+            argsReadable=1
+        fi
+    fi
+    if [ -e ${file}.in ]; then
+        inExist=1
+        if [ -r ${file}.in ]; then
+            inReadable=1
+        fi
+    fi
+    if [ -e ${file}.out ]; then
+        outExist=1
+        if [ -w ${file}.out ]; then
+            outEditable=1
+        fi
+    fi
+
+    if [ ${argsExist} -eq 1 -a ${argsReadable} -eq 0 ]; then
+        echo &quot;ERROR: ${file}.args is not readable.&quot; 1&gt;&amp;2
+        exit 1
+    fi
+    if [ ${inExist} -eq 1 -a ${inReadable} -eq 0 ]; then
+        echo &quot;ERROR: ${file}.in is not readable.&quot; 1&gt;&amp;2
+        exit 1
+    fi
+    if [ ${outExist} -eq 1 -a ${outEditable} -eq 0 ]; then
+        echo &quot;ERROR: ${file}.out is not editable.&quot; 1&gt;&amp;2
+        exit 1
+    fi
+    
+    if [ ${argsExist} -eq 1 ]; then
+        if [ ${inExist} -eq 1 ]; then
+            ./$2 $(cat ${file}.args) &lt;${file}.in &gt; ${file}.out
+        else
+            ./$2 $(cat ${file}.args) &gt;${file}.out
+        fi
+    else
+        if [ ${inExist} -eq 1 ]; then
+            ./$2 &lt;${file}.in &gt;${file}.out
+        else
+            ./$2 &gt;${file}.out
+        fi
+    fi
+done</code></pre><h3 id="88c7c30c-9f71-497c-95e2-8777f53498f8" class="">runSuite</h3><pre id="e83bdc28-4b49-416d-8179-113684658cad" class="code"><code>#!/bin/bash
+
+if [ $# -ne 2 ]; then
+	echo &quot;ERROR: incorrect number of arguments.&quot; 1&gt;&amp;2
+	exit 1
+fi
+if [ ! -r $1 ]; then
+	echo &quot;ERROR: suite file $1 is not readable.&quot; 1&gt;&amp;2
+	exit 1
+fi
+if [ ! -x $2 ]; then
+	echo &quot;ERROR: program $2 is not executable.&quot; 1&gt;&amp;2
+	exit 1
+fi
+
+exitcode=0
+temp=$(mktemp)
+var_exist=0
+in_exist=0
+
+for file in $(cat $1); do
+	if [ -e ${file}.args ]; then
+		if [ ! -r ${file}.args ]; then
+			echo &quot;ERROR: file ${file}.args is not readable.&quot; 1&gt;&amp;2
+			exitcode=1
+		else
+			var_exist=1
+			if [ -e ${file}.in ]; then
+				if [ ! -r ${file}.in ]; then
+					echo &quot;ERROR: file ${file}.in is not readable.&quot; 1&gt;&amp;2
+					exit 1
+				else
+					in_exist=1
+					./$2 $(cat ${file}.args) &lt;${file}.in &gt;${temp}
+				fi
+			else
+				./$2 $(cat ${file}.args) &gt;${temp}
+			fi
+		fi
+	else
+		var_exist=0
+		if [ -e ${file}.in ]; then
+			if [ ! -r ${file}.in ]; then
+				echo &quot;ERROR: file ${file}.in is not readable.&quot; 1&gt;&amp;2
+				exit 1
+			else
+				in_exist=1
+				./$2 &lt;${file}.in &gt;${temp}
+			fi
+		else
+			./$2 &gt;${temp}
+		fi
+	fi
+	
+	if [ ! -e ${file}.out ]; then
+		echo &quot;ERROR: ${file}.out file does not exist.&quot; 1&gt;&amp;2
+		exit 1	
+	elif [ ! -r ${file}.out ]; then
+		echo &quot;ERROR: ${file}.out file is not readable.&quot; 1&gt;&amp;2
+		exit 1
+	else
+		cmp ${temp} ${file}.out &gt;/dev/null
+		if [ $? -ne 0 ]; then
+			echo &quot;Test failed: ${file}&quot;
+			echo &quot;Args:&quot;
+			if [ ${var_exist} -ne 0 ]; then
+				echo &quot;$(cat ${file}.args)&quot;
+			fi
+			echo &quot;Input:&quot;
+			if [ ${in_exist} -ne 0 ]; then
+				echo &quot;$(cat ${file}.in)&quot;
+			fi
+			echo &quot;Expected:&quot;
+			echo &quot;$(cat ${file}.out)&quot;
+			echo &quot;Actual:&quot;
+			echo &quot;$(cat ${temp})&quot;
+		fi
+		
+	fi
+	var_exist=0
+	in_exist=0
+done
+rm ${temp}
+exit ${exitcode}</code></pre></div></article></body></html>
