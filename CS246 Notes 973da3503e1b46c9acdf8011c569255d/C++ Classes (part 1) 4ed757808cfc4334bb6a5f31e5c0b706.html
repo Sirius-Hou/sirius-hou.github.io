@@ -1,0 +1,1048 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>C++ Classes (part 1)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="4ed75780-8cfc-4334-bb6a-5f31e5c0b706" class="page sans"><header><h1 class="page-title">C++ Classes (part 1)</h1></header><div class="page-body"><p id="cd785888-f6d2-4052-900f-27264f406cbe" class="">Some content not covered in the previous lecture:</p><h3 id="9c939845-48df-440d-a921-7c8e08d1f863" class="">Resize array:</h3><p id="48e3c7c4-7520-444c-aa48-10c328cb7a62" class="">C++ does not have <code>realloc()</code>, so we need to implement this process on ourselves:</p><ol type="1" id="74b700cc-db11-4d94-8259-950bb9572bf1" class="numbered-list" start="1"><li>create a new array, </li></ol><ol type="1" id="d82b8420-01d3-4fff-8561-786068a8f523" class="numbered-list" start="2"><li>copy everything one by one from the old array to the new one, </li></ol><ol type="1" id="ec26cad4-31a7-4122-aa63-db796a88b4ea" class="numbered-list" start="3"><li><code>delete </code>the old array, </li></ol><ol type="1" id="2217281f-1ba9-4b7d-8884-ab8f66429d89" class="numbered-list" start="4"><li>assign the pointer to the new array to the pointer pointing to the old array.</li></ol><p id="079a2678-a9b4-4055-b66f-a5d62e65858d" class="">Example:</p><pre id="1b321e01-ca98-482a-96c3-2f43d2e8dbb6" class="code"><code>int* arr = new int[10];
+
+int* temp = new int[20]; //step1: create a new array
+
+for (int i = 0; i &lt; 10; i++) { // step2: move everything into the new array
+	temp[i] = arr[i];
+}
+
+delete[] arr; // step3: free the memory of the old array
+
+// step4: assign the new pointer to the original identifier
+arr = temp; </code></pre><p id="942aa834-d7fa-4bbc-8b17-a516b447be0b" class="">
+</p><h1 id="0adc56e7-fa70-4b62-a787-a30909064a25" class="">C++ Classes</h1><p id="39fec6ec-1120-4ad9-bfbe-6e3eb1eae33a" class="">Recall Structures in C++:</p><pre id="a3c5f47d-8e93-4ea0-9bf0-a79dabc8fc9d" class="code"><code>struct BST {
+	int value;
+	BST* left;
+	BST* right;
+};
+
+// value, left, right are variables</code></pre><p id="06fa7d89-3071-4761-96f1-b3562688a028" class="">C++ classes: (generally writes class definition in .h files, therefore we need to include guard to prevent multiple definition.)</p><pre id="e2c46ed8-01c4-4a76-a34f-1777a623219c" class="code"><code>#ifndef __BST_H__ // by tradition, the guard name is the file name
+#define __BST_H__
+
+struct BST {
+	int value;
+	BST* left;
+	BST* right;
+
+	// classes are structures that contain functions
+	void print(); // only declaration here
+};
+
+#endif</code></pre><p id="c2984708-9e89-4fab-a05a-718b5e3e0348" class="">When a <strong>structure</strong> definition contains <strong><mark class="highlight-red">functions</mark></strong>, it becomes a <span style="border-bottom:0.05em solid"><strong>class</strong></span>.</p><p id="ac118bd0-9139-44da-bcda-eaebacb32046" class="">
+</p><p id="9f6ec022-679e-4ff8-a415-d88c24686f88" class=""><strong>Method:</strong></p><ul id="f622264d-d2a6-4a9f-9df8-20b8a41e51bf" class="bulleted-list"><li style="list-style-type:disc">We often write <strong>declarations</strong> in class definition (in header files), and <strong>implement the method</strong> in implementation files (.cc files)</li></ul><ul id="26afca4e-917d-4592-baa1-13b4fadbfe7f" class="bulleted-list"><li style="list-style-type:disc">Remember to include guard for header files</li></ul><p id="5b8991e2-8e4d-46b4-929a-f39603fd22ab" class="">
+</p><h3 id="8420fbf1-60c1-4dd8-9d03-36582dc30700" class="">Scope of functions:</h3><p id="1d616b1e-a910-4112-906f-15bda4069d8a" class="">Methods are declared INSIDE a class, so the scope if within the class, which means that they are not accessible outside the class. We need to use the scope resolution operator <code>::</code> to indicate the scope they are in.</p><p id="5ccc3378-df78-453e-b595-ffd37071ea07" class="">
+</p><p id="6b2447ae-979b-40e2-98db-46ff6e0eddfe" class=""><strong>The double colon</strong> <code>::</code></p><ul id="2adf81ef-a994-4f66-8f56-13978ed52451" class="bulleted-list"><li style="list-style-type:disc">The scope resolution operator</li></ul><ul id="f316ce5b-ceab-4e89-9d93-6d1cd330324b" class="bulleted-list"><li style="list-style-type:disc">We can access class functions by adding the class name followed by a pair of double colon</li></ul><p id="4392aede-12b9-4d0c-8d7c-aaf8c77dabcd" class="">Example:</p><p id="d505eeaf-9561-41c2-88d0-162927e1f825" class=""><code>void BST::bstPrint() { /*code*/ }</code>: defining a function in the BST class.</p><p id="20b583a4-e8f5-4d40-a57c-54076cb739bb" class="">
+</p><h3 id="5ca2de4b-442a-466e-95cc-5bcf64f209f4" class=""><code>this</code></h3><ul id="fa30157a-a31b-4c16-b5f1-6f11b5ee47ef" class="bulleted-list"><li style="list-style-type:disc"><code>this</code> is a pointer pointing to the class itself.</li></ul><ul id="e27bd11e-8578-414a-988c-847468b17b8a" class="bulleted-list"><li style="list-style-type:disc">We can interpret that: <code>this</code> = <code>BST* const ptr</code> </li></ul><ul id="c3873d4a-b80c-4e41-b555-d8ee3b0d59b1" class="bulleted-list"><li style="list-style-type:disc"><code>this</code> is a <code>const</code> pointer: we can modify the class contents through <code>this</code>, but we cannot change what <code>this</code> points at.</li></ul><ul id="4f3c8222-c18e-4e34-9c09-eb2fd6da09de" class="bulleted-list"><li style="list-style-type:disc">We can only use <code>this</code> when implementing a member function of this class.</li></ul><p id="91c8a362-2744-4f2d-9081-293b376bfe54" class="">
+</p><p id="f7f79140-b42b-4833-aaad-971cb4ff02d9" class="">
+</p><p id="f763471e-54cf-45e4-93b1-a2e35f4ed858" class="">
+</p><h1 id="a6aa04dc-5241-4bc1-ad23-d9b06d69cc28" class="">C++ Class Initialization</h1><h3 id="18871445-c521-42ab-942e-0f2a5d9f19e8" class="">Object:</h3><p id="a7da17a7-9414-475d-a195-a1fb9c063c70" class="">An instance / value of a class</p><pre id="1fea1234-0283-4c71-a9a0-22ddb27f3b16" class="code"><code>#include &quot;bst.h&quot;
+
+int main() {
+	// C-style initialization
+	BST b1 = {5, new BST{4, nullptr, nullptr}, new BST{6, nullptr, nullptr}};
+	// We won&#x27;t use this style in C++ (can run, but may show a warning)
+
+	// uniform initialization (used in C++)
+	BST b2{10, new BST{5, nullptr, nullptr}, nullptr};
+
+	BST b3 = BST{20, nullptr, nullptr};
+}</code></pre><p id="efa319a7-bc8f-4912-9c22-5bae6e18ca4b" class=""><strong>Question:</strong> Why uniform initialization is only allowed in C++?</p><p id="9914370a-3bf9-4069-8db2-292ca7243187" class=""><strong>Answer:</strong> We need to specifically tell the C++ compiler that what we’re going to do with the memory allocated (what are we assigning to different sections), but C language doesn’t care what we are going to do with the allocated memory.</p><p id="84770294-14aa-460c-b8a2-e4ff3b22e1e3" class="">
+</p><p id="23ba1133-741c-4529-b1ef-a6193bab2bb6" class="">
+</p><h1 id="f25f4629-4904-440c-833b-84c35e0862a9" class="">Constructor</h1><p id="f5db0e4d-2f76-4c39-a41a-ec73e0f7c797" class="">In C++, for structures or classes, we use a special function called <mark class="highlight-red"><strong>constructor (构造函数)</strong></mark></p><p id="da49ca13-0ee5-4918-9aa2-8023fab4ff3b" class="">Sample declaration:</p><pre id="83dd175a-33e4-4353-af4f-c854414188a7" class="code"><code>struct BST {
+	int value;
+	BST* left;
+	BST* right;
+
+	// constructors (must have the exact same name as the class name [case sensitive])
+	// (a class can have more than one constructor)
+	BST();
+	BST(const int&amp;);
+
+	// contains functions
+	void print() {}
+};</code></pre><ul id="648cac4e-2731-4738-8ba9-d6d0c97b2a9a" class="bulleted-list"><li style="list-style-type:disc">No need to write return type for constructors</li></ul><ul id="e35f1d0d-63cb-4cf7-a0d3-baf4d6eb1968" class="bulleted-list"><li style="list-style-type:disc">Constructor name must be the <mark class="highlight-red"><strong>SAME</strong></mark> as the class name</li></ul><ul id="a1fc5532-237a-46fe-851d-5df80806f41a" class="bulleted-list"><li style="list-style-type:disc">Constructor is <mark class="highlight-red"><strong>automatically</strong></mark> called when a object is created</li></ul><p id="c265543d-16b0-434a-a9c4-cd875d54acf1" class="">
+</p><p id="f9f3bb90-8d5b-436f-ba67-492ee4812b19" class="">Example definition:</p><pre id="0592006c-75da-44d1-9d35-c190a6596040" class="code"><code>BST::BST() { // no return type is needed
+	value = 0;
+	left = nullptr;
+	right = nullptr;
+}
+
+BST::BST(const int&amp; val) {
+	this-&gt;value = value;
+	this-&gt;left = nullptr;
+	this-&gt;right = nullptr;
+}
+
+// two constructor definitions (with 0 argument and 1 argument)
+// initialize fields in constructors &amp; customized constructor</code></pre><p id="ab131515-e278-434f-bbbe-4e9571c30d87" class="">
+</p><h3 id="06dd67a5-56e4-4380-9ea5-d0630595b203" class="">Default Constructor &amp; Customized Constructors:</h3><p id="9d71df79-9032-4d01-a7d8-3d61f81b5009" class="">We can create objects without writing a customized constructor because:</p><ul id="55646e5d-b98c-4a48-b2f9-a79b2183aeb5" class="bulleted-list"><li style="list-style-type:disc">every C++ class comes with a build-in default constructor</li></ul><ul id="4ad7ce43-0efc-44fb-8297-c96be90dd7a0" class="bulleted-list"><li style="list-style-type:disc">default constructor takes no parameter. (or parameters all with default values)</li></ul><p id="62bad2a6-c496-4021-b705-e1b4aa670d49" class="">Once a <strong>customized constructor</strong> is created:</p><ul id="7a1a08f9-8246-4868-8d00-d293b89dbf53" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">build-in default constructor</mark> <strong>will not work</strong></li></ul><ul id="21a9b9e8-bf52-4d18-a120-53534cd8b69f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">C-style initialization</mark> <strong>will not work</strong></li></ul><pre id="85980dc2-5072-449f-97a8-65f8de3e1230" class="code"><code>#include &quot;bst.h&quot;
+
+int main() {
+	// C-style initialization
+	BST b1 = {5, new BST{4, nullptr, nullptr}, new BST{6, nullptr, nullptr}};
+	// Error occurs after implementing a customized constructor
+
+	// uniform initialization
+	BST b2{10, new BST{5, nullptr, nullptr}, nullptr};
+	
+	BST b3 = BST{20, nullptr, nullptr};
+}</code></pre><p id="ee6ddc61-2c55-4b09-aaa5-1d0ab65af61f" class="">
+</p><p id="8c928270-c7f4-4711-9a32-ff35e045c5f0" class="">But, if we use a uniform initialization without implementing a customized constructor, the program will try to use the default constructor and will result in the error below:</p><figure id="c374daff-0895-4494-ae5b-7b16f9e5c40b" class="image"><a href="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled.png"><img style="width:1961px" src="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled.png"/></a><figcaption>(Error message)</figcaption></figure><p id="361545de-ec67-4887-89c1-eb5f20381b41" class="">Error message is telling us that the argument list does not match. In other words, no function signature is matched. We need default arguments to match the function signature.</p><p id="6b97a958-9b9c-4063-ac17-d73ad731ca86" class="">
+</p><p id="7acc6fb0-61e3-4398-bd2b-e821b424ed57" class="">If we implement a customized constructor:</p><pre id="569e2cbf-9079-434f-9ad7-1389e08139c5" class="code"><code>// .h file:
+struct BST {
+	int value;
+	BST* left;
+	BST* right;
+
+	// constructors (customized)
+	BST(const int&amp;, BST* left = nullptr, BST* right = nullptr);
+
+	// contains functions
+	void print() {}
+};
+
+
+// .cc file
+BST::BST(const int&amp; val, BST* left, BST* right) {
+// If the constructor already defined default values in declaration, then we
+// do not need to copy the default values again in definition (Otherwise, an
+// error will occur)
+	this-&gt;value = val;
+	this-&gt;left = nullptr;
+	this-&gt;right = nullptr;
+}</code></pre><p id="e366c62a-6678-43ea-8832-9efba04cf654" class=""><strong>Function signatures</strong> that can be recognized by the compiler:</p><ol type="1" id="6047c26e-cf05-4c18-a793-552126b41c9e" class="numbered-list" start="1"><li><code>BST(int);</code></li></ol><ol type="1" id="4f86325e-9a4e-4554-b03c-b3551b4fd41b" class="numbered-list" start="2"><li><code>BST(int, BST*);</code></li></ol><ol type="1" id="33d42906-d585-4261-8f81-3b3feefc2ebd" class="numbered-list" start="3"><li><code>BST(int, BST*, BST*);</code></li></ol><p id="0c5026f0-8cbc-464a-9d66-aa0b566bc03f" class="">
+</p><p id="5cfb9192-60ce-4289-8b5b-3c5022e115db" class="">Example:</p><pre id="9082c080-15f0-4058-a57d-55f554048731" class="code"><code>int main() { // 3 examples of initialization
+	BST b1 = BST{ 4 };
+	BST b2 = BST{ 5, &amp;b1, nullptr };
+	BST b3{7, &amp;b1, &amp;b2 };
+
+	b3.print();
+}</code></pre><p id="739bfcd8-6a9b-49a2-8dc3-c9d54df7510f" class="">
+</p><p id="58a9b0fc-ac41-4dc5-8ef4-19e55858e9ff" class="">Constructors can do more than just initializing fields:</p><p id="163fa4bf-b0cb-4718-94c4-3791fdf85c1d" class="">After we initialize fields, we can treat it as a normal function and add additional commands to it.</p><p id="fc0ddc88-1bb3-43d3-866c-e9e968ca8818" class="">
+</p><p id="d18754e9-b764-433f-bdb6-3d1afd4a0b1b" class="">Example: Print the BST automatically when the object is created</p><pre id="84dd4ede-c8a3-4082-ab86-457d8982c64d" class="code"><code>// constructor
+BST::BST( const int&amp; val, BST* left, BST* right ) {
+	value = val;
+	this-&gt;left = left;
+	this-&gt;right = right;
+	// finished initializing fields
+
+	// constructor body
+	this-&gt;print(); // one additional command
+}</code></pre><p id="45c6821a-71dd-4742-95c4-1a3bfcde7f7a" class="">
+</p><p id="09e17c54-d347-4b1b-8530-43c483739875" class=""><strong>Steps for constructing objects:</strong></p><ol type="1" id="a8f47d61-f80d-4605-9bbb-2961d2b18c4a" class="numbered-list" start="1"><li>allocate space in stack / heap (compiler)</li></ol><ol type="1" id="9675e3ab-5a92-47f4-8db1-9ccfd36826b7" class="numbered-list" start="2"><li>fields initialization (ourselves)</li></ol><ol type="1" id="b78d3001-8745-494a-83df-9e62d3d532c2" class="numbered-list" start="3"><li>constructor body (ourselves)</li></ol><p id="e3a45329-34b7-45b8-ade2-64fec4ce97df" class=""><mark class="highlight-red">*Constructing objects must follow the above order strictly!</mark></p><p id="1776ffcf-95f4-4f6e-86e8-204b6fb635d0" class="">*If you accidentally write constructor body before fields initializations, error might occur.</p><p id="42d593e7-e700-4ee5-8e99-5b731560fc8c" class="">We need to ensure that fields initializations are <span style="border-bottom:0.05em solid"><mark class="highlight-red">before</mark></span> constructor body.</p><p id="99718368-d72b-47ad-a4c9-bede5261ac97" class="">
+</p><h1 id="3f9ec9c8-3ee5-4794-8d11-07695e1d06f1" class="">Member Initialization List (MIL)</h1><p id="d59eb9df-1e62-440e-a8e9-2c4a91b541b0" class="">Used when initializing fields of a class</p><h3 id="2dfba4ff-4400-4aa7-a40b-7b3a0d055b5b" class="">Syntax:</h3><figure id="d37bcba6-58f9-47f6-8e05-b78a18f58c8f" class="image"><a href="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled%201.png"><img style="width:949px" src="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled%201.png"/></a></figure><h3 id="6d3e32da-e6e4-40b8-91d6-9d56054bae24" class="">Advantage of using MIL:</h3><p id="72ff2953-e99b-4c51-b283-d86dba92f90f" class=""><strong>MIL has </strong><strong><mark class="highlight-red">higher efficiency</mark></strong>: it assigns values to fields during the step of initialization, while the original method is to initialize the object with default value first, and then manually assign the values to fields in the constructor body.</p><p id="3bccff89-ba85-4633-a560-0462939a4c3d" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f5c88900-ba95-4d03-afde-696c7c401f79"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><strong>Attention:
+</strong>If one or more fields in the class are <code>const</code> or <code>reference</code> , then we <mark class="highlight-red">MUST</mark> use MIL!!! 
+(If we use the old method to initialize the object, an error will occur because <code>const</code> and <code>reference</code> variables must be assigned to values when being initialized!)</div></figure><p id="eedb6c47-60aa-4be7-9b39-42dce39ae630" class="">We cannot write like:</p><pre id="910f0bac-3127-4e1d-a97f-fa2f181f8183" class="code"><code>const int;
+// or
+int &amp;;
+// program won&#x27;t compile and errors will occur</code></pre><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6a59a9e8-54a5-409b-9125-c19b7e237bc0"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">We <strong><mark class="highlight-red">MUST</mark></strong> use <strong><mark class="highlight-red">MIL</mark></strong> when dealing with <mark class="highlight-red">constant</mark> and <mark class="highlight-red">reference</mark> fields!!!</div></figure><p id="f0c04128-ac56-47eb-90cd-750c63911847" class="">
+</p><p id="34e4f435-baff-451f-99ea-7d9c8ebfd582" class="">Example:</p><pre id="c6a07cd7-8e59-415f-8cc5-04644d6b082c" class="code"><code>// constructor
+BST::BST( const int&amp; val, BST* left, BST* right ): // &quot;:&quot; indicates the start of MIL
+	value{val}, left{left}, right{right} { // &quot;{&quot; indicates the end of MIL (REQUIRED!)
+	// the start of constructor body
+	this-&gt;print();
+}</code></pre><ul id="279e5f31-1d9a-4e23-acba-f05164732e70" class="bulleted-list"><li style="list-style-type:disc">MIL handles constant / reference fields initialization</li></ul><ul id="2fbef508-075f-4092-97d1-650df0f759b9" class="bulleted-list"><li style="list-style-type:disc">All fields can be initialized by using MIL</li></ul><ul id="4ad1609c-76a6-4fa7-830b-6612b29b6ff9" class="bulleted-list"><li style="list-style-type:disc">In some cases, MIL is <strong><mark class="highlight-red">more efficiently</mark></strong> then using constructor body to initialize fields</li></ul><ul id="3c589aeb-8f2a-4c53-a523-249ac0ccd252" class="bulleted-list"><li style="list-style-type:disc">MIL <mark class="highlight-red">MUST</mark> initialize fields in <span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">field declaration order</mark></strong></span><strong><mark class="highlight-red"> (top to bottom) ! </mark></strong><strong>However, we can skip a few fields as long as the initialization order is correct.</strong></li></ul><p id="8110eb97-3718-4f1c-9efc-5ad768683041" class="">
+</p><h3 id="a55e3449-3c5f-4ba5-ae1b-787248ec78e7" class="">We can only do 2 things with <strong><mark class="highlight-red">MIL</mark></strong>:</h3><ol type="1" id="1a74aa0f-b353-4aa8-a908-d722d7a9947e" class="numbered-list" start="1"><li>assigning parameters to fields</li></ol><ol type="1" id="c478b9a1-07a9-47e3-a7cf-24226c02874e" class="numbered-list" start="2"><li>calling other constructors in this class</li></ol><p id="9d07ec99-ef83-43e8-88bd-4f02dcb5ff77" class=""><strong><mark class="highlight-red">After MIL</mark></strong> (after “<code>{</code>”), we can do anything we want (treat it as a normal function).</p><p id="11cb274b-779e-44d3-9a73-9b617cf86ea4" class="">
+</p><h1 id="f4b4ae34-5c2b-4834-b557-9a82c40696f9" class="">Constructor: Implicit &amp; Explicit Conversions</h1><ul id="035eef7a-4d58-4f3f-9ec4-9da97d44b023" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">One</mark></strong> (and only one) <strong><mark class="highlight-red">parameter</mark></strong> constructor allows <span style="border-bottom:0.05em solid"><em><strong><mark class="highlight-red">implicit conversion.</mark></strong></em></span></li></ul><ul id="278c04e6-dce0-4b80-b2d4-aaad0211c3b8" class="bulleted-list"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid"><em><strong><mark class="highlight-red">Implicit conversion</mark></strong></em></span>: allowing us to call a constructor without { }.<p id="e41932ae-8ade-47fa-94fe-2ab351bb61e0" class="">e.g.: <code>int x = 10;</code></p><p id="efaf0135-296e-4a53-8e34-b9709d9683ae" class="">It’s formal form should be: <code>int x{10};</code> We used implicit conversion here.</p></li></ul><ul id="ca35ac49-6e0f-4143-b368-45d4c004b147" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Implicit conversion</mark></strong><em><strong><mark class="highlight-red"> </mark></strong></em>is <strong><mark class="highlight-red">automatically enabled.</mark></strong></li></ul><h3 id="edca98ad-3b56-43a6-9c2a-6d9b674e5153" class="">To disable implicit conversion:</h3><ul id="38b86951-6b04-4116-bbca-7209a4c917eb" class="bulleted-list"><li style="list-style-type:disc">Add the keyword <code>explicit</code> before constructor</li></ul><ul id="841e4d96-4a8a-4790-ac51-e2f3357e8d89" class="bulleted-list"><li style="list-style-type:disc">Now, implicit conversion is <strong><mark class="highlight-red">disabled</mark></strong></li></ul><ul id="696420e6-04d4-44a3-a7f9-89520641ea59" class="bulleted-list"><li style="list-style-type:disc">explicit conversion is <strong><mark class="highlight-red">enabled</mark></strong></li></ul><ul id="bffb0dd3-c46b-4c9e-95b7-f344200902b6" class="bulleted-list"><li style="list-style-type:disc">only needed for single-variable constructors (multiple-variable constructors do not required <code>explicit</code>)</li></ul><ul id="21c00852-4dce-4751-bed0-d3bb2ddffc50" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Implicit</mark></strong> constructors only have <mark class="highlight-red"><strong>one</strong></mark> parameter.</li></ul><pre id="368fb16d-dda6-4d65-a785-18ecdd1025a2" class="code"><code>struct BST {
+	const int value;
+	struct BST* left;
+	struct BST* right;
+	
+	// constructors
+	explicit BST( const int&amp;, BST* left = nullptr, BST* right = nullptr );
+
+	// contains functions
+	void print();
+};</code></pre><p id="c26829ba-a13d-4283-8851-cb4e1cc6d1b5" class="">
+</p><h1 id="83b7eb9a-54fa-45b7-bd64-d08abc167677" class="">The Big Five</h1><p id="a1ace17e-c00f-453b-8479-8e0da6e9f848" class="">Each class is provided with a built-in default constructor, and is also provided with the Big Five (The Rule of Five) below:</p><div id="08406971-e101-425e-bbac-38a05744e82e" class="column-list"><div id="23f1d04e-5bfa-4665-aa8b-63ae12d0ffdb" style="width:50%" class="column"><ul id="688fedd2-530e-4b24-8099-2a3dd52ffd95" class="bulleted-list"><li style="list-style-type:disc">Destructor (析构函数):</li></ul><ul id="f7761268-2082-4150-a2d5-da6551f3274b" class="bulleted-list"><li style="list-style-type:disc">Copy constructor:</li></ul><ul id="b23ad256-00d0-4121-92eb-f55c79d42422" class="bulleted-list"><li style="list-style-type:disc">Copy assignment operator:</li></ul><ul id="06cc2726-7a57-4060-9e43-7b2af532e58f" class="bulleted-list"><li style="list-style-type:disc">Move constructor (since C++11):</li></ul><ul id="dd5751be-1194-4f17-bfb4-089f9becec15" class="bulleted-list"><li style="list-style-type:disc">Move assignment operator (since C++11):</li></ul></div><div id="c962dcc4-9da0-44bd-80ac-6233066696fe" style="width:50%" class="column"><p id="4dd3135f-31b7-4c57-aa6e-7f2443e29038" class=""><code>~BST();</code></p><p id="b7dbd370-8f13-4ebe-882e-0dbadc3ee327" class=""><code>BST( const BST&amp; );</code></p><p id="2d23e47c-ba24-4804-a221-09aea69de1b3" class=""><code>BST&amp; operator=( const BST&amp; );</code></p><p id="cc211265-9ba1-4525-add4-1ad27ec0da6f" class=""><code>BST( BST&amp;&amp; );</code></p><p id="c65eebe1-2cdf-4db3-9c58-5096eaa20bbc" class=""><code>BST&amp; operator=( BST&amp;&amp; };</code></p></div></div><p id="bb7ae55e-22d4-48e3-961c-4ead1f7697f4" class="">
+</p><h1 id="70572c26-c157-4840-97f0-fbfa7244d662" class="">Destructor:</h1><ul id="4a74451a-c1cf-46c4-a9d1-6c51a6f4ba41" class="bulleted-list"><li style="list-style-type:disc">A function that de-allocates memory storing an object</li></ul><ul id="04717023-d44b-49ca-ae53-b3f931c689a7" class="bulleted-list"><li style="list-style-type:disc">Called automatically when an object goes out of scope</li></ul><p id="423be1ac-1c4c-4328-9ec3-65200fb14758" class="">
+</p><p id="d45a58b4-6b8a-4824-8f7a-72900b94eebe" class=""><strong>Same behaviors between C and C++:</strong></p><ul id="2ef39d27-ac6a-4058-a7da-657d0bf9be54" class="bulleted-list"><li style="list-style-type:disc">CPU manages stack memory</li></ul><ul id="16239ae0-28c2-4bf3-a81e-0b095db7e8c0" class="bulleted-list"><li style="list-style-type:disc">User manages heap memory</li></ul><ul id="83247b7f-0a21-4e78-9a06-fa18a2c27026" class="bulleted-list"><li style="list-style-type:disc">Deleting (<code>delele</code>) the pointer pointing to heap memory will de-allocate the memory</li></ul><p id="53168e89-eb08-442f-abce-2624388c3c08" class="">
+</p><p id="d7d33cb7-15c6-4939-a54c-01838e67e079" class=""><strong>Note:</strong> When creating objects, let all the objects created from the same class have the same allocation. (all use memory from heap or all use memory from stack).</p><p id="35e8a466-6dff-460e-8072-94447aa4268e" class="">
+</p><p id="7607037b-e57a-4795-9dc1-5d951a2884a6" class="">Example: BST: suppose all objects created from the BST class will be heap allocated, how do we write the destructor?</p><pre id="029cf77f-8de0-4a43-8e2d-de4d1c3cabb1" class="code"><code>// destructor
+BST::~BST() { // a &quot;~&quot; sign ahead, no parameters required / allowed
+	delete left;
+	delete right;
+}
+// no return value</code></pre><p id="8f367553-f66a-4c53-8754-91bee2292fed" class="">
+</p><p id="e6fb52ea-1f6d-43cf-a822-f84301fa022c" class=""><strong>Procedure:</strong></p><ol type="1" id="9749d16b-29a4-4a5a-b57f-a43ea2f2c8bd" class="numbered-list" start="1"><li>Starting from the current node, if this node is a null pointer, then delete <code>nullptr</code> does nothing and return.</li></ol><ol type="1" id="8bc0a352-b325-41cb-9336-f06d6aa0e06a" class="numbered-list" start="2"><li>If node is not null, then the destructor body will delete its left child, which will trigger the left child’s destructor. This step recursively happens until case 1 is reached eventually.</li></ol><ol type="1" id="af61817c-b663-46cc-951c-dcfb44a2453e" class="numbered-list" start="3"><li>Once left child is destroyed, then destructor body will delete its right child, which will trigger the right child’s destructor. This step recursively happens until case 1 is reached eventually.</li></ol><p id="aff3db40-7733-452d-abac-206a83860871" class="">
+</p><p id="6a4acdf1-57b5-4eff-852d-7a2ee0230aa4" class=""><mark class="highlight-red"><strong>Note:</strong></mark></p><p id="8c30875c-38fc-4e6f-b379-9ffaacecdd62" class="">Although destructors are called automatically, however, if we define a pointer pointing to an object allocated in heap memory, we still need to delete the pointer <mark class="highlight-red">manually</mark>, which will trigger the destructors.</p><p id="3470a1bf-aa9a-43c0-9b41-b5178279fbe8" class="">
+</p><h3 id="ed791582-aa2a-4d35-ad1c-462008833650" class=""><strong>Practice Problem</strong></h3><p id="764694c8-9f5f-4919-8300-82a1ff57bd31" class="">Write a C++ program that reads a pre-order traversal of a non-empty tree from standard input, and prints the corresponding post-order for that tree.</p><p id="2bbda4b9-0d22-4892-b1d6-d3e0a0a58cec" class="">Requires: </p><ul id="ed6afe61-a2c1-4075-84eb-ace6f8429e25" class="bulleted-list"><li style="list-style-type:disc">Runtime must be <code>O(n)</code>, where n is the number of nodes in the tree.</li></ul><ul id="c005629d-640b-4980-ab0b-1add966602f2" class="bulleted-list"><li style="list-style-type:disc">You are only allowed to implement the constructor and the destructor and the print function of the Node class to make this program works</li></ul><ul id="158e7083-ad51-4b62-b49f-41c868c56d2d" class="bulleted-list"><li style="list-style-type:disc">No memory leak</li></ul><p id="c99298e7-3be8-48e0-ae4d-46a01bfcb7b5" class="">Each line of input and output will consist of two non-negative integers:</p><p id="98fecb30-f7cd-4ed1-bfaf-c93624df172f" class="">&lt;node value&gt; &lt;number of children&gt;</p><div id="f76d999f-d786-46a9-8c2c-1b702d3adfa6" class="column-list"><div id="cfbb1afc-753a-464f-813d-6489ceb1dd41" style="width:50%" class="column"><pre id="f9f7e4f9-7640-4d38-a70b-db0b31edf849" class="code"><code>// node.cc
+#include &lt;iostream&gt;
+
+struct Node {
+	int val;
+	int numChildren;
+	Node** children;
+	
+	// constructor
+	Node();
+	
+	// destructor
+	~Node();
+
+	// contained functions
+	void print();
+};
+
+int main() {
+	Node* t = new Node;
+	t-&gt;print();
+	delete t;
+}</code></pre></div><div id="f4ebdd1a-0db9-4d14-b1af-98ae4e915b91" style="width:50%" class="column"><figure id="fa784efe-50c6-4c9b-b8ce-209b3ffdf926" class="image"><a href="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled%202.png"><img style="width:336px" src="C++%20Classes%20(part%201)%204ed757808cfc4334bb6a5f31e5c0b706/Untitled%202.png"/></a></figure></div></div><pre id="748734cc-f3c1-45ec-b01a-ec7b74ca82fa" class="code"><code>////////////// SOLUTION //////////////
+// node.cc
+// constructor
+Node::Node() {
+	std::cin &gt;&gt; val &gt;&gt; numChildren;
+	if ( numChildren == 0 ) {
+		children = nullptr;
+		return;
+	}
+	children = new Node*[ numChildren ];
+	for ( int i = 0; i &lt; numChildren; i++ ) {
+		children[i] = new Node();
+	}
+}
+
+// destructor
+Node::~Node() {
+	if ( numChildren == 0 ) {
+		return;
+	} else {
+		for ( int i = 0; i &lt; numChildren; i++ ) {
+			delete children[i];
+		}
+		delete [] children;
+	}
+}
+
+// print
+void Node::print() {
+	if ( numChildren != 0 ) {
+		for ( int i = 0; i &lt; numChildren; i++ ) {
+			this.children[i].print();
+		}
+		std::cout &lt;&lt; val &lt;&lt; &quot; &quot; &lt;&lt; numChildren &lt;&lt; endl;
+		return;
+	} else {
+		std::cout &lt;&lt; val &lt;&lt; &quot; &quot; &lt;&lt; numChildren &lt;&lt; endl;
+		return;
+	}
+}</code></pre><p id="c372b65e-b5fe-40b4-b938-dff5343c72c0" class="">
+</p><p id="9f7cb2d2-16ea-4145-a96e-68dcab4b1430" class="">
+</p><h1 id="ad12d306-2ed9-4583-824d-5e338bb9d92c" class="">Copy Constructor</h1><ul id="9d1b9997-5815-4111-b2cf-8fbed9a4cd29" class="bulleted-list"><li style="list-style-type:disc">Called when a new object is created from <span style="border-bottom:0.05em solid"><mark class="highlight-red">an existing object</mark></span></li></ul><ul id="425925a6-f4a1-4e32-afb9-ad46e3a0c776" class="bulleted-list"><li style="list-style-type:disc">A copy of the existing object</li></ul><ul id="cc57f13d-d56e-49ed-8a49-04c08b11099b" class="bulleted-list"><li style="list-style-type:disc">Assign values from the existing object to the new object</li></ul><p id="85081576-202f-43c0-b52b-7dc714d32e5c" class="">Example:</p><pre id="2025e244-7e36-48d9-8ec9-94847708f9de" class="code"><code>// copy constructor (built-in default copy constructor)
+BST::BST( const BST&amp; other ): // Using MIL
+	value{ other.value }, left{ other.left }, right{ other.right } {}
+// the ending &quot;{}&quot; is required
+
+</code></pre><p id="22754830-3a0d-4196-989b-a339a281f2c9" class="">
+</p><h3 id="0c4b8d67-5a56-4002-8117-63004892145b" class="">Shallow Copy:</h3><ul id="9cd49f7f-b55b-4ee4-8314-c782c499f169" class="bulleted-list"><li style="list-style-type:disc">Implementation of default copy constructor</li></ul><ul id="a69e848a-d600-445c-920e-0de1bcab04de" class="bulleted-list"><li style="list-style-type:disc">Copy all the member fields</li></ul><p id="999313db-9faf-439f-9691-c47a8663d0ce" class="">
+</p><p id="fb456fd1-2a6a-4be6-ac31-6917e874acd7" class="">However, we often want objects to be independent of each other. That is, if one object is mutated, other duplicated objects should remain unchanged.</p><p id="47c25fe9-6612-4fa2-9ea1-ca8fdf9cdd5d" class="">Example: why won’t shallow copy work sometime:</p><pre id="e1e717db-4bdb-4cfd-91f7-2a29443b3110" class="code"><code>int main() {
+	BST* b1 = new BST{ 5, new BST{ 4, nullptr, nullptr },
+												new BST{ 6, nullptr, nullptr } };
+	BST* b2 = new BST{*b1}; // shallow copy
+
+	std::cout &lt;&lt; b1-&gt;left-&gt;value &lt;&lt; std::endl;
+	b2-&gt;left-&gt;value += 10;
+	std::cout &lt;&lt; b1-&gt;left-&gt;value &lt;&lt; std::endl;
+}
+----------------------------------------------------------------------------------------
+&gt;&gt;&gt; 4
+&gt;&gt;&gt; 14
+// two outputs are different, even though we didn&#x27;t directly modify b1-&gt;left-&gt;value</code></pre><p id="db0c75f1-b018-4768-8313-89b59c763968" class="">
+</p><h3 id="6cd2b714-d870-4268-b169-7f85da6b2db5" class="">Deep Copy:</h3><ul id="06e0ee3e-2e00-4582-9fdd-e062a60f6cfb" class="bulleted-list"><li style="list-style-type:disc">Allocates memory for field values and then copy the values</li></ul><ul id="474e3e3c-a41f-4182-8a10-5baf392f1285" class="bulleted-list"><li style="list-style-type:disc">Making new objects independent of the existing object</li></ul><ul id="40343fd3-960a-40c0-8781-f638bd921efa" class="bulleted-list"><li style="list-style-type:disc">We often use deep copy on objects</li></ul><p id="afd61fed-a564-4367-84ca-d09a46f0ba26" class="">
+</p><p id="d3f872e0-cc15-4cd7-8d34-fb1c44893fce" class="">Procedure: same as destructor, perform recursively</p><pre id="3adeae74-982f-47fe-a9c2-7e8beff921c0" class="code"><code>// copy constructor
+BST::BST( const BST&amp; other }:
+	value{ other.value } {
+	std::cout &lt;&lt; &quot;called copy constructor&quot; &lt;&lt; std::endl; // indicator
+	if ( other.left != nullptr ) {
+		left = new BST{ *other.left };
+		// recursively calls copy constructor for the left child
+	} else {
+		left = nullptr; // recursion base case
+	}
+	if ( other.right != nullptr ) {
+		right = new BST{ *other.right };
+		// recursively calls copy constructor for the right child
+	} else {
+		right = nullptr; // recursion base case
+	}
+}</code></pre><p id="ed196eda-86c8-49ef-a592-ada9e3488f8b" class="">Now, b1 and b2 are completely independent.</p><p id="664cf346-307d-447a-ac73-036c71c98657" class="">
+</p><h1 id="bc653252-f57f-4b29-86f3-f98ca66dd309" class="">Copy Assignment Operator</h1><ul id="d1e1945e-590a-4cdb-b428-af94351ae213" class="bulleted-list"><li style="list-style-type:disc">Called when an existing object is assigned new values from an existing object</li></ul><ul id="55fe5791-eeda-49b1-88e7-633635add953" class="bulleted-list"><li style="list-style-type:disc">Operator overloading</li></ul><ul id="0e0637eb-95c1-4066-b945-ac171275f23a" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Deep copy!!!</mark></strong> (Must be the <mark class="highlight-red">SAME</mark> as copy constructor (both using deep copy or both using shallow copy))</li></ul><p id="33f1d580-d7fd-47cb-b553-2c50038ffdf0" class="">
+</p><p id="10afc9a0-011d-4b72-8ce3-29cea62f40e7" class="">A simple concept illustration:</p><pre id="cc6b55ec-b1a5-4a74-83c7-3587dd8fd1f6" class="code"><code>int x = 10;
+int y = 5;
+y = x;
+// assigning/copying the value of x to y
+// replacing/discarding the original value of y</code></pre><p id="a75fb815-6071-481c-a724-b92fba3cd9fb" class="">
+</p><pre id="ea6fccea-216b-4eb8-9301-95bf509f81fb" class="code"><code>// copy assignment operator
+BST&amp; BST::operator=( const BST&amp; rhs ) { // return by reference, no need for re-copying
+	// self-assignment
+	if ( this == &amp;rhs ) return *this;
+	// if &quot;this&quot; (the const pointer) equals to rhs&#x27;s pointer, then this object is
+	//  the same as the rhs object, then there&#x27;s no need for re-copying.
+	
+	value = rhs.value;
+
+	delete left; // MUST delete the original heap-allocated memory to prevent memory leak!
+	delete right;
+
+	left = rhs.left == nullptr ? nullptr : new BST{ *rhs.left };
+	// if the condition is true, then return the result after &quot;?&quot;, otherwise, return
+	// the result after &quot;:&quot; (call the copy constructor for rhs&#x27;s left child)
+	right = rhs.right == nullptr ? nullptr : new BST{ *rhs.right };
+	return *this;
+}
+
+
+// Avoid self-assignment
+// Performs deep copy just as the copy constructor
+// *Remember to delete the original heap-allocated memories before assigning new values</code></pre><ul id="64c05a32-05f4-4863-9c47-ae68aee6a2c5" class="bulleted-list"><li style="list-style-type:disc">Avoid self-assignment</li></ul><ul id="1648f868-818f-4ac5-8ee1-d22405c86c1a" class="bulleted-list"><li style="list-style-type:disc">Performs deep copy just as the copy constructor</li></ul><ul id="61f23e58-1e63-466b-9c1b-297701e94f83" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">IMPORTANT!!!</mark><p id="06478626-eba9-47ef-94ec-9074c9472fb7" class="">Remember to <span style="border-bottom:0.05em solid"><mark class="highlight-red">delete the original heap-allocated memories</mark></span> before assigning new values, otherwise, memory leaks will occur.</p></li></ul><p id="ef280f7e-98ee-41ac-9339-20595d185c16" class="">
+</p><hr id="3d21f95f-c0c6-45d2-817f-c0968663b1f2"/><h3 id="8cc87e76-49be-4d79-9431-21f69dfa4aea" class="">Dangling pointers &amp; Delay delete:</h3><p id="91bee3b9-4d26-4052-9eb2-9e0b1941d2cd" class="">What if we run out of memory in heap? (Do not need to consider this in this course, just for knowledge extension.)</p><p id="6738dfb7-0dae-424a-a4fe-b6ccbbb41a38" class=""><strong>Dangling pointers:</strong></p><ul id="0b9984f9-ceab-4cb1-856e-62bfe9c95287" class="bulleted-list"><li style="list-style-type:disc">pointers that do not point to valid object of the appropriate type</li></ul><ul id="46dc7db7-a820-468e-9b28-51e7a562bf80" class="bulleted-list"><li style="list-style-type:disc">may or may not crash the program. In this course, we call it <span style="border-bottom:0.05em solid"><mark class="highlight-red">undefined behavior</mark></span> (we don’t know what will happen)</li></ul><p id="2901f50c-e121-45f1-9e6b-49853d4f3399" class="">
+</p><p id="1a21817f-25f1-4725-af0c-a2cff89f5784" class="">Solution: <mark class="highlight-red">Delay delete</mark></p><pre id="d320abd2-4c02-4319-9251-e454f03aa579" class="code"><code>// copy assignment operator
+BST&amp; BST::operator=( const BST&amp; rhs ) {
+	// self-assignment
+	if ( this == &amp;rhs ) return *this;
+	
+	value = rhs.value;
+
+	BST* temptLeft = left;
+	BST* tempRight = right;
+	// backup the addresses before we&#x27;re certain that the memory allocations
+	// are successful.
+
+	try {
+		left = rhs == nullptr ? nullptr : new BST{ *rhs.left };
+		right = rhs == nullptr ? nullptr : new BST{ *rhs.left };
+		// if no error occurs at this point, then we can safely delete the backup.
+		delete left;
+		delete right;
+	} catch ( ... ) { // if any error occurs, then execute the following
+		left = tempLeft; // restore the addresses to pointers.
+		right = tempRight;
+	} // then basically, no change has been made.
+	return *this;
+}</code></pre><p id="087b8f6c-5599-45c6-81a3-1147b4ed0163" class="">
+</p><hr id="728d4b02-ab2d-463d-9a75-1cc934ff8e14"/><h3 id="3d0749ad-3030-48e2-802d-9471886fe0f2" class="">Return type of the copy assignment operator:</h3><p id="6961cd31-2cc2-4624-b243-3df3a83cc310" class=""><em><strong>Question: </strong></em>Why can’t the return type be <code>void</code> for the copy assignment operator?</p><p id="9a1b2acf-b47f-4202-86ac-529ea49eb755" class=""><em><strong>Answer:</strong></em> Because returning by reference allows multiple assignments in one line.</p><p id="e183a8b4-8aac-4113-8844-6e2a61461673" class="">Example:</p><pre id="59d1a9cd-42b6-4298-9185-c9688193b0b3" class="code"><code>int main() {
+	BST* b1 = new BST{ 5, new BST{ 4, nullptr, nullptr },
+												new BST{ 6, nullptr, nullptr } };
+	BST* b2 = new BST{*b1};
+	BST b4 = *b1 = *b2 = *b1; // BAD STYLE
+	// if return type is void, then the above line will cause error
+}</code></pre><p id="4adec04d-970e-4fee-adcb-a3ad192c3847" class="">
+</p><p id="f4932ff3-470b-470f-8be8-677c2cd61741" class=""><em><strong>Question:</strong></em><strong> </strong>Why copy assignment operator is returned by reference?</p><p id="cdf7954d-bdf7-4c29-a4a2-6f1e1e7bcb58" class=""><em><strong>Answer:</strong></em></p><ul id="ad0c4e67-b73c-44f6-96e2-afd1ee1e5606" class="bulleted-list"><li style="list-style-type:disc">Strictly speaking, copy assignment operator does NOT need to type by reference.</li></ul><ul id="68f3ce2b-3587-4a08-ab66-ab0e2acd3884" class="bulleted-list"><li style="list-style-type:disc">However, returning by reference requires minimal work done.</li></ul><p id="05655534-ac2a-40d8-aa17-c13466c7889f" class="">
+</p><p id="1be0bd90-0fda-41a9-a494-ac3ecc8d6345" class="">If return by<mark class="highlight-red"> </mark><mark class="highlight-red"><strong>instance (value)</strong></mark>:</p><ul id="1d090e23-ea99-4acc-87e3-10fa45c96773" class="bulleted-list"><li style="list-style-type:disc">Copy assignment operator returned a rvalue</li></ul><ul id="2cdcbec9-3233-4a9d-86fb-c5b74f858ca6" class="bulleted-list"><li style="list-style-type:disc">The value is copied then returned to the caller (extra copy constructors called)</li></ul><ul id="ffacd8d3-d5fd-46db-9a20-0bfddcd97a57" class="bulleted-list"><li style="list-style-type:disc">After executing copy assignment operator, rvalue is discarded (extra destructors called)</li></ul><p id="677be4ae-d4b9-4753-a148-31f0019305f8" class="">
+</p><p id="36ce13d8-94b9-4ac4-8486-366712587f3d" class="">If return by<strong> </strong><mark class="highlight-red"><strong>reference</strong></mark>:</p><ul id="ad968515-d192-4c72-9ca8-e9b76653369b" class="bulleted-list"><li style="list-style-type:disc">Reference of the existing object is passed to the caller (no extra copy constructors needed)</li></ul><ul id="1badabbc-8a4d-45d0-8031-a07481815164" class="bulleted-list"><li style="list-style-type:disc">Do not go out of scope after copy assignment operator (no extra destructors needed)</li></ul><ul id="8492cd8c-f93e-4512-8e31-d53648162b3a" class="bulleted-list"><li style="list-style-type:disc">Time-efficient</li></ul><p id="ab92c7b6-1dff-4307-88b6-6ea26edfe08e" class="">
+</p><p id="0a879d36-e651-41bc-9d2e-69d7fd1ccf30" class="">
+</p><hr id="2a8e7836-f75f-41e4-9284-9c7cefba2d3b"/><h3 id="c8c5a098-7f18-4a41-8cd6-e0f3a94c4b0c" class="">An Easier / Lazy Approach for Copy Assignment Operator:</h3><p id="4339a34e-9311-48da-b35d-52c5091b8702" class="">library: <code>#include &lt;utility&gt;</code></p><p id="2e2d62c1-c1e7-4c97-9d81-8886ad22596c" class="">command: <code>std::swap</code>: swaps data of two objects</p><p id="026d9b30-fa59-4b3b-88bd-47e7c9e3a5f7" class="">Illustration of <code>std::swap</code>:</p><pre id="9b2cc1a6-5f12-4852-aba6-fed4456e5bed" class="code"><code>#include &lt;iostream&gt;
+#include &lt;utility&gt;
+
+struct List {
+	int value;
+	List* next;
+	~List() { delete next };
+};
+
+int main() {
+	List* l1 = new List{ 5, new List{ 6, nullptr } };
+	List* l2 = new List{ 1, new List{ 2, nullptr } };
+
+	std::swap( l1, l2 );
+	
+	std:cout &lt;&lt; l1-&gt;value &lt;&lt; &#x27; &#x27; &lt;&lt; l1-&gt;next-&gt;value &lt;&lt; std::endl;
+	std:cout &lt;&lt; l2-&gt;value &lt;&lt; &#x27; &#x27; &lt;&lt; l2-&gt;next-&gt;value &lt;&lt; std::endl;
+	delete l1;
+	delete l2;
+}
+-------------------------------------------------------------------------------------
+&gt;&gt;&gt; 1 2
+&gt;&gt;&gt; 5 6
+// objects swapped</code></pre><p id="a03e9cc8-57fa-4ba6-9fc8-33db031ab7b8" class="">
+</p><h3 id="b81d92ab-f8f6-411d-bd6b-9714a7de6649" class="">Copy-swap idiom:</h3><p id="c0d02ef2-cda4-49e3-91c0-64284ac07e12" class="">Easier implementation of copy assignment operator: <mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">(copy-swap idiom)</span></strong></mark> (might not be allowed in assignments)</p><pre id="b643d57c-de8e-43eb-a9c0-45a42739dd24" class="code"><code>// .h file
+void swap( BST&amp; ); // add a swap function in BST class
+--------------------------------------------------------------------------------------
+// .cc file
+#include &lt;utility&gt;
+
+// copy swap idiom
+void BST::swap( BST&amp; other );
+	std::swap( value, other.value );
+	std::swap( left, other.left );
+	std::swap( right, other.right );
+}
+
+BST&amp; BST::operator=( const BST&amp; rhs ) {
+	// self-assignment
+	if ( this == &amp;rhs ) return *this;
+	
+	BST temp{ rhs }; // create a temporary object using copy constructor
+	swap( temp ); // swaps two objects
+	return *this;
+}</code></pre></div></article></body></html>

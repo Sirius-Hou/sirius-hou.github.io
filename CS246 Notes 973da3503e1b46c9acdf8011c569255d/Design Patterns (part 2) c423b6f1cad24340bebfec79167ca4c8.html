@@ -1,0 +1,907 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Design Patterns (part 2)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="c423b6f1-cad2-4340-bebf-ec79167ca4c8" class="page sans"><header><h1 class="page-title">Design Patterns (part 2)</h1></header><div class="page-body"><h1 id="d618147d-9903-4cbe-aeaf-1d61a35d925c" class="">Factory Design Pattern</h1><ul id="32e48165-6feb-41d3-9f17-5a5c59cb3c0f" class="bulleted-list"><li style="list-style-type:disc">Creational Design Pattern</li></ul><ul id="3641a649-c1cc-41c3-8329-4f48260f4d10" class="bulleted-list"><li style="list-style-type:disc">High level flexibility</li></ul><ul id="14f0b176-2140-45c2-9ad0-c648549e8af9" class="bulleted-list"><li style="list-style-type:disc">Creating objects without specifying their concrete classes</li></ul><figure id="77decc3c-227b-475b-879c-ad31b79ee5c0" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled.png"><img style="width:384px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled.png"/></a></figure><p id="30ba70c8-633d-4285-8fbb-90c36d4396f5" class="">Client wants the product, but we do not want then to call constructors directly. We are using a creator class to return the product to the client.</p><p id="4ef3759b-08f1-4e85-aab3-aa9db2f06349" class="">In Factory Design Pattern, we cannot do: <em><mark class="highlight-red">Product* p = new Product{…};</mark></em></p><p id="7949f3a5-2871-454d-a5f0-e222341e2c6d" class="">Instead, we do:</p><p id="2036969f-177c-4f6a-9a96-2cf2b27acfa6" class=""><mark class="highlight-red"><em>Creator* c = new ConcreteCreator;</em></mark></p><p id="946784db-a8ce-4dc1-aa95-6edac9158cdf" class=""><mark class="highlight-red"><em>Product* p = c-&gt;factoryMethod();</em></mark></p><p id="7572e28e-f7ae-48ef-b6e2-6f4f951991bf" class="">Example:</p><p id="a0d2eb94-4e3f-4db5-9f33-cb74895db784" class="">Suppose we are developing a game. We will have goblin and slime as monsters.</p><p id="0caf8ee8-04f1-4f06-b70c-cf25f7bddaaf" class="">
+</p><p id="2bbba83e-5438-4af1-b43b-6fd8e941da10" class="">Step 1: create abstract Monster class</p><pre id="ab68adf6-3ef9-4597-abfc-5ec0eb24aab1" class="code"><code>// monster.h
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Monster {
+protected:
+	const std::string name;
+	unsigned int health;
+	unsigned int damage;
+	// private constructor
+	Monster(const std::string&amp;, const unsigned int&amp;, const unsigned int&amp;);
+public:
+	// since we don&#x27;t have pure virtual methods, and we want to keep this class abstract,
+	// so we make its destructor pure virtual to force it to remain abstract.
+	virtual ~Monster() = 0;
+
+	friend std::iostream&amp; operator&lt;&lt;(std::ostream&amp;, const Monster&amp;);
+};</code></pre><pre id="18affd19-9d71-443c-beb0-320c1af76b4f" class="code"><code>// monster.cc
+Monster::Monster(const std::string&amp; name, const unsigned int&amp; health,
+								 const unsigned int&amp; damage) :
+	name{name}, health{health}, damage{damge} { }
+
+// even though we make the constructor pure virtual, we still have to implement it in
+// .cc file! (Destructor is a special function! It&#x27;s the only function that we still
+// need to implement even though it&#x27;s pure virtual!)
+~Monster::Monster() { }
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Monster&amp; m) {
+	out &lt;&lt; m.name &lt;&lt; &quot;:&quot; &lt;&lt; std::endl;
+	out &lt;&lt; &quot;\tHealth:\t&quot; &lt;&lt; m.health &lt;&lt; std::endl;
+	out &lt;&lt; &quot;\tDamage:\t&quot; &lt;&lt; m.damage &lt;&lt; std::endl;
+	return out;
+}
+</code></pre><p id="dd5af5fc-3bc0-4013-a247-14ab812cf2a4" class="">
+</p><p id="53ee6ee4-497a-47fb-b1ff-33c9207aa055" class="">Step 2: Create concrete Monster classes</p><pre id="590a8c67-ae82-4a2d-8df8-5778ab7ca486" class="code"><code>// monster.h
+// The following code beeds modifications, shown below in step 5
+
+class Goblin : public Monster {
+	// private constructor
+	Goblin(const std::string&amp;, const unsigned int&amp;, const unsigned int&amp;);
+};
+
+class Slime : public Monster {
+	// private constructor
+	Slime(const std::string&amp;, const unsigned int&amp;, const unsigned int&amp;);
+};</code></pre><pre id="243833c9-b97b-4d77-ac3d-82bfc3eeefa9" class="code"><code>// monster.cc
+Goblin::Goblin(const std::string&amp; name, const unsigned int&amp; health,
+							 const unsigned int&amp; damage): Monster{name, health, damage} { }
+
+Slime::Slime(const std::string&amp; name, const unsigned int&amp; health,
+							 const unsigned int&amp; damage): Monster{name, health, damage} { }</code></pre><p id="d797fd63-af3e-4a0b-95ef-3cdaa69295e0" class="">
+</p><p id="f0295565-3e0c-4a32-9825-f94f3bb45968" class="">Step 3: Create Factory class (This will be our “creator” class. We will be creating monsters using creators)</p><pre id="f4040b68-ffa8-4159-b13f-46162172f507" class="code"><code>// factory.h
+#ifndef __FACTORY_H__
+#define __FACTORY_H__
+
+#include &quot;monster.h&quot;
+class Factory {
+public:
+	Monster* createObjectA();
+	Monster* createObjectB();
+};
+
+#endif</code></pre><pre id="5af0b47b-072b-4d5c-b656-c8b465b163bd" class="code"><code>// factory.cc
+#include &quot;factory.h&quot;
+
+Monster* Factory::createObjectA() {
+	return new Slime(&quot;Slime&quot;, 100, 15);
+}
+
+Monster* Factory::createObjectB() {
+	return new Goblin(&quot;Goblin&quot;, 200, 25);
+}</code></pre><p id="c9e77020-dc94-47e5-9893-0dceea6afb62" class="">However, this program won’t compile:</p><p id="c542a9a5-0821-4cc0-92c8-c3fdf778083e" class="">Remember that we declared monster constructors as private. Therefore, Factory cannot directly call Slime’s and Goblin’s constructors directly. Hence, we need <code>friend</code> relationships.</p><p id="d95d2008-f116-4941-9a51-560c485dab91" class="">
+</p><p id="543e5bb6-89cb-436e-b769-0ecd3fe17d72" class="">Step 5: Adding friend relationships</p><pre id="74df09b1-ef25-47eb-94bf-0753348f5b38" class="code"><code>// monster.h (modified)
+
+class Goblin : public Monster {
+	// private constructor
+	Goblin(const std::string&amp;, const unsigned int&amp;, const unsigned int&amp;);
+	friend class Factory; // now Factory can call Goblin&#x27;s constructor
+};
+
+class Slime : public Monster {
+	// private constructor
+	Slime(const std::string&amp;, const unsigned int&amp;, const unsigned int&amp;);
+	friend class Factory; // now Factory can call Slime&#x27;s constructor
+};</code></pre><ul id="5cd96b47-3518-4e4b-8125-9bc59430e9be" class="bulleted-list"><li style="list-style-type:disc">Encapsulation won’t be broken even by adding friend class relationship.</li></ul><ul id="84549151-00b6-46eb-b634-4877b4c57585" class="bulleted-list"><li style="list-style-type:disc">Even with friend relationship, clients still cannot access monster constructors.</li></ul><ul id="fd9c8807-c6e1-4de9-a442-9e4cc70ab860" class="bulleted-list"><li style="list-style-type:disc">Object creations ar   encapsulated by another class.</li></ul><p id="d6254491-e2d2-4283-8d77-c276601e5647" class="">
+</p><p id="df93ebd2-693a-44c7-8e90-8c09b802d6e7" class="">Client code:</p><pre id="5bffb0bc-7607-4b7b-a737-26bf62c34937" class="code"><code>#include &quot;factory.h&quot;
+
+int main() {
+	Factory factory;
+	Monster* s = factory.createObjectA();
+	Monster* g = factory.createObjectB();
+
+	std::cout &lt;&lt; *s &lt;&lt; *g &lt;&lt; std::endl;
+
+	delete s;
+	delete g;
+}</code></pre><p id="c7c8b13c-b5bf-429b-96b9-d88f2d4cc846" class="">Result:</p><figure id="570d4a99-e170-4098-8025-3bc717448080" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%201.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%201.png"/></a></figure><p id="cfe78c79-578d-4f4f-a405-42012ff29b1b" class="">
+</p><h1 id="f38e9531-4c96-4867-8493-31e2b7473237" class="">Abstract Factory Design Pattern</h1><ul id="f715caf0-3c1a-4af2-b120-deb9709c5806" class="bulleted-list"><li style="list-style-type:disc">Creational Design Pattern</li></ul><ul id="73c0bdbc-c1ca-467c-87cf-ed2f092730d4" class="bulleted-list"><li style="list-style-type:disc">Extension of Factory Design Pattern</li></ul><ul id="a5d8431d-bfab-4763-9377-974ffb6bdb36" class="bulleted-list"><li style="list-style-type:disc">Creates a family of objects without specifying their concrete classes</li></ul><figure id="4e26cb9d-1fc2-4b36-82c2-7677cb3b1d87" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%202.png"><img style="width:528px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%202.png"/></a></figure><ul id="5cf2c8b7-c8cd-4317-86da-b35419b47a49" class="bulleted-list"><li style="list-style-type:disc">Different factory produces different products by calling different methods.</li></ul><ul id="dabcd026-af9c-44cb-9880-8b952c86f63d" class="bulleted-list"><li style="list-style-type:disc">*Understanding Factory Design Pattern is enough for now</li></ul><p id="9f5c4b63-fd92-4a89-9ce7-416f5202c61d" class="">
+</p><p id="adb6ba86-81fd-4706-b19e-209750b336dc" class="">Recall previous example: we created a factory class that will generate monster objects, we might as well need some weapons to kill the monster, so we want our creator to create not only monsters, but also weapons. Hence, we need to extend our code.</p><p id="1ffab891-c565-44e7-a437-1dfe677bf9c9" class="">
+</p><p id="9ca6bf77-51e1-46ce-9ba5-270216548cc4" class="">Step 1: Extend <em>factory.h</em> &amp; update friend relationship (Concrete factory class will return generated objects to clients)</p><pre id="933cce78-b713-43df-a5e8-767988e13ddc" class="code"><code>// factory.h
+#ifndef __FACTORY_H__
+#define __FACTORY_H__
+
+class AbstractFactory {
+public:
+	// pure virtual methods (since we don&#x27;t know what to create)
+	virtual Monster* createMonster() = 0;
+	virtual Weapon* createWeapon() = 0;
+	virtual ~AbstractFactory();
+};
+
+class FactoryA : public AbstractFactory {
+public:
+	Monster* createMonster() override;
+	Weapon* createWeapon() override;
+};
+
+class FactoryB : public AbstractFactory {
+public:
+	Monster* createMonster() override;
+	Weapon* createWeapon() override;
+};
+
+#endif</code></pre><p id="54328ef6-032a-4478-aac2-ffa9d4f43860" class="">
+</p><p id="21737a28-ef0a-43f3-af72-98d973b5e8ff" class="">Step 2: Create abstract Weapon and concrete Weapon classes</p><pre id="fc5e47ba-3656-4c04-a9e8-aefef9edffd7" class="code"><code>// weapon.h
+#ifndef __WEAPON_H__
+#define __WEAPON_H__
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+class Weapon {
+protected:
+	const std::string name;
+	unsigned int damage;
+	// private constructor
+	Weapon(const std::string&amp;, const unsigned int&amp;);
+public:
+	// since we don&#x27;t have pure virtual methods, and we want to keep this class abstract,
+	// so we make the destructor pure virtual to force it to remain abstract.
+	virtual ~Weapon() = 0;
+
+	friend std::iostream&amp; operator&lt;&lt;(std::ostream&amp;, const Weapon&amp;);
+};
+
+class Sword : public Weapon {
+	// private constructor
+	Sword(const std::string&amp;, const unsigned int&amp;);
+	friend class FactoryA;
+};
+
+class Gun : public Weapon {
+	// private constructor
+	Gun(const std::string&amp;, const unsigned int&amp;);
+	friend class FactoryB;
+};
+
+#endif</code></pre><pre id="f5b35816-282c-4ea2-9d5f-06b0a60643f3" class="code"><code>// weapon.cc
+
+Weapon::Weapon(const std::string&amp; name, const unsigned int&amp; damage):
+	name{name}, damage{damage} { }
+
+Weapon::~Weapon() { }
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Weapon&amp; w) {
+	out &lt;&lt; w.name &lt;&lt; &quot;:&quot; &lt;&lt; std::endl;
+	out &lt;&lt; &quot;\tDamage:\t&quot; &lt;&lt; w.damage &lt;&lt; std::endl;
+	return out;
+}
+
+Sword::Sword(const std::string&amp; name, const unsigned int&amp; damage):
+	Weapon{name, damage} { }
+
+Gun::Gun(const std::string&amp; name, const unsigned int&amp; damage):
+	Weapon{name, damage} { }</code></pre><p id="7260a902-52af-46fc-8f94-ffa242dd50a5" class="">
+</p><p id="41c87b29-af28-48c6-a20b-d88d589cfee7" class="">Step 3: Implement factory classes</p><pre id="1f4e7423-3540-4cc6-bdf8-9fad883fe752" class="code"><code>#include &quot;factory.h&quot;
+
+AbstractFactory::~AbstractFactory() { }
+
+Monster* FactoryA::createMonster() {
+	return new Slime{&quot;Slime&quot;, 100, 15};
+}
+
+Weapon* FactoryA::createWeapon() {
+	return new Sword{&quot;Sword&quot;, 30};
+}
+
+Monster* FactoryB::createMonster() {
+	return new Goblin{&quot;Gobli&quot;, 200, 25};
+}
+
+Weapon* FactoryB::createWeapon() {
+	return new Gun{&quot;Gun&quot;, 40};
+}
+</code></pre><pre id="e29a938d-ea6a-49e5-8b12-8ff5cdc5ec2a" class="code"><code>// client code:
+
+int main() {
+	FactoryA fa;
+	
+	Monster* m1 = fa.createMonster();
+	Weapon* w1 = fa.createWeapon();
+	std::cout &lt;&lt; *m1 &lt;&lt; *w1 &lt;&lt; std::endl;
+
+	delete m1;
+	delete w1;
+}</code></pre><p id="ab86a7b6-7e6e-4cc6-a847-d2762fa48856" class="">Result:</p><figure id="75ccba69-895a-4f55-b577-7fbd4f083f61" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%203.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%203.png"/></a></figure><p id="e380d6cc-0901-47c0-9ce5-02b6bc319ad8" class="">
+</p><h1 id="797a16a1-8067-42cc-b300-55f4dfe54d06" class="">Visitor Design Pattern</h1><ul id="3d227b21-b07c-496e-83a7-ed4ecb8a202d" class="bulleted-list"><li style="list-style-type:disc">Behavior design pattern</li></ul><ul id="bd665a8d-d5aa-48fc-a23c-6809c37ecd18" class="bulleted-list"><li style="list-style-type:disc">Visitor design pattern is different from design patterns we have learned.</li></ul><ul id="fefd1ccd-22e6-41bb-ac5d-eceadc635eeb" class="bulleted-list"><li style="list-style-type:disc">Other patterns often focus on dealing with one objects or a sequence of objects from same classes (only requires one dynamic dispatch <mark class="highlight-red"><strong>(single dispatch)</strong></mark>).</li></ul><ul id="5a07615b-990f-4da1-b6bb-5f1161775e2c" class="bulleted-list"><li style="list-style-type:disc">Visitor design patterns is how objects interacts with objects from different type. It requires <mark class="highlight-red"><em>two</em></mark> dynamic dispatch <mark class="highlight-red"><strong>(double dispatch)</strong></mark>.</li></ul><figure id="a05f611e-0a0c-4d50-8bc3-dafd62e9df4b" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%204.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%204.png"/></a></figure><figure id="b8309377-f02a-4f61-8f3d-81e473ef479e" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%205.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%205.png"/></a></figure><p id="ba3447e0-8783-4889-90df-5c520a9945e4" class="">We often use base class pointer/reference to concrete objects to allow <mark class="highlight-red">polymorphism</mark>.
+Here comes the problem:
+How can we determine the concrete type of the parameter in <mark class="highlight-red"><em>Customer::visit( Entertainment* )</em></mark> ?</p><p id="8a5f7a5f-885e-4b8e-a7bf-bd3ef78c1b12" class="">
+</p><p id="faca1a6f-89a2-47b6-b26d-35d7ae0fac61" class=""><strong>Idea of Visitor Design Pattern:</strong>
+Instead of passing base class pointer/reference, what if we pass concrete class pointer/reference, and we use <em>function overloading</em> for different concrete class type?</p><figure id="a9250deb-b2f8-42dc-b0e0-c889b12f12d1" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%206.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%206.png"/></a></figure><p id="94ec3345-acc1-4cbe-86b8-da7122cffd6e" class="">It solves part of the issue, it can only handle the case where we don’t use polymorphism:</p><figure id="a5595bde-c257-4fca-9809-ffa57a773956" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%207.png"><img style="width:288px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%207.png"/></a></figure><p id="dddc0c2b-35cf-4e0e-b726-612ca95451ce" class="">As soon as polymorphism is involved, this solution cannot handle:</p><div id="56d66b4e-e573-4c39-ae1d-8c164bda777d" class="column-list"><div id="a9319c48-f886-4052-85ea-7aa5efe41c99" style="width:50%" class="column"><figure id="5e4bfa8b-81c7-4a01-b8cb-417ea083f17c" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%208.png"><img style="width:336px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%208.png"/></a></figure></div><div id="d439c97b-81d5-41a6-af49-d48911c3f2d0" style="width:50%" class="column"><figure id="c2b89041-2cdb-4c84-9c8a-82b6ebfd6e86" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%209.png"><img style="width:888px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%209.png"/></a></figure></div></div><p id="490e6083-5f7f-4d42-9ef4-a2b88bd593f2" class="">Therefore, we need to find some way to simulate “dynamic dispatch” ourselves.</p><p id="4fc7fdcb-3d46-47ad-9a78-26953557ac97" class="">
+</p><p id="00bf4228-de11-4b1c-91a3-f32348cbbee3" class=""><strong>Solution:</strong> using <code>this</code>
+<code>this</code> always points to the type it belongs to, and <code>*this</code> always return the <mark class="highlight-red"><em>concrete type</em></mark> of the object.</p><figure id="d15536b3-6ac4-4d2e-a08e-e1a0a96ef5a7" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2010.png"><img style="width:432px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2010.png"/></a></figure><p id="23cb9023-3132-4648-9260-30ea6f5feeb2" class=""><em><strong>Method accept():</strong></em></p><p id="edf7b51b-aa42-47da-9f7a-71431ea33a4a" class="">The purpose of function <mark class="highlight-red">“accept()”</mark> is to let “customer” knows which <mark class="highlight-red">concrete type</mark> it is visiting.</p><p id="0e204aff-d412-4556-a018-807a6e28746d" class="">We know the concrete type that is calling “<mark class="highlight-red">accept()</mark>”, thus, dereferencing <code>this</code> will return the concrete type of the object.</p><p id="4cdedb53-8507-4cb5-bfa4-490f84044669" class="">
+</p><p id="e1b0a2d4-efcb-45e9-ac59-2087e535340e" class="">Full implementation using Visitor Design Pattern:</p><div id="405e016d-2e7b-46af-ad00-0fb1008ea66d" class="column-list"><div id="dedd48b7-8a15-4bee-8bf2-c5d5b10c3e98" style="width:43.75%" class="column"><p id="58315a72-16b3-4399-a6d5-e88d6d9a44c2" class="">customer.h:</p></div><div id="02241aa2-3e15-489d-b72a-0ef6b5c7d9fe" style="width:56.25%" class="column"><p id="7a1df082-4f11-47f8-8db2-35746476e13c" class="">customer.cc:</p></div></div><div id="dcb8ffe4-9e4c-42af-a391-b8bdf3fdd892" class="column-list"><div id="e03af20c-f735-49ea-8cab-2b0f20487b82" style="width:43.75%" class="column"><figure id="f036406b-597f-4b88-9c7e-3b08930145e9" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2011.png"><img style="width:421px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2011.png"/></a></figure></div><div id="8e7ac51b-6c4c-4f45-b4e2-10da4f4b622b" style="width:56.25%" class="column"><figure id="8dcd1dff-913a-4cc1-a28a-31657aec37ae" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2012.png"><img style="width:384px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2012.png"/></a></figure></div></div><p id="0918712a-390d-4c9b-849c-d4d6f745c7f0" class=""><em><strong>Method visit():</strong></em></p><p id="936c93be-b4aa-4edc-b411-a02d4958ae33" class="">We use<mark class="highlight-red"> function overload</mark> to handle interactions with different concrete types from another class hierarchy. (concrete class → visit → another concrete class)</p><p id="7b8e5495-de97-4664-897c-b169dcadc4fb" class="">
+</p><p id="f72bb7bd-b83a-4ff1-9cc4-89b5467ea753" class="">Client code:</p><figure id="db9ed349-cd47-4660-a28a-2b71450c403c" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2013.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2013.png"/></a></figure><p id="edded637-9524-4251-a687-dccf4ad94fa7" class="">Result:</p><figure id="13f5357b-7a8c-417b-a654-c7bdd8b128f9" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2014.png"><img style="width:862px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2014.png"/></a></figure><p id="fb99c652-dcb3-46fa-941d-ea4be447bc25" class="">
+</p><p id="df864b68-dfda-47f3-b871-a547917be015" class="">
+</p><h1 id="852a678b-87fc-47ab-b145-c8e664147cd4" class="">Pimpl Idiom Strategy</h1><p id="022f4500-8f62-4699-9355-7c90ddf75cf0" class="">Clients can see header files, which leads to they can see private fields. Regardless of clients caring about private fields, if we as implementers changes one of the fields, then clients might need to re-compile the whole program. But if we can hide some details such as private fields (clients cannot access them anyways), if we made some changes, then clients will re-compile less.</p><p id="7f0fee15-0cc6-4195-b148-a31f2d5bc222" class="">
+</p><p id="bb37971d-9e61-4712-b32c-0ff90dd108ee" class="">Example: Consider the following code</p><div id="b3d0efd2-d70b-45ff-9491-d6ab398c5653" class="column-list"><div id="095c27ff-9c29-42a7-a90e-f90fe77d18db" style="width:37.5%" class="column"><p id="dc45836b-7316-4145-a939-28fb5c1cc97a" class="">vehicle.h</p></div><div id="f50dc672-f17c-4997-b552-386585550783" style="width:62.5%" class="column"><p id="977496cc-019f-4a5e-9149-174c332c8851" class="">vehicle.cc</p></div></div><div id="26befb08-f63e-472d-9423-27d18803dcf5" class="column-list"><div id="c3f25780-b709-4c16-b1c1-ce9da11c6836" style="width:37.5%" class="column"><figure id="73dc35bf-bdf2-4d54-a7fb-8dc58c07f1b8" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2015.png"><img style="width:475px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2015.png"/></a></figure></div><div id="bae69b14-2328-4e30-9c6d-76628140d055" style="width:62.5%" class="column"><figure id="325ab2ea-0e99-405d-80d1-20e6f8486cbc" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2016.png"><img style="width:738px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2016.png"/></a></figure></div></div><p id="f5f55246-0c6d-4c85-ad00-6f2e3a1cf7d6" class="">What happens to Makefile if we touch vehicle.h?</p><figure id="d4c390a1-b25c-471b-9125-2b0721c660b2" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2017.png"><img style="width:929px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2017.png"/></a></figure><p id="b04b0a39-28e6-4fc2-983a-a96d295f0b6c" class="">Since main.cc and vehicle.cc is depending on vehicle.h, two .o files are re-compiled.</p><p id="1367ff68-18e0-4089-a1e5-71781632aa4b" class="">What if we hide some details in vehicle.h?</p><p id="e078f355-b8b8-499e-9f1b-c2ffeb9b7ac9" class="">
+</p><p id="494d341b-564b-48bd-af72-e2942ab1a1f7" class=""><strong>Pimpl Idiom:</strong></p><p id="e94cb88e-a1b6-44d5-b22d-43a7f30d475e" class="">Pimpl stands for <strong><em><mark class="highlight-red">Pointer to implementation</mark></em></strong>. We encapsulate <span style="border-bottom:0.05em solid">all private fields</span> inside a new class, and stores a <mark class="highlight-red">pointer</mark> to this class in class Vehicle.</p><figure id="57375650-29f4-4d5a-8dc6-e4c7cfc9c4cb" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2018.png"><img style="width:480px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2018.png"/></a></figure><p id="522ea8b0-c39d-4139-a921-d76493d2157d" class="">Since we only have pointer field in class definition, then all we need is <mark class="highlight-red">forward declarations</mark>, so we have less file dependencies.</p><p id="cc0bfd55-4464-47b1-9bdd-0cb91afef9fc" class="">Now, vehicle.h does not need to include parts.h anymore. Class Pimpl will be fully implemented in vehicle.cc.</p><p id="a0bac443-b6a4-49cc-97eb-215612134295" class="">
+</p><p id="6cbbff5e-e0ab-4200-856e-d59857613955" class="">Class Pimpl:</p><figure id="39a664f8-aa63-4f68-839d-0d4c121e3177" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2019.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2019.png"/></a></figure><p id="6e868544-861b-4fc6-b123-2b4244e59783" class="">new vehicle.cc</p><figure id="1b4d80b5-7b1e-4942-81c3-a498fbbe8a4c" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2020.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2020.png"/></a></figure><p id="e5a39ec0-646a-463b-bfc6-f950ec068269" class="">What happens now if we want to change some implementation?</p><figure id="1796f5ad-a1d7-4ce8-a086-0f4fc2b1866c" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2021.png"><img style="width:624px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2021.png"/></a></figure><p id="d8a8283b-6937-4efb-a293-3b9014f2cea7" class="">Since only vehicle.cc is touched, only one .o file is re-compiled.</p><p id="d83ffb9d-4bf4-483c-b0e3-699d348315ef" class="">Unnecessary re-compilations are avoided</p><p id="c6e05738-3b14-479a-8c1f-b04e0633fd60" class="">Pimpl Idiom Strategy leads to <strong><mark class="highlight-red">Bridge Design Pattern</mark></strong> below.</p><p id="5af7eac3-8ff1-41c2-99cb-645c728c0201" class="">
+</p><p id="80955c51-7449-4741-b276-91d71086cb2b" class="">
+</p><h1 id="099f5b8b-de32-49fc-8e8d-7cb5768b24d3" class="">Bridge Design Pattern</h1><ul id="4d32cdd0-9239-4c4b-ac56-686f1265b7c6" class="bulleted-list"><li style="list-style-type:disc">Structural Design Pattern</li></ul><ul id="b0295ad6-52a6-4d63-abd3-9e624816bd3e" class="bulleted-list"><li style="list-style-type:disc">Split a large class or a set of closely related classes into two separate hierarchies: abstraction and implementation.</li></ul><ul id="6dcbcd6b-a906-4080-8862-63a97735bfa0" class="bulleted-list"><li style="list-style-type:disc">Developed independently of each other.</li></ul><figure id="3707e113-ec7a-4e99-af62-00546c1e43da" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2022.png"><img style="width:624px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2022.png"/></a></figure><p id="7601c21f-3493-4725-9a9b-709fa9e2d2d0" class=""><mark class="highlight-red">Abstraction class</mark> stores a pointer pointing to <mark class="highlight-red">Implementer class</mark>.</p><p id="b2b6b663-dfb5-45e3-978a-68db471f7eb1" class="">
+</p><p id="9cdf770f-d1ea-47e3-8f0a-f9af950d18e5" class=""><strong>Example: </strong>extension to our previous vehicle example</p><ul id="929c0fe6-fab5-41a0-b45f-66f31d2875ab" class="bulleted-list"><li style="list-style-type:disc">We will make class Vehicle <mark class="highlight-red">abstract</mark> and define some concrete derived classes.</li></ul><ul id="dcb71138-3295-4335-ae9a-5a93f566aeb8" class="bulleted-list"><li style="list-style-type:disc">We will also make class Pimpl <mark class="highlight-red">abstract</mark> and define some concrete derived classes.</li></ul><ul id="cee87211-4544-4e3e-b92c-c2fbdaf8076a" class="bulleted-list"><li style="list-style-type:disc">Vehicle objects still has a <mark class="highlight-red">pointer field</mark> pointing to <mark class="highlight-red">Pimpl objects</mark></li></ul><ul id="1def879a-dd40-44f8-8ddc-40f5ad5f16dc" class="bulleted-list"><li style="list-style-type:disc">Class Pimpl will have implementations.</li></ul><ul id="ed46296c-a9fc-4392-a5ab-29b96dfb0440" class="bulleted-list"><li style="list-style-type:disc">Vehicle objects will need to call these implementations <mark class="highlight-red">through the pointer field</mark>.</li></ul><ul id="47d8f44d-0767-4ba3-8cec-33a00f78c31f" class="bulleted-list"><li style="list-style-type:disc">The pointer field is the<mark class="highlight-red"><strong> bridge</strong></mark> between objects and implementations associated.</li></ul><ul id="80ac65e5-ff10-40d5-8ede-6c30694db47c" class="bulleted-list"><li style="list-style-type:disc">This is called <em><strong><mark class="highlight-red">Bridge Design Pattern</mark></strong></em>.</li></ul><p id="f4bcc3f1-e3ef-40c4-8fa2-d78b9edab9bf" class="">
+</p><p id="515df1e7-1ceb-4228-93e8-7001b81912f0" class="">vehicle.h:</p><figure id="e6999235-2355-4030-8d8c-c2f33e122305" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2023.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2023.png"/></a></figure><ul id="67149230-ee1d-49fa-a0e1-b6875b3707c1" class="bulleted-list"><li style="list-style-type:disc">Pointer field becomes <em><mark class="highlight-red">protected</mark></em> since derived classes need to access it.</li></ul><ul id="6d366349-7c86-4eeb-8269-b862c7d9d6ed" class="bulleted-list"><li style="list-style-type:disc">We only need <mark class="highlight-red">default constructors</mark> for base class since it is <mark class="highlight-red">abstract.</mark></li></ul><ul id="df8e92ab-6632-49ee-9709-b2e0695e32d3" class="bulleted-list"><li style="list-style-type:disc">We need <mark class="highlight-red">customized constructors</mark> for derived concrete classes (<mark class="highlight-red">for initializing pimpl</mark>).</li></ul><ul id="0216763a-7b76-40d5-b137-9771b0f15ad7" class="bulleted-list"><li style="list-style-type:disc"><code>findCost()</code> will <mark class="highlight-red">not</mark> be a pure virtual method because derived classes will have the same implementation (access methods through pointer).</li></ul><p id="7001cf1c-f6a3-4013-8f75-5540c8b07feb" class="">
+</p><p id="3fca7ed9-30d2-4e73-91d4-5f68928e310b" class="">vehicle.cc (part 1)</p><figure id="1e44860e-8fb1-405b-8cf0-55dff6297bfa" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2024.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2024.png"/></a></figure><ul id="492659d3-24ca-4b44-b62e-2eeedc809688" class="bulleted-list"><li style="list-style-type:disc">New public method <code>calculate()</code> is added, and this is the true implementation of <code>findCost()</code> in Vehicle class.</li></ul><ul id="cb17647c-a03c-4afc-aab4-fd7e2a4489ed" class="bulleted-list"><li style="list-style-type:disc"><code>calculate()</code> is <em><mark class="highlight-red">pure virtual</mark></em>, implemented in concrete Pimpl classes.</li></ul><p id="9088f0e0-94ad-406f-87a8-f7151135283b" class="">
+</p><p id="c5a5d847-f06c-436e-bc70-4b74081fa214" class="">vehicle.cc (part 2)</p><figure id="2ca33069-1156-4d5d-8650-7983f97b377e" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2025.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2025.png"/></a></figure><ul id="79efa3e7-5289-49eb-8c9a-7e54075991e8" class="bulleted-list"><li style="list-style-type:disc">Class MotorPimpl stores the <mark class="highlight-red">implementation of class Motor</mark></li></ul><ul id="ced6b640-de52-42b2-9d37-703a0ff5cf96" class="bulleted-list"><li style="list-style-type:disc">Class TruckPimpl stores the <mark class="highlight-red">implementation of class Truck</mark></li></ul><p id="464446f5-dd0a-40ac-a3ab-193949533602" class="">
+</p><p id="c5be0d44-f7b3-477a-b8b4-b7b51f8dfa3e" class="">vehicle.cc (part 3)</p><figure id="0c3d7ece-b289-4ecb-957e-4b47b25fe0e2" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2026.png"><img style="width:480px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2026.png"/></a></figure><ul id="1191ec7a-2ff6-4661-83f7-b093c9b5f97a" class="bulleted-list"><li style="list-style-type:disc">Implement base class Vehicle’s member function <code>findCost()</code></li></ul><ul id="a97282dd-771c-46fc-8dd1-aaf7f8c0d839" class="bulleted-list"><li style="list-style-type:disc">Derived classes need nothing but a constructor.</li></ul><ul id="50db8928-8de5-4d30-9925-a54da7ccb7e3" class="bulleted-list"><li style="list-style-type:disc">Class Motor class creates <mark class="highlight-red">MotorPimpl object</mark> since the latter stores the implementation of class Motor. (Same goes for class Truck)</li></ul><p id="64a90e82-4c2b-49c8-bd4b-6a6d770b226b" class="">
+</p><p id="7608ec75-ce0e-44d8-8e51-294cd6881a74" class="">client code:</p><figure id="f1a469eb-3919-4605-9d35-ac9992f31b08" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2027.png"><img style="width:432px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2027.png"/></a></figure><p id="7dcc0d10-f0af-49dc-a5ce-b1898dcc9b06" class="">Output:</p><figure id="cdc97ac3-34e9-4414-890b-eaaf58d2f5bb" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2028.png"><img style="width:432px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2028.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="5a97ad3d-5c90-460d-8e49-3ee3a2f5b086"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><em>Low coupling leads to less re-compilation</em></div></figure><p id="401b7691-cae4-480f-9559-ccc02142cdc5" class="">
+</p><h1 id="bb85603c-d47f-4c5e-9dfa-c371d5fa17d1" class="">Low Coupling High Cohesion</h1><p id="96793f8f-e78c-484c-a3fa-9c734b885ed1" class=""><em><strong>Loose coupling:</strong></em></p><p id="b4b22b26-daae-4694-becc-3d62989b7f2f" class="">Dependent class contains a pointer <mark class="highlight-red">only to an interface</mark>, which can then be implemented by one or many concrete classes. </p><p id="1bcab08d-2bf8-45e6-9636-188651f47d5b" class="">In our example: class Vehicle contains a pointer to Pimpl object, class Pimpl contains pointers to Parts object.</p><p id="999af7e0-2b4d-4ab7-bfec-0917a98e8836" class="">
+</p><p id="5a7070ea-e308-4f9b-a15c-4f8747d7f9d8" class=""><em><strong>Advantages:</strong></em></p><ul id="29e7dd96-5d6b-43cf-a5fc-9a56172b1833" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">Low module dependencies</mark></li></ul><ul id="f71dc3d0-92fd-4e84-84c0-db5dea70dcfe" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">Less re-compilation</mark> (re-compilation will always re-compile the whole file instead of a block of code)</li></ul><p id="7a55bdc6-229b-4767-af5a-e52ec3ad5e38" class="">
+</p><p id="24e1a885-9cbc-4e02-9937-7738e05fa064" class="">We always want to re-compile as few files (lines of code) as we can, so how should we design our program to achieve low coupling and high cohesion?</p><p id="3005fa69-1bf6-45d7-b469-e07e55517e5c" class=""><strong><em>Answer:</em></strong> Stores pointer fields instead of instances. (or use  Pimpl Idiom Strategy)</p><p id="33235e9a-8ed5-4178-b9e2-8589350483c4" class="">
+</p><p id="c9e3f68a-6a75-43f7-a636-e1e71c6323af" class=""><strong><em>Single Responsibility Principle:</em></strong></p><p id="40a6f646-6e38-447b-bdf8-935ffd46cca4" class="">Every class or module should have responsibility for just one piece of this program’s functionality. In other words, “a class should only have one reason to change” by Martin.</p><p id="95148eab-d3cb-4857-b38e-86ee7ca507a0" class="">Thus, if we want to add extra functionalities to our program, we should create new modules.</p><p id="cf08c441-9822-42c6-81a8-2d6c3907ae8e" class="">
+</p><h3 id="59ca285f-7d05-46e1-91f7-09077dce6b1b" class="">Function Object:</h3><ul id="a3db4296-afc1-4436-a12b-d16cc3b3d64d" class="bulleted-list"><li style="list-style-type:disc">A class that implements <em><strong><mark class="highlight-red">operator()</mark></strong></em> overloading is a function object.</li></ul><ul id="37c6432f-773d-49bb-85a0-e721bf6961c8" class="bulleted-list"><li style="list-style-type:disc">Acts like a function.</li></ul><p id="e3aa3aae-52a0-4586-823a-ac785799eb39" class="">
+</p><p id="c7ace1aa-54e7-4ebf-b325-2d42fca77b5a" class="">Example: modify class Pimpl</p><figure id="075833f3-07d6-415a-894e-06874616c68a" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2029.png"><img style="width:528px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2029.png"/></a></figure><p id="54956417-d2d5-4dd1-8ade-bda8b3a99b9f" class="">An additional feature class: CarWash</p><figure id="4cc472f2-edd6-4ad8-be58-b6b2b86506e1" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2030.png"><img style="width:1060px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2030.png"/></a></figure><p id="b388ad9a-419e-4321-b0dc-145822917abe" class="">Implement additional feature: Pimpl::carWash()</p><figure id="a85715d9-939a-40a6-a1a7-8987ca0ac489" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2031.png"><img style="width:432px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2031.png"/></a></figure><p id="93f56aec-c70b-42f3-99be-10ab307cf37c" class="">Modify class Vehicle:</p><figure id="f0a27f30-e262-47ac-8c22-720814414a47" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2032.png"><img style="width:240px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2032.png"/></a></figure><p id="3be94031-4420-4cb0-8ff9-f2b0d2c71ed1" class="">Implement Vehicle::carWash():</p><figure id="dbe2bde8-4a4c-4593-8567-3b42923159c0" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2033.png"><img style="width:288px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2033.png"/></a></figure><p id="8af28ee1-4610-479a-8f84-18c1f2e3c47c" class="">Client code:</p><figure id="0e9e2855-015d-4de8-a74f-b8ce162cb078" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2034.png"><img style="width:432px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2034.png"/></a></figure><p id="b7f70432-a63d-4fef-bced-3c743dc54248" class="">Output:</p><figure id="27d03795-c78e-4442-8c3e-e48c70bc51a9" class="image"><a href="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2035.png"><img style="width:576px" src="Design%20Patterns%20(part%202)%20c423b6f1cad24340bebfec79167ca4c8/Untitled%2035.png"/></a></figure><p id="b4d87bd7-bd62-49e8-8736-2be893b2b9a3" class="">
+</p><p id="e24422db-3f29-479e-9a84-089e0f31b2ca" class=""><em><strong>Advantages:</strong></em></p><ul id="03f90f9d-6047-415b-8abd-fbb90fee6ef5" class="bulleted-list"><li style="list-style-type:disc">Low file dependencies.</li></ul><ul id="25d3dfd8-95ee-414c-9258-251ef8ad7248" class="bulleted-list"><li style="list-style-type:disc">Only adds new code without modifying original code.</li></ul><ul id="71e6856d-955b-47fe-84a2-19429946cd81" class="bulleted-list"><li style="list-style-type:disc">Less re-compilation is needed.</li></ul><p id="0e4aca3b-766f-4cf1-bad0-8414cadd748f" class="">
+</p><p id="ef6feb35-93a6-445e-a59a-677467ebd055" class=""><em><strong>Note:</strong></em>
+To achieve low coupling and high cohesion, designing a program is important, but what’s more important is that knowing when to use <mark class="highlight-red">forward declarations</mark> instead of <mark class="highlight-red">including header files</mark>.</p><p id="0ef71b15-bd48-46df-bff7-7c8c5d1c0e27" class="">
+</p></div></article></body></html>

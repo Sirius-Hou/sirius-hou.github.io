@@ -1,0 +1,907 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Inheritance</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="4a7228af-5f43-4ac3-94fa-4b2d22211342" class="page sans"><header><h1 class="page-title">Inheritance</h1></header><div class="page-body"><h1 id="7fc5884b-1aed-42e1-9de0-52e8068ba2d9" class="">Class relationships &amp; UML</h1><p id="860104f7-97c4-4ee4-a334-713dd59b938d" class="">There are 3 main types of class relationships:</p><ol type="1" id="d27c6c96-28a4-4881-b435-24199189f210" class="numbered-list" start="1"><li><strong>Aggregation</strong> (A have B)</li></ol><ol type="1" id="0c95164f-e03e-4b1f-b193-987578d0d8b5" class="numbered-list" start="2"><li><strong>Composition</strong> (A owns B)</li></ol><ol type="1" id="6692f1a5-ac1e-45c8-a866-31cbe6cd3d0b" class="numbered-list" start="3"><li><strong>Generalization / specialization</strong> (A is B) (which is also called <mark class="highlight-red"><strong>Inheritance</strong></mark>)</li></ol><p id="3058b14b-2fd9-414f-a22b-c629672ffbff" class="">
+</p><h3 id="4c6f3719-9932-4862-a71c-f802ce39c474" class="">Unified Modelling Language (UML)</h3><ul id="c86cc2a7-d6bd-45de-9815-b4dccf0a89ad" class="bulleted-list"><li style="list-style-type:disc">A collection of many kinds of programs for representing software, designs, etc.</li></ul><ul id="8d54e49c-347a-40cd-97ff-c55e152036c1" class="bulleted-list"><li style="list-style-type:disc">Mostly used in software engineering</li></ul><ul id="64571d6e-f954-4a4b-9321-01d6857950fd" class="bulleted-list"><li style="list-style-type:disc">In this course, we mainly focus on class diagrams including representing fields and methods in a class along with class relationships.</li></ul><p id="eae56275-fd50-4051-8e65-45dd54161662" class="">
+</p><h3 id="a265e00e-5b31-49aa-8e20-8fc3b9e06f22" class="">UML Online Graphing Tool:</h3><p id="f1c86ad7-516e-4c75-9cc5-91987963cf9c" class="">Lucidchart: </p><figure id="29d3a52b-4f2c-4641-a318-724cb9353f60"><a href="https://www.lucidchart.com/pages/examples/uml_diagram_tool?km_CPC_AdGroupID=1241348803859903&amp;km_CPC_AdPosition=&amp;km_CPC_CampaignId=369459356&amp;km_CPC_Country=5225&amp;km_CPC_Creative=&amp;km_CPC_Device=c&amp;km_CPC_ExtensionID=%7Bextensionid%7D&amp;km_CPC_Keyword=lucidchart&amp;km_CPC_MatchType=e&amp;km_CPC_Network=o&amp;km_CPC_TargetID=kwd-77584442618100%3Aloc-32&amp;km_CPC_placement=&amp;km_CPC_target=&amp;msclkid=7fddbe93d6001404e18adc3f2f00a857&amp;utm_campaign=_chart_en_tier1_mixed_search_brand_exact_&amp;utm_medium=cpc&amp;utm_source=bing" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">UML Diagram Tool</div><div class="bookmark-description">Lucidchart is an intelligent diagramming application that combines diagramming, data visualization, and collaboration to accelerate understanding and drive innovation. It&#x27;s never been easier to make a UML online &quot;I had to draw diagrams related to my project, such as UML diagrams, class diagrams, activity diagrams, and sequential diagrams. The ease with which I was able to draw them was amazing!&quot;</div></div><div class="bookmark-href"><img src="https://cdn-cashy-static-assets.lucidchart.com/marketing/images/Lucidchart_favicon_full_96x96.png" class="icon bookmark-icon"/>https://www.lucidchart.com/pages/examples/uml_diagram_tool?km_CPC_AdGroupID=1241348803859903&amp;km_CPC_AdPosition=&amp;km_CPC_CampaignId=369459356&amp;km_CPC_Country=5225&amp;km_CPC_Creative=&amp;km_CPC_Device=c&amp;km_CPC_ExtensionID=%7Bextensionid%7D&amp;km_CPC_Keyword=lucidchart&amp;km_CPC_MatchType=e&amp;km_CPC_Network=o&amp;km_CPC_TargetID=kwd-77584442618100%3Aloc-32&amp;km_CPC_placement=&amp;km_CPC_target=&amp;msclkid=7fddbe93d6001404e18adc3f2f00a857&amp;utm_campaign=_chart_en_tier1_mixed_search_brand_exact_&amp;utm_medium=cpc&amp;utm_source=bing</div></div><img src="https://cdn-cashy-static-assets.lucidchart.com/marketing/pages/chart/consideration-2020/hero-images-color-swap/uml-diagram-hero-image-2020@2x.png" class="bookmark-image"/></a></figure><p id="d2b9a44e-d665-4342-b347-2e566a58a4a0" class="">
+</p><h3 id="59e601c6-1071-4b2b-9efe-899d79604c23" class="">Composition</h3><p id="99e4e48c-abbd-4f95-b5d2-9ca32662fc06" class=""><strong>Example:</strong></p><p id="36b1c4ef-a4ed-4c84-9c6f-82bf112ac8b4" class="">Suppose we have two classes, class iPhone and class Camera. An iPhone has a camera. If the iPhone is destroyed, then the camera is destroyed as well. This relationship is called composition.</p><p id="ca6f9b3c-ca8f-4963-9552-90c32e19d5e8" class="">
+</p><p id="a156f8c5-9139-44f3-a48a-dbc37dfa078f" class=""><strong>Conclusion:</strong></p><p id="e1f30c19-eef8-4dff-961e-d7580b688214" class="">If class A has a field related to class B or pointer pointing to class B, and A <mark class="highlight-red"><strong>HAS</strong></mark> <strong><mark class="highlight-red">control</mark></strong> over constructing and destructing class B, then we say <mark class="highlight-red"><strong>A is composed of B</strong></mark>.</p><p id="6d0f10ba-c8bd-4e09-9f78-59c9bdbf99c1" class="">
+</p><p id="3cadd899-5259-4002-8350-b27cdb94d62a" class=""><strong>UML Representation:</strong></p><p id="f04658e9-215b-4636-a6d3-84a848e9197b" class="">In UML, we use the <strong><mark class="highlight-red">solid diamond</mark></strong> symbol to represent the <strong>composition</strong> relation.</p><p id="89dcf395-e852-4a8f-bfbc-3ed7e913c056" class="">Example:</p><figure id="f9e37a90-50bc-4354-9227-7eff670a0887" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled.png"><img style="width:726px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled.png"/></a></figure><p id="6ade3af9-c1a8-418e-9985-7e17ce20508a" class=""><strong>Symbols:</strong></p><ul id="6ab1f4fa-2968-489c-9065-062d78876d17" class="bulleted-list"><li style="list-style-type:disc"><code>-</code> : <code>private</code></li></ul><ul id="9a0269cc-da47-4c97-b60c-8a90f8fb1f68" class="bulleted-list"><li style="list-style-type:disc"><code>+</code> : <code>public</code></li></ul><ul id="cea43959-4030-4b28-b59b-ac9079c8c56f" class="bulleted-list"><li style="list-style-type:disc"><code>#</code> : <code>protected</code></li></ul><p id="7b477e0f-46cc-406a-84ef-0b1da8e0c86a" class="">
+</p><p id="1ab7e314-97ee-490c-b68f-11e82535207c" class=""><strong>The upper block: fields</strong><div class="indented"><p id="af54c584-02fa-42b8-878e-2f7eeb9a85cc" class="">[<span style="border-bottom:0.05em solid">accessibility</span>]  [<span style="border-bottom:0.05em solid">field identifier</span>]  :  [<span style="border-bottom:0.05em solid">type</span>]</p></div></p><p id="557b168b-ca48-4649-a389-49b69f0ba8d1" class="">
+</p><p id="1261e51b-83af-426a-929f-b0cc19686630" class=""><strong>The lower block: methods</strong><div class="indented"><p id="07d7de73-4d30-4d25-8b2d-e4f6af48aaad" class="">[<span style="border-bottom:0.05em solid">accessibility</span>] [<span style="border-bottom:0.05em solid">method identifier</span>] ( [<span style="border-bottom:0.05em solid">parameter name</span>] : [<span style="border-bottom:0.05em solid">type</span>]  … ) : [<span style="border-bottom:0.05em solid">return type</span>]</p><ul id="8a87ca87-1d37-4634-b53c-410c7051bb60" class="bulleted-list"><li style="list-style-type:disc">If method has no parameter, leave it blank.</li></ul><ul id="01b88db9-9fad-41f6-a97a-c019d2d3ef78" class="bulleted-list"><li style="list-style-type:disc">If method’s return type is void, leave it blank.</li></ul><ul id="208fcb60-742d-466d-80b1-b4ffba376087" class="bulleted-list"><li style="list-style-type:disc">We DO NOT need to write the Big Five here.</li></ul></div></p><p id="b63ec4f5-72c4-4b6d-923b-c985820e7592" class="">
+</p><p id="81a5ac9d-dc9c-42c3-bacd-3069765a6137" class=""><strong>Important:</strong></p><ul id="3f82d7f8-7eee-4376-9d28-05e6f462aebf" class="bulleted-list"><li style="list-style-type:disc">Use <strong>solid diamond</strong> to represent composition!</li></ul><ul id="4b8c7420-32b2-4bd8-a824-7f4a37158e70" class="bulleted-list"><li style="list-style-type:disc">The <strong>position</strong> of the diamond <strong>matters</strong>!</li></ul><ul id="3b6461eb-9db6-4665-873b-34e8d87894b9" class="bulleted-list"><li style="list-style-type:disc">The <strong>number</strong> above the line represents the number of Camera objects the iPhone object has.</li></ul><p id="f4d98fce-52f8-4b5c-9497-8467cc7fe38d" class="">
+</p><p id="37631f30-c531-4afa-8fef-c84436690548" class=""><strong>Number representations</strong>:</p><ul id="3a2b781e-977f-4b34-b04f-8dab4cb29a02" class="bulleted-list"><li style="list-style-type:disc">0..2 : means that class A has 0 to 2 class B objects</li></ul><ul id="456ca26e-1672-41b0-abd4-533cc892f524" class="bulleted-list"><li style="list-style-type:disc">1: means that class A has exactly 1 class B object</li></ul><ul id="bfb176d9-f6ca-434c-a194-a919d09803f3" class="bulleted-list"><li style="list-style-type:disc">0..* : means class A has arbitrary number of class B objects</li></ul><p id="5645786e-c4e8-4e00-8a8f-1a7572843e69" class="">
+</p><h3 id="732f699e-0faa-4a40-aadc-fc5d5c8a2ca1" class="">Aggregation:</h3><p id="9060bb3a-0e78-4c09-925d-4880fb9121fb" class=""><strong>Example:</strong></p><p id="68e58674-ad1f-464f-90a2-421a1a416bc2" class="">Suppose we have two classes, class iPhone and class iCloudService. iCloudService can be accessed using iPhone. Even if iPhone object is destroyed, the iCloudService object still exists.</p><p id="6e1ec49a-e158-4d50-812e-b979f4ff6d4c" class="">
+</p><p id="a5218aff-3037-4acf-bcfb-7f8dffb71fca" class=""><strong>Conclusion:</strong></p><p id="4cf7077a-bfc9-438b-b2be-4f14bbdde172" class="">If class A has fields related to a pointer pointing to class B, and A <mark class="highlight-red"><strong>DOES NOT HAVE control</strong></mark> over constructing and destructing class B objects, then we say that A <mark class="highlight-red"><strong>aggregates</strong></mark> B.</p><p id="4ea922b6-8f16-45fc-b96f-6d539706aa0e" class="">
+</p><p id="2fb72b4e-aac0-4197-92b2-4b20c54a3cc7" class=""><strong>UML Representation:</strong></p><p id="162c9abf-1f31-4e83-8a04-06f8822508d0" class="">In UML, we use the <mark class="highlight-red"><strong>hollow diamond</strong></mark> symbol to represent the <strong>aggregation</strong> relation.</p><p id="2870a1f0-934d-4bae-84f5-b37cb9189d16" class="">Example:</p><figure id="ef9cccb3-71ca-47e5-87f5-d7e395e220fc" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%201.png"><img style="width:957px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%201.png"/></a></figure><p id="58adad31-0cb2-4ca2-a7de-afb2770aa589" class="">
+</p><p id="7e0dbd3d-50d9-45db-9bc7-f85220f6d2ee" class=""><strong>Important:</strong></p><ul id="b4100bff-b4eb-433c-969a-fb81bd05e05f" class="bulleted-list"><li style="list-style-type:disc">We use the <mark class="highlight-red"><strong>hollow diamond</strong></mark> to represent the aggregation relation.</li></ul><ul id="826c51de-a80d-4914-a030-10e6b599ab62" class="bulleted-list"><li style="list-style-type:disc">The position of the diamond matters! (Same as composition)</li></ul><ul id="eb60c444-01be-40a6-b9fe-db44a63929a2" class="bulleted-list"><li style="list-style-type:disc">Number representations are the same as composition’s.</li></ul><p id="8dc27d27-7bcc-4616-bd26-8cc6c34b2609" class="">
+</p><h3 id="fada8149-6d51-4b68-a9b0-8230b2a40091" class="">Composition V.S. Aggregation:</h3><div id="186bab6d-a261-427f-859b-f8545105e352" class="column-list"><div id="a3ace224-d597-478d-9cd9-c32b98f890e2" style="width:50%" class="column"><p id="7e038180-f71d-4c1b-95bd-4103c02dc084" class="">Composition: A is composed of B</p><ul id="460954bc-314a-438e-9ff1-f346b1a649fa" class="bulleted-list"><li style="list-style-type:disc">If A is created, then B is created.</li></ul><ul id="30026cd8-a6d6-4dd3-b4cd-7fb4d2b55716" class="bulleted-list"><li style="list-style-type:disc">If A is destroyed, then B is destroyed.</li></ul><ul id="17643f1c-9586-468d-af63-2cb21af11ed5" class="bulleted-list"><li style="list-style-type:disc">If A  is copied, then B is copied.</li></ul></div><div id="53270e2b-968f-46ad-a50f-c925bcadb6fc" style="width:50%" class="column"><p id="911edf11-1182-4fe2-bbe0-bfab459c611f" class="">Aggregation: A aggregates B</p><ul id="b5b4ea1a-def4-47e7-85af-3a011d840b9f" class="bulleted-list"><li style="list-style-type:disc">If A is created, no B is created.</li></ul><ul id="fe604f2a-0d41-49f6-b024-ab0efab04538" class="bulleted-list"><li style="list-style-type:disc">If A is destroyed, no B is destroyed.</li></ul><ul id="28870727-6950-4726-b1fc-59b8c5a555cb" class="bulleted-list"><li style="list-style-type:disc">If A  is copied, no B is copied.</li></ul></div></div><p id="4c732bb3-9963-4e33-9c86-6b14941fcdef" class="">Previous examples:</p><p id="09a4fc3a-52c2-4d1c-a6c2-6bfd972c6942" class="">iPhone is composed of 2 Camera objects.</p><p id="435c6f88-b496-4b71-9bef-5302ffe08cc1" class="">iPhone aggregated iCloudService.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="090b7506-3f28-499d-a585-ca3218c0cecc"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">Thus, composition is a <strong>stronger</strong> relationship than aggregation!</div></figure><p id="ab93d5ee-a2d3-466e-9d55-0a395e4d3144" class="">
+</p><h3 id="ebb46dd4-1c1d-45a7-9141-d17db7eb5815" class="">Generalization / Specialization: Inheritance:</h3><p id="e547cf40-1391-4c59-9f00-c688f8e1e051" class="">Example:</p><p id="6f50aa78-46a0-45ae-af4b-a3d61620d6c2" class="">A car has four wheels. An extra Audi logo is put on the car if this car is Audi. And Audi is a car.</p><p id="f48a07f9-ce03-449f-85ca-44925a8af688" class="">
+</p><p id="3cade5d6-0208-4bd1-8c0b-ed405ea89313" class=""><strong>Conclusion:</strong></p><ul id="af725829-955a-490c-85a7-474204d53f6c" class="bulleted-list"><li style="list-style-type:disc">If class B is class A with some <strong>extra fields</strong>, then we say <strong>B is A</strong>.</li></ul><ul id="c0123c6e-f5b6-4ad0-a60e-9b6a1795bee1" class="bulleted-list"><li style="list-style-type:disc">B is <mark class="highlight-red">a </mark><mark class="highlight-red"><strong>derived / sub / child class</strong></mark><mark class="highlight-red"> </mark>of A</li></ul><ul id="c9bfabf6-1641-4779-b60e-3c7d4a6d50b9" class="bulleted-list"><li style="list-style-type:disc">A is the <strong><mark class="highlight-red">base / super / parent class</mark></strong> of B</li></ul><p id="a521fdfa-ca25-46e3-9d54-12ac6554259b" class="">
+</p><p id="d17400f0-84c7-4829-8154-d8326c078a05" class=""><strong>UML Representation:</strong></p><p id="3e8c6f01-8f06-4535-bede-1454052fdfa2" class="">In UML, we use the <mark class="highlight-red"><strong>hollow triangle</strong></mark> symbol to represent the <strong>inheritance</strong> relation.</p><p id="798e9795-e06e-4056-b12a-84554eb25d56" class="">Example:</p><figure id="bbbb010d-5358-4e21-a813-cbb74ae0b8eb" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%202.png"><img style="width:240px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%202.png"/></a></figure><p id="1ddb48cf-3820-4b60-8e8e-707e1504f93b" class="">
+</p><h1 id="92f64171-2d34-4444-8949-3cab1a1f7647" class="">Inheritance</h1><p id="e5dcdd4d-6c2f-4f56-953e-d342d68a4764" class="">When we find common properties among classes, we build the base class based on those common properties so that derived classes only need to specify how they differ from the super class. This behavior is called <strong>inheritance</strong>.</p><p id="22488b5e-32c7-4a0f-b43f-85fe4e6e8e93" class="">
+</p><p id="28b58e90-1e43-4f08-8d31-72bdaacc5db0" class="">Example:</p><p id="06f0e0d6-37e9-4ce6-84a1-9e4cd0e15657" class="">All vehicles have engines and tires. (common properties)</p><p id="fa31515e-e4df-4ac6-bdff-f22029ea1356" class="">Different brands of cars have different logos. (different properties)</p><p id="cf9d520f-6db8-4f24-a02d-f6be9ff5d34b" class="">So we can create a base class based on those common properties.</p><pre id="a01ac165-e90f-4719-b589-58ea7f0431cc" class="code"><code>class Vehicle {
+	Engine engine;
+	std::vector&lt;Tire&gt; tires;
+public:
+	Vehicle( const Engine&amp; e, const Tire&amp; t ):
+		engine{e} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+};
+
+int main() {
+	Vehicle v{ Engine{ &quot;Audi&quot;, 1500 }, Tire{ &quot;Michelin&quot;, 300 }};
+}</code></pre><p id="a672f4d1-5677-4b9c-a1b5-814eae346262" class="">How do we specify different properties?</p><p id="0659c2b2-f53b-421a-9f68-4c547584938b" class="">We create derived classes, add new fields or methods that super class doesn’t have.</p><p id="348ed6b8-76f6-43a3-890f-a29939fce709" class="">Example:</p><pre id="03d7711f-06c1-4b9c-82c8-8e2656257da7" class="code"><code>class Audi : public Vehicle { // Audi inherits from the Vehicle class
+	std::string logo;
+public:
+	Audi(const Engine&amp; e, const Tire&amp; t, const std::string&amp; logo = &quot;Audi&quot;};
+};</code></pre><ul id="d952d235-e157-4047-b6c7-c222d5824b84" class="bulleted-list"><li style="list-style-type:disc">Keyword <code>: public Vehicle</code> indicates that <mark class="highlight-red"><strong>class Audi is a derived class of class Vehicle</strong></mark></li></ul><ul id="7f115280-0471-40af-99e5-dcce2f8a2f62" class="bulleted-list"><li style="list-style-type:disc">We do not need to write down common properties anymore, we only need to list out different properties.</li></ul><p id="4712f783-ff2d-457a-a4da-1da1dc47821e" class="">
+</p><h3 id="3fc69645-2eb3-4a6d-98ac-936eca2c8651" class="">Constructors:</h3><p id="dbd1382f-11f4-45e2-9d47-35621425fe19" class="">Wrong implementation example:</p><pre id="b7071f8d-2624-4d56-a218-abc1a6b70003" class="code"><code>class Audi : public Vehicle {
+	std::string logo;
+public:
+	Audi(const Engine&amp; e, const Tire&amp; t, const std::string&amp; logo = &quot;Audi&quot;}:
+		engine{e}, logo{logo} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+};</code></pre><ul id="6982ef2a-4f2c-40ce-973f-5edacd8cb707" class="bulleted-list"><li style="list-style-type:disc">The code above won’t compile</li></ul><ul id="cb61808c-ef4e-41ca-a0e3-8be164860cc8" class="bulleted-list"><li style="list-style-type:disc">Since class Audi <strong>does not have member engine and tires</strong>, we cannot use MIL here. And we <strong>don’t have the default constructor</strong> for class Vehicle.</li></ul><p id="e13c5a65-4702-49b8-8245-641589d45fbb" class="">
+</p><p id="21a566f7-4fda-48c7-be2d-6254ffbbdcef" class="">Error message:</p><figure id="854aad05-1616-4e05-b527-8c019e0982a6" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%203.png"><img style="width:983px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%203.png"/></a></figure><p id="97ea20c1-f29f-4ba3-b332-bbdb05085945" class=""><strong>Reason:</strong></p><p id="ec57d0d4-9085-4162-bdf9-07f9b5c54130" class="">When we’re calling constructor for Audi, a Vehicle object will be created first. The compiler then automatically calls the default constructor for Vehicle, but a user-defined constructor for Vehicle has been implemented, which means that the default constructor has been <strong>disabled</strong>. Therefore, we need to call the user-defined constructor for Vehicle class <strong>manually</strong>.</p><p id="0e8dd447-21c1-4fdc-bb55-68774703ab5e" class="">
+</p><p id="ff4cc67b-ec83-4ad3-b681-4488e006c8ab" class="">But here is the new problem:</p><p id="8fdc8478-602f-4fc0-b440-b69cea9e8a81" class="">Common fields are encapsulated in class Vehicle, and class Audi cannot access them. This is not the purpose of inheritance, so what should we do about this?</p><p id="21e1ecba-2e70-40c5-b6d4-0bc1351df555" class="">
+</p><p id="19c4fee1-ebcc-4139-807f-ef41a75f6ccd" class=""><strong>Solution</strong>: Keyword “<code>protected</code>”</p><p id="8caa7b20-86b5-44e1-a1bb-3e4e43f50b5c" class="">We make the base class’s fields <code>protected</code>. Fields are still <strong>privates</strong> outside the class, (i.e.: users still cannot access them directly) but fields can be accessed directly by <span style="border-bottom:0.05em solid"><strong>derived classes</strong></span>.</p><p id="f20a31c0-613a-412d-90a5-a54b2b0d7f57" class="">
+</p><p id="8d6f6496-f9c0-48e6-a664-c5acbacaed33" class="">Example: Correct implementation for class Audi constructor</p><pre id="f51523ab-9591-469e-8627-565e85f033bc" class="code"><code>class Vehicle {
+protected: // fields that can be directly accessed by derived classes
+	Engine engine;
+	std::vector&lt;Tire&gt; tires;
+public:
+	Vehicle( const Engine&amp; e, const Tire&amp; t ):
+		engine{e} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+};
+
+class Audi : public Vehicle {
+	std::string logo;
+public:
+	Audi( const Engine&amp; e, const Tire&amp; t, const std::string&amp; logo = &quot;Audi&quot; ):
+		Vehicle{e, t}, logo{logo} { } // now we can call the parent class&#x27;s constructor
+};</code></pre><p id="7b195caa-5d51-4cfa-9864-e17b3db9ad70" class=""><mark class="highlight-red"><strong>Note:</strong></mark></p><p id="a9ae8b39-9ab9-4c08-89d9-182132f9b893" class="">Children classes can only <mark class="highlight-red"><strong>read and access</strong></mark> protected fields, but <strong><mark class="highlight-red">cannot create</mark></strong> them!</p><p id="a405f707-b3b7-448d-8a4b-961e8d546039" class="">
+</p><h1 id="d303dc88-6787-46c4-bfd8-e66d63a34768" class="">Object Slicing</h1><ul id="187a7dc8-f32d-45d6-8e48-2026a60c93ab" class="bulleted-list"><li style="list-style-type:disc">Assigning an object from derived class to an instance of base class.</li></ul><ul id="35392ff4-f7a7-401f-b2b4-dbfe9ce708f6" class="bulleted-list"><li style="list-style-type:disc">Some of the fields may be sliced (discarded)</li></ul><ul id="c8c3d17d-85d6-44b8-9d41-78b30b4391b5" class="bulleted-list"><li style="list-style-type:disc"><strong>Insufficient memory</strong> for allocation</li></ul><ul id="6a5864cd-1f0d-4989-9ec6-4d1b864ebf83" class="bulleted-list"><li style="list-style-type:disc">Compiler <mark class="highlight-red"><strong>slice off</strong></mark> exceeded memory </li></ul><ul id="c3febb11-5e09-45c9-803f-423de4f70df6" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Breaks polymorphism</mark></strong></li></ul><ul id="94c65487-9368-4e3c-a857-1c4bffa6b2e2" class="bulleted-list"><li style="list-style-type:disc">Leads to <mark class="highlight-red"><strong>undefined behaviors</strong></mark></li></ul><p id="66ef1485-8cb0-429d-a875-553eaf6aca6b" class="">
+</p><p id="db08f77c-3d44-4b0e-ade5-e6e0939f1e66" class="">Example:</p><pre id="13a55371-3fda-4bf3-97ed-f3653fcbe26e" class="code"><code>int main() {
+	Vehicle v{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+
+	Audi a{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+
+	// Remember: class Audi inherits from class Vehicle,
+	// so Audi is a Vehicle
+	Vehicle v2 = Audi{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+}</code></pre><p id="5e9c8d87-62a5-4e07-bc74-7350fdffd369" class="">The code above can compile successfully and run, but some problems may occur….</p><p id="61362981-963b-418e-8fff-a120356f1cb5" class="">Since class Vehicle only has 2 fields while its child class Audi has 3 fields, when initializing v2, only the first 2 parameters are taken.</p><p id="478774bd-1042-4b69-8cc9-1258f03c767c" class="">
+</p><figure id="5e63493b-f9c6-4dc0-a1c9-027098ec237e" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%204.png"><img style="width:1075px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%204.png"/></a></figure><figure id="2b495f75-2be3-4303-b094-625bcce590a5" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%205.png"><img style="width:1083px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%205.png"/></a></figure><p id="319fa30d-c0f6-4183-917c-e0ea34b6d029" class="">Our Audi &amp; Vehicle example:</p><figure id="9baa9d9f-c23b-425a-9fe8-13a9ec473e6a" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%206.png"><img style="width:657px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%206.png"/></a></figure><figure id="d859358e-0c27-4e38-a427-76c0ef060c02" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%207.png"><img style="width:682px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%207.png"/></a></figure><p id="457c3733-7c39-48af-bbde-ab0c434ac344" class="">
+</p><h3 id="1aeeecc8-8f25-4f40-b5bd-76173088f4c8" class="">Feature of Inheritance:</h3><p id="bbf997c6-0b3e-4bfa-b7f1-b1b3dda0ffd6" class="">Base class pointer type can point to derived class pointer type, but not the other way around.</p><p id="7d9f1838-fca2-49f9-b3c7-22ce687c1be2" class="">In our previous Audi &amp; Vehicle example, a <code>Vehicle*</code> pointer can point to an <code>Audi* </code>type, but an <code>Audi*</code> pointer cannot point to a <code>Vehicle*</code> type.</p><p id="2b7f68ac-4702-4e5e-87eb-df87286cd617" class="">
+</p><h3 id="8ad030aa-8a33-4594-9215-626d1506ebc3" class="">Solution 1 to the object slicing problem:</h3><p id="2106b2cf-dc12-4422-81ac-fe6eb2d8fc9a" class="">Object slicing does no occur when <strong>using pointer or reference</strong>. (Avoid undefined behavior).</p><p id="cb6b041c-17ee-4485-b040-4e22d66f693b" class="">Example:</p><pre id="0b73c94b-31b4-4850-ba19-a2c1606b742d" class="code"><code>int main() {
+	Vehicle v{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+	Audi a{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+	
+	// pointer avoids object slicing
+	Vehicle* v2 = &amp;a;
+	// But the other way around is incorrect:
+	Audi* a2 = &amp;v; // won&#x27;t compile!
+}</code></pre><p id="0d7f880c-ddb7-441f-8a61-4705488ab45a" class="">
+</p><h3 id="a0c3b01c-69ca-40d9-b983-7f055e77ebf6" class="">Static Dispatch:</h3><p id="34b0189e-de80-4e15-9c80-edd042d750f4" class=""><strong>Static</strong>: compiler knows which function to run during <span style="border-bottom:0.05em solid"><strong>compiling stage</strong></span>.</p><p id="2dd30bb7-ef29-4a15-b9e0-3420ba7fe1d0" class=""><strong>Dispatch</strong>: compiler chooses which function to run.</p><p id="e3954261-085a-4173-95f1-55a7bfbf4775" class="">
+</p><h1 id="3ff75b21-898e-4c66-8f2c-b36df9bcead7" class="">Virtual Methods</h1><ul id="9e65032c-51cb-489a-8c41-31f5e9cced80" class="bulleted-list"><li style="list-style-type:disc">Special methods that are shared with the class hierarchy.</li></ul><ul id="6476047e-c31a-458d-8c4d-a2285243340a" class="bulleted-list"><li style="list-style-type:disc">Often implemented by base class.</li></ul><ul id="565062ac-c4b5-4cfe-89a7-617d2037d03f" class="bulleted-list"><li style="list-style-type:disc">Can be overwritten by derived classes.</li></ul><ul id="7940b384-a5c3-4621-8ef6-3e8f0454bf92" class="bulleted-list"><li style="list-style-type:disc">Derived classes will override virtual methods only if they want a different behavior from the base class.</li></ul><p id="c9fadcdb-97e5-4370-b1f6-45a6455b3853" class="">
+</p><p id="0c15c5c3-c064-46e9-bfc0-93ee68b2b81c" class="">Example 1: using <mark class="highlight-red"><strong>static dispatch</strong></mark></p><pre id="f362c776-dd0b-49c7-ac3c-1ac0f856309a" class="code"><code>class Vehicle {
+protected:
+	Engine engine;
+	std::vector&lt;Tire&gt; tires;
+public:
+	Vehicle( const Engine&amp; e, const Tire&amp; t ):
+		engine{e} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+
+	void print() const {
+		std::cout &lt;&lt; &quot;Vehicle print method&quot; &lt;&lt; std::endl;
+	}
+};
+
+
+class Audi : public Vehicle {
+	std:string logo;
+public:
+	Audi( const Engine&amp; e, const Tire&amp; t, const int n ):
+		Vehicle{e, t}, n{n} { }
+	
+	void print() const { // Audi has implemented a different
+											 // method with the same name as Vehicle&#x27;s
+		std::cout &lt;&lt; &quot;Audi print method&quot; &lt;&lt; std::endl;
+	}
+};
+
+int main() {
+	Vehicle v{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+	Audi a{Engine{&quot;Audi&quot;, 1500}, Tire{&quot;Michelin&quot;, 300}};
+	
+	Vehicle* v2 = &amp;a;
+	v2-&gt;print(); // this will call the Vehicle&#x27;s print method
+}</code></pre><p id="064c4ef1-245e-48da-90bb-bd7fa33bf573" class="">
+</p><p id="777a8fdb-bf22-40cc-b6b7-b4300c97544f" class="">Example 2: using <strong><mark class="highlight-red">dynamic dispatch</mark></strong></p><pre id="7e51775b-8b9d-4549-9d6d-915e6cc40a8c" class="code"><code>class Vehicle { // base class
+protected:
+	Engine engine;
+	std::vector&lt;Tire&gt; tires;
+public:
+	Vehicle( const Engine&amp; e, const Tire&amp; t ):
+		engine{e} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+
+	virtual void print() const { // keyword &quot;virtual&quot; indicates that
+															 // this is a virtual method
+		std::cout &lt;&lt; &quot;Vehicle print method&quot; &lt;&lt; std::endl;
+	}
+};
+
+
+class Audi : public Vehicle { // derived class
+	std:string logo;
+public:
+	Audi( const Engine&amp; e, const Tire&amp; t, const int n ):
+		Vehicle{e, t}, n{n} { }
+	
+	void print() const override{
+		// keyword &quot;override&quot; indicates that the derive class overrides
+		// the virtual method in the base class
+		std::cout &lt;&lt; &quot;Audi print method&quot; &lt;&lt; std::endl;
+	}
+};</code></pre><p id="b8ad4725-0e40-4e88-8989-e334f6e604c5" class="">
+</p><h3 id="0c7d3a35-864d-4f53-b2c1-15afa885e133" class="">Dynamic Dispatch:</h3><ul id="5baf5103-963d-4368-b3c0-57001b227c19" class="bulleted-list"><li style="list-style-type:disc">Compiler decides which method to execute <mark class="highlight-red"><strong>at the runtime stage</strong></mark></li></ul><ul id="61fbf232-bfc2-4a13-8cbf-2dc9a8a82dd8" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Polymorphism</mark></strong></li></ul><p id="046b07c1-a2e4-4924-9929-0673ba63aae4" class="">
+</p><h3 id="27e4d9a9-cf69-4716-8394-4d07fd8f4cab" class="">Polymorphism:</h3><ul id="97c84f1a-e3dc-447d-9d96-b35d24a0b860" class="bulleted-list"><li style="list-style-type:disc">Occurs when there is a hierarchy of classes and they have inheritance relationship.</li></ul><ul id="7d77c4b0-71f9-49c3-98d3-2e7037f84dd4" class="bulleted-list"><li style="list-style-type:disc">Call to a member function will cause different functions to execute depending on the type of object invoked. (Different classes have methods with the same name.)</li></ul><p id="933d4d26-6197-4638-baec-032e2679216c" class="">
+</p><h3 id="afd58a2a-0623-42b9-abd4-2b7fc3febab7" class="">Solution 2 to the object slicing problem:</h3><p id="d1acb5fa-6c57-4d4d-92c0-79566d1881f7" class="">Concrete classes &amp; Abstract classes</p><p id="a3b719d1-488a-4488-be91-4a1fc4ef5d52" class="">
+</p><h3 id="672f92c8-a622-4122-9523-d6891e026eaa" class="">Concrete class:</h3><p id="2d52109f-33cc-411e-a5c4-ab12b81c363a" class="">All member functions are implemented.<div class="indented"><p id="57f29992-3b05-4c69-a545-732a144c3872" class="">(e.g.: Vehicle and Audi are both concrete classes)</p></div></p><p id="32d58971-a636-48cc-a781-bf80d8a31696" class="">Objects can <mark class="highlight-red"><strong>ONLY</strong></mark> be created from <mark class="highlight-red"><strong>concrete classes</strong></mark>.</p><p id="169f4db4-6f14-4c89-b2f6-abb30c188342" class="">
+</p><h3 id="2cda8200-a2f5-45f5-a499-bf52b4f2d1a8" class="">Abstract class:</h3><p id="c017aed8-63fe-49a5-bba4-99aef01ee0ff" class="">Some member functions are not implemented, such as <mark class="highlight-red"><strong>pure virtual methods</strong></mark>.</p><p id="8e1f9ddc-1cdf-4cc3-a8ba-3d15ce35fdc8" class="">Objects <mark class="highlight-red"><strong>CANNOT</strong></mark> be created from abstract classes.</p><p id="3f036a65-8094-4d33-8791-292c2488ef76" class="">
+</p><p id="ebb4e013-ef4a-4abb-b578-2c40d56eb6a3" class="">Normally, base classes should be <em>abstract classes</em> and derived classes should be <em>concrete classes</em>. In this case, we cannot create any base class objects if the base class is <mark class="highlight-red">abstract</mark>. And no more object slicing will happen!</p><p id="937d8a23-b8d4-400d-b007-f253847f78d5" class=""> </p><h3 id="759637a0-a943-42dc-832f-5d31d636372d" class="">Pure virtual methods:</h3><p id="6c025f5d-ac87-44b3-9ed5-b3d123efc7ff" class="">Methods with only declaration in base class, and derived classes must define these methods.</p><p id="de66429d-359b-4509-adc5-edb937faebe0" class=""><strong>Syntax:</strong> <code>virtual [return type] [identifier] ( [parameters &amp; types] ) = 0;</code></p><p id="4df14d76-40d5-4969-ae5b-88be4b40d599" class="">(having <code>= 0</code> at the end of method declaration: <strong>pure virtual method</strong>)</p><p id="ed4a5e4f-4b73-4a29-b21f-c330f7f5d598" class="">Example:</p><pre id="560130a7-9ac5-445d-99d2-27dc2ba73860" class="code"><code>class Vehicle { // base class
+protected:
+	Engine engine;
+	std::vector&lt;Tire&gt; tires;
+public:
+	Vehicle( const Engine&amp; e, const Tire&amp; t ):
+		engine{e} {
+		for (int i = 0; i &lt; 4; i++) {
+			tires.emplace_back(t);
+		}
+	}
+
+	virtual void print() const = 0; // pure virtual method
+};</code></pre><p id="1e501405-0fbe-4b2b-9458-8b4653debf92" class="">Once we have a pure virtual method in a class, that class becomes an <strong>abstract class</strong>. And we cannot create objects of that class type.</p><pre id="7f2914bc-1d6d-4a49-b50c-e1f99fcacfb5" class="code"><code>class Audi : public Vehicle { // derived class
+	std:string logo;
+public:
+	Audi( const Engine&amp; e, const Tire&amp; t, const int n ):
+		Vehicle{e, t}, n{n} { }
+	
+	void print() const override{
+	// this method is called during runtime stage
+		std::cout &lt;&lt; &quot;Audi print method&quot; &lt;&lt; std::endl;
+	}
+};</code></pre><p id="93641646-eb06-4572-b408-f7369d04df0e" class="">Class Audi implements method print() which makes itself a <strong>concrete class</strong>. Now objects <strong>can</strong> be created from class Audi. The method print in class Audi will be called during runtime stage. This is called <mark class="highlight-red"><strong>dynamic dispatch</strong></mark>.</p><p id="2aeb5a13-a2fc-43df-ba88-6b65e4d6719d" class="">
+</p><h2 id="137fa791-80ed-4ab8-b5fe-80f0ce777ddd" class="">Pure Virtual V.S. Virtual:</h2><div id="b20d99ad-e9a7-4050-9440-73c1651c92a0" class="column-list"><div id="74eac111-bd89-43e2-b01a-67872ee17db8" style="width:50%" class="column"><p id="0671ba31-b1fc-4ca7-ab47-54de0e6271b0" class=""><strong>Pure virtual:</strong></p><ul id="a3cf3352-d181-4410-b732-557c8b1a9b02" class="bulleted-list"><li style="list-style-type:disc">No definition</li></ul><ul id="af33d4fd-8e94-4950-96eb-0030fea8c8c1" class="bulleted-list"><li style="list-style-type:disc">Abstract</li></ul><ul id="ab180179-2e54-46ce-969c-a5028147c05c" class="bulleted-list"><li style="list-style-type:disc">If derived class needs to be concrete, pure virtual methods <strong><mark class="highlight-red">MUST BE</mark></strong> overridden!</li></ul></div><div id="b1475fbc-2992-44fc-b9a7-08747f476d83" style="width:50%" class="column"><p id="1431c080-004e-46ac-b93b-dfebc382bde9" class=""><strong>Virtual:</strong></p><ul id="f9da7b65-ba52-4fe9-b9ed-fdba823e90d6" class="bulleted-list"><li style="list-style-type:disc">Has definition</li></ul><ul id="4eb6993c-8291-4fa1-b3c5-edc4093fcde6" class="bulleted-list"><li style="list-style-type:disc">Concrete</li></ul><ul id="7b87e575-a02f-4c5f-bc9a-f6850d02728a" class="bulleted-list"><li style="list-style-type:disc">Derived classes can either override or do not override the virtual method.</li></ul></div></div><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9adef016-6086-46fb-9516-16ef7cd95f9d"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%">Even though a method is declared as pure virtual in <code>.h</code> file, we still need to define it in <code>.cc</code> file!!!</div></figure><p id="798e4013-a61c-4214-bf02-5b6b826ddb41" class="">
+</p><h2 id="f2fea9cc-cf51-4b76-848c-9ae34c73b4e2" class="">Compile time polymorphism V.S. Runtime polymorphism:</h2><p id="d623014e-ec49-45f4-9146-bee8c39fc398" class=""><strong>Compile time polymorphism: (static dispatch)</strong><div class="indented"><p id="41e4c784-2a0b-470c-9aea-49eb90997686" class="">Function overloading, operator overloading</p></div></p><p id="16fe929e-b5b4-44f0-8c93-cd88ae7ffbf8" class=""><strong>Runtime polymorphism: (dynamic dispatch)</strong><div class="indented"><p id="e2b8ee3f-7522-47c6-925f-4d9d807298f5" class="">Virtual methods, pure virtual methods</p></div></p><p id="91a0708e-7434-4fae-adee-cf4c1d23bae9" class="">
+</p><h3 id="af19cfe1-c6cc-4365-acb8-843d5cb926a2" class="">Benefits of having abstract base classes:</h3><p id="4c83a170-ce96-4f2b-8e87-ab1c41a74c48" class="">In real world, all vehicles must have logos, otherwise they won’t be allowed to be sold or on the road. Therefore, vehicle should just be a concept. All vehicles should have a engine and tires and should not be created without a logo. However, we can still use base class pointer type or base class reference.</p><p id="3b65f95a-45aa-4afe-877d-b7402539996d" class="">
+</p><h1 id="348bf1f5-c9bf-4fb0-966a-e5ea35d92e83" class="">Destructor</h1><figure id="bf3b7bcc-c66e-4654-b9ca-b161a9f0c968" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%208.png"><img style="width:940px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%208.png"/></a></figure><figure id="24ac876c-9cde-4b37-abb6-8cefe2887113" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%209.png"><img style="width:1106px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%209.png"/></a></figure><figure id="9cb9d305-ba53-45f6-96a1-840fa97dff22" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2010.png"><img style="width:1073px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2010.png"/></a></figure><p id="1bfdb11d-35f5-4dd6-a438-9a56f1ae3747" class="">Since <code>Audi</code> is composed of <code>Vehicle</code>, so if <code>Audi</code> is destroyed, <code>Vehicle</code> should be destroyed as well. Therefore both destructors are called.</p><p id="ca09ff57-5668-4f2a-84ec-58d2fbd18f0f" class="">Result:</p><figure id="d3612bcf-7f41-49c3-8c5a-174bb39012ab" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2011.png"><img style="width:877px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2011.png"/></a></figure><p id="1e769301-fa54-47b3-8dcb-3abdc601d197" class="">
+</p><p id="4b18ddb7-8733-4310-8835-54f30015793c" class="">However, if we write the following:</p><figure id="132ac4a8-ec40-4ef5-881c-f7240aecc01c" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2012.png"><img style="width:1242px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2012.png"/></a></figure><figure id="648f31a4-c0dc-4bff-869f-c32350f29fd7" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2013.png"><img style="width:1165px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2013.png"/></a></figure><p id="ee27a69e-b55e-4559-ae71-4a667935e47f" class="">Compiler sees that <code>v</code> is a <code>Vehicle</code> pointer type, so compiler will only call the Vehicle destructor. Therefore, memory leak will potentially occur.</p><p id="54fa2663-4ba2-45fd-a658-c0bd67bb30f6" class="">
+</p><p id="155548fc-cbc2-4ed0-842d-f6b4918c6fb0" class=""><strong>Solution:</strong></p><p id="87aa744e-3eca-4dcb-8dcc-5d02061ae94d" class="">Destructor must be <span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>virtual method</strong></mark></span> in inheritance relationship.</p><p id="3c81df29-72f1-46bb-858f-77ae5a21f6c8" class="">Once <code>Vehicle</code> type pointer is being deleted, during runtime stage, the correct destructor is looked up in an object know as <strong><em><mark class="highlight-red">vtable</mark></em></strong> (will be taught later in this course).  As a result, <code>Audi</code> destructor will be called first, then <code>Vehicle</code> destructor will be called because of the composition relationship. This should be the correct implementation.</p><figure id="b9827f11-4474-4adb-95f0-1a208f2cd8c3" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2014.png"><img style="width:1088px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2014.png"/></a></figure><p id="8b254918-697c-4b3e-a694-ea847a01e338" class="">
+</p><p id="94b54b88-904f-41a1-9f2b-36ec482e219e" class="">
+</p><h1 id="81d068a3-ab75-4fae-acfd-254658773512" class="">Design Patterns</h1><ul id="87960c4a-88b7-4370-8e76-650b2a37f6c9" class="bulleted-list"><li style="list-style-type:disc">Provide a general reusable solution for common problems in software design.</li></ul><ul id="8a57b46b-1114-4598-9a4f-b9ec45caec26" class="bulleted-list"><li style="list-style-type:disc">Show relationships between classes or objects.</li></ul><ul id="4d764efd-fa0e-4f5f-8e3d-3869d270b61b" class="bulleted-list"><li style="list-style-type:disc">Programming languages independent strategies for solving a common problem.</li></ul><ul id="5bc8dbe8-52e7-4643-8ade-4b2891651a37" class="bulleted-list"><li style="list-style-type:disc">Represents <strong>an idea</strong>, not a specific implementation.</li></ul><ul id="9557b429-f839-4b5d-8bcc-ff3d662a0a38" class="bulleted-list"><li style="list-style-type:disc">More flexible, reusable, and maintainable.</li></ul><ul id="7cfa1fa8-e6ac-4c38-a5b1-179b38403c24" class="bulleted-list"><li style="list-style-type:disc">It’s not mandatory to implement design patterns, and is not meant for software development.</li></ul><h3 id="29195dab-44aa-4be6-84c3-89d1d686ca4b" class="">Design Patterns in CS246 Overview:</h3><p id="79c498c5-21de-4529-b777-31e5e66f115f" class=""><strong>Basic design patterns:</strong><div class="indented"><ol type="1" id="f9a5d2df-a618-4a0d-8dca-3345cb4083ee" class="numbered-list" start="1"><li>iterator design pattern</li></ol><ol type="1" id="8ead268d-865e-4271-9c16-61c2896670ce" class="numbered-list" start="2"><li>observer design pattern</li></ol><ol type="1" id="0cc4321f-943d-4eea-b56a-5fb2f106e4a1" class="numbered-list" start="3"><li>decorator design pattern</li></ol></div></p><p id="01ae6863-4c6d-47ec-a872-8d72c60e4ca7" class=""><strong>Advanced design patterns:</strong><div class="indented"><ol type="1" id="0a6a6cc3-5473-42ea-a32b-0790bcc226b1" class="numbered-list" start="1"><li>factory design pattern</li></ol><ol type="1" id="0d88bf05-97b3-4b09-b4cf-429bd4b9a225" class="numbered-list" start="2"><li>strategy design pattern</li></ol><ol type="1" id="673674fd-01b1-492f-86d4-038d17c32b47" class="numbered-list" start="3"><li>template design pattern</li></ol><ol type="1" id="d392aa72-5af9-490a-b7ac-27029df4a6e1" class="numbered-list" start="4"><li>non-virtual design pattern</li></ol><ol type="1" id="78a6f2b9-5818-406e-89b7-01fe280ae1ec" class="numbered-list" start="5"><li>visitor design pattern</li></ol><ol type="1" id="b7d7ac40-570c-4e8c-8957-dcd76a2c96ec" class="numbered-list" start="6"><li>the Pimpl idiom</li></ol><p id="3a7ea917-91ed-41e4-895f-d4665043658e" class="">
+</p></div></p><p id="b6071bcd-5ec9-4702-9404-0ec9ea5835aa" class=""><strong>Example:</strong></p><p id="725a8c44-ef22-44b4-b7fb-50963d105c0f" class="">Suppose we are asked to implement a Queue ADT using linked list. Client should be able to <span style="border-bottom:0.05em solid">add new elements to the back</span>, and <span style="border-bottom:0.05em solid">remove from the front</span>. (First in First out) The client should also be able to <span style="border-bottom:0.05em solid">find the element at the ith position</span>.</p><pre id="787a7e48-d602-4c20-8b69-e578aad67cfc" class="code"><code>// header file:
+#ifndef __QUEUE_H__
+#define __QUEUE_H__
+
+class Queue {
+	// opaque class Node
+	struct Node; // declaring / defining a class inside a class is allowed
+
+	Node* head = nullptr;
+	Node* back = nullptr;
+public:
+	void addBack( const int&amp; );
+	void removeFront();
+	int ithIndex( int ) const;
+	~Queue();
+};
+
+#endif</code></pre><pre id="d3cda5e1-967b-46c6-ad17-348822ca7683" class="code"><code>// .cc file
+
+// We first implement the hidden class Node
+struct Queue::Node {
+	int value;
+	Node* next = nullptr;
+
+	// constructor
+	Node( const int&amp; value ):
+		value{value}, next{nullptr} { }
+
+	// destructor
+	~Node() { delete next; }
+};</code></pre><ul id="2256350a-30fe-4bb2-9090-0c5de3e905dc" class="bulleted-list"><li style="list-style-type:disc"><code>Queue</code> is designed to be a wrapper of class <code>Node</code></li></ul><ul id="448223e2-4441-4f76-bab2-4526c2889cfe" class="bulleted-list"><li style="list-style-type:disc">default constructor for <code>Queue</code> is enough</li></ul><ul id="1b915bbf-4924-43c1-a137-6cb09f648751" class="bulleted-list"><li style="list-style-type:disc">customized constructor is needed for <code>Node</code></li></ul><ul id="eec79115-2236-41bc-917e-2ad95dc58b6d" class="bulleted-list"><li style="list-style-type:disc">customize destructor is needed for both <code>Queue</code> and <code>Node</code></li></ul><p id="841cbe45-f19a-4c04-b4da-165f2edaa526" class="">
+</p><p id="ba35fc4d-c1cf-484b-9775-5c131d837b9b" class="">Implementation of class Queue:</p><figure id="efaf759b-1269-46db-a17a-921bf05d5625" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2015.png"><img style="width:384px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2015.png"/></a></figure><figure id="2f280453-1501-46e8-bc88-f8d6e6b051a0" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2016.png"><img style="width:624px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2016.png"/></a></figure><p id="605ef7a9-f0ab-4e35-b7a7-9a90550cad77" class=""><strong>Class invariant:</strong></p><p id="5fb1ef51-2eba-42ae-a275-79b6dc210722" class=""><code>ithindex()</code> requires that Queue is not empty. And if index is out of range, we just print the value at the last index instead.</p><p id="06b1a09c-5c72-47bb-8d05-dffdac49c65d" class="">
+</p><p id="6f4efc71-44c7-4d84-ae84-795572c34436" class="">However, here’s the problem:</p><p id="58b3d3ed-b0d4-4976-bcd6-91ee4f0d1ee6" class="">If the client wish to <strong>traverse</strong> the Queue and print all the elements in the same order, then he will have to call <code>ithIndex()</code> for each iteration, which can be very inefficient. (Time complexity: <code>O(n^2)</code>)</p><p id="01dfbb30-a043-42b1-b98d-4cac5eb83205" class="">e.g.:</p><figure id="d38c86e0-6175-4873-bd93-9a11d63d0edc" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2017.png"><img style="width:384px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2017.png"/></a></figure><p id="52d9f79d-e0d2-4326-ba35-4d8e4e293393" class="">We can give client some power to traverse the Queue without getting direct access to the Node fields. It’s time to use design pattern.</p><p id="abc605db-6ae3-4009-a676-ce487637fe01" class="">
+</p><h1 id="7cc8b9c7-3067-476e-bb5c-1c20013090c6" class="">Design Pattern 1: Iterator Design Pattern</h1><p id="05435a0a-bad9-4f2b-80e0-924651b4d431" class="">What is <em><strong>Iterator Design Pattern</strong></em>?</p><ul id="0a272127-22aa-47f3-8cdd-41fe59680325" class="bulleted-list"><li style="list-style-type:disc">An iterator used to traverse a container and access the container’s elements.</li></ul><ul id="631ebe0c-d67a-4496-b80d-3972dd3fa909" class="bulleted-list"><li style="list-style-type:disc">Belongs to behavior design patterns.<ul id="6eda8b84-a113-4e26-860b-75fbefe1f775" class="bulleted-list"><li style="list-style-type:circle"><strong>Behavior design patterns</strong>: Identify common communication patterns between objects and realize those patterns.</li></ul></li></ul><ul id="95fa6782-6141-4fa6-8835-5e70497ca288" class="bulleted-list"><li style="list-style-type:disc">C++ implements iterators with the semantics of  pointers.</li></ul><p id="323697e6-d28d-4163-8451-60a88913b897" class="">
+</p><p id="a0b0f5aa-ef3e-4224-9551-029c8feed6de" class="">What do we need for <em><strong>implementing</strong></em> an iterator design pattern?</p><ul id="3e228048-b846-4879-9751-053d7933eb9a" class="bulleted-list"><li style="list-style-type:disc"><code>begin()</code> &amp; <code>end()</code> methods</li></ul><ul id="231ad9be-1fa1-442a-ad9c-ab5d933c5ae3" class="bulleted-list"><li style="list-style-type:disc"><code>operator!=</code>, <code>operator==</code>, <code>operator++</code>, <code>operator*</code> (dereferencing)</li></ul><p id="5678caf0-4ce8-48ca-b8d0-0429b30cc1e2" class="">
+</p><p id="018bd47d-f207-4833-bcd8-1903d93fc701" class=""><strong>Implementation:</strong></p><figure id="0fd88010-ef83-486d-883b-2ade5533803a" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2018.png"><img style="width:480px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2018.png"/></a></figure><figure id="fc4a311f-a68d-433f-8930-d93d6fe6627e" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2019.png"><img style="width:966px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2019.png"/></a></figure><p id="70e119e8-d9a6-493a-b52b-f8f94bf0ae88" class=""><strong>Simple interface:</strong> <code>main.cc</code></p><figure id="adbcd026-2697-4698-ba39-ad0e15a942f1" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2020.png"><img style="width:1010px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2020.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="d893580d-c63d-48a5-9f21-deba3dbcbfb1"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><strong>Required syntax</strong>: <code>++it</code>
+<code>it++</code>: won’t compile!</div></figure><p id="2ae67a1e-b008-4e23-8636-83715931d3b4" class="">Now we are able to print all elements within <code>O(n)</code> time.</p><p id="5a77c605-63e8-4e1e-8c71-e67b49716a18" class="">
+</p><h3 id="a1b48189-eb28-4639-876d-d72c2f8ebc29" class=""><strong>An easier way to write the range-based for loop:</strong></h3><figure id="82f4ea81-bdb5-45c2-8d7a-7a86b20efe58" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2021.png"><img style="width:336px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2021.png"/></a></figure><p id="52a5e8aa-3163-4713-bc90-df85081d9768" class=""><strong>Variable </strong><code><strong>val</strong></code><strong>:</strong></p><ul id="020a7187-a4bd-496f-9890-f5612bd46dd7" class="bulleted-list"><li style="list-style-type:disc">A <em><strong>copy</strong></em> of the value returned from <code>operator*</code></li></ul><ul id="83309877-23f4-46cd-a4eb-7d493c2a6660" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red"><strong>Automatic dereferencing</strong></mark> the iterator.</li></ul><p id="688afd79-f217-4511-b9e4-7273dd922246" class="">
+</p><p id="e27dabde-5be9-4944-ab33-adff01595470" class=""><strong>More:</strong></p><figure id="a205e026-dd46-4366-8dec-1cde7aaec28b" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2022.png"><img style="width:336px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2022.png"/></a></figure><p id="68a5fb2e-d166-449a-b31f-63a8b6e23d39" class="">We can also use this manner to mutate elements. Since the dereferencing operator returns by reference, client can directly mutate values through reference.</p><p id="49d1ab7d-18f2-4832-a8aa-17304d6b8e16" class="">
+</p><h1 id="fec26034-55b2-475d-8312-8ccf9f2c033a" class="">Friend</h1><p id="5a28a05e-36a1-462b-9247-d1440424348f" class=""><strong>Some concerns about iterator design pattern:</strong></p><p id="04665b4a-d745-4e2f-99c4-3fdee2653562" class="">Constructor for class <strong>Iterator</strong> should be <code>private</code> since we only want clients to create iterator objects by calling methods <code>begin()</code> and <code>end()</code>. However, error will occur if we hide the constructor for class <strong>Iterator</strong> because <code>begin()</code> and <code>end()</code> are calling the <strong>constructor</strong> for class Iterator. This is a contradiction. So how can we solve this problem?</p><p id="3f630628-6837-45ac-94c9-508cd5968f61" class=""><strong>Answer</strong>: using keyword: <code>friend</code></p><p id="62648c62-07a6-49d4-af5a-d9ffa64ed119" class=""><strong>Demo</strong>:</p><figure id="9aa3119d-786e-4a97-af26-03b984da8a54" class="image"><a href="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2023.png"><img style="width:763px" src="Inheritance%204a7228af5f434ac394fa4b2d22211342/Untitled%2023.png"/></a></figure><ul id="dcf5eac7-20d8-48a0-8b54-09319f757f1e" class="bulleted-list"><li style="list-style-type:disc">By declaring <code>friend</code>, class <strong>Queue</strong> can access <strong>all fields and methods in class Iterator</strong> (<code>private</code> and <code>public</code>).</li></ul><ul id="eefdd366-658b-407a-beef-d70410736e67" class="bulleted-list"><li style="list-style-type:disc"><code>friend</code> <strong>is not bidirectional</strong>! (i.e.: class <strong>Iterator</strong> still cannot access all private fields and methods in class <strong>Queue</strong>)</li></ul><ul id="0682aa28-7403-42ff-8dc5-9a026cb90417" class="bulleted-list"><li style="list-style-type:disc"><code>friend</code> <strong>breaks encapsulation</strong>.</li></ul><ul id="40cb3009-049a-46fa-86da-6fb124f66368" class="bulleted-list"><li style="list-style-type:disc">We should have as few “friends” as possible, otherwise, we are losing the purpose of information hiding.</li></ul><p id="92f95fd5-4a9b-4c15-bee7-dafa71a46d7a" class="">
+</p></div></article></body></html>

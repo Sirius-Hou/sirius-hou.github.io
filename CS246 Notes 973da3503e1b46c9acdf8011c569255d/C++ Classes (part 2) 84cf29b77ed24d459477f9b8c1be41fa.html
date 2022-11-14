@@ -1,0 +1,1022 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>C++ Classes (part 2)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="84cf29b7-7ed2-4d45-9477-f9b8c1be41fa" class="page sans"><header><h1 class="page-title">C++ Classes (part 2)</h1></header><div class="page-body"><h1 id="1fbe6b92-5703-4bd7-a1b1-0b42dcc87c9b" class="">Quick Review</h1><ul id="62f845ae-33b9-4b48-a455-fa8017b95e9f" class="bulleted-list"><li style="list-style-type:disc">Every class comes with a <strong>default constructor</strong>.</li></ul><ul id="73831241-a643-478a-a128-8d2779c72bfb" class="bulleted-list"><li style="list-style-type:disc">Every class comes with a set of default “<strong>the Big Five</strong>”.</li></ul><ul id="ed1a7c5f-3374-4aa0-b3f2-98d57cf51256" class="bulleted-list"><li style="list-style-type:disc">Constructor is called <strong>automatically</strong> when an object is created.</li></ul><ul id="b1093830-99fd-4887-89bb-0fa807a19f58" class="bulleted-list"><li style="list-style-type:disc">Constructor has <strong>implicit</strong> and <strong>explicit</strong> definitions.</li></ul><ul id="f87565b3-584d-49ad-aa80-952e3be28d7d" class="bulleted-list"><li style="list-style-type:disc"><strong>MIL</strong> must be used  to initialize <strong>constant fields</strong> (<code>const</code>, <code>reference</code>)</li></ul><ul id="86054ca8-1619-4b69-8e14-1cf723e060fb" class="bulleted-list"><li style="list-style-type:disc"><strong>Destructor</strong> is called when object is an object is <span style="border-bottom:0.05em solid">destroyed</span>.</li></ul><ul id="6381b779-884a-4c20-b6cd-3b706c6b2e47" class="bulleted-list"><li style="list-style-type:disc"><strong>Copy constructor</strong> is called when an <span style="border-bottom:0.05em solid">object is created from an existing object</span>.</li></ul><ul id="3f804483-77b6-42d3-b2df-2a94448fbc28" class="bulleted-list"><li style="list-style-type:disc"><strong>Copy assignment operator</strong> is called when <span style="border-bottom:0.05em solid">an existing object is assigned new values from another existing object.</span></li></ul><ul id="0fb1d9ee-2dc9-48e9-879c-82191bb25b11" class="bulleted-list"><li style="list-style-type:disc">We often want deep copies.</li></ul><ul id="a09a1ccc-ae00-4621-a56d-e48048554d2b" class="bulleted-list"><li style="list-style-type:disc">We can use <strong>copy-swap idiom</strong> to implement copy assignment operator.</li></ul><p id="03657383-fb91-4096-b8a8-3e130b922387" class="">
+</p><p id="506a0ec4-9797-405a-8727-f28f7a657f50" class="">Samples:</p><pre id="fe77962e-8ec1-4300-9209-6b62eeb4b65c" class="code"><code>// Constructor
+BST::BST(const int&amp; value, BST* left, BST* right): // MIL begin
+	value{value}, left{left}, right{right} { }
+
+// Destructor
+BST::~BST() { // only onedestructor, no parameters
+	delete left;
+	delete right;
+}
+
+
+
+// Copy constructor
+BST::BST(const BST&amp; other):
+	value{other.value} {
+	if (other.left == nullptr) {
+		left = nullptr;
+	} else {
+		left = new BST{*other.left};
+	}
+	if (other.right == nullptr) {
+		right = nullptr;
+	} else {
+		right = new BST{*other.right};
+	}
+}
+
+// Copy assignment operator
+BST&amp; BST::operator=(const BST&amp; rhs) {
+	// self-assignment
+	if (this == &amp;rhs) return *this;
+
+	value = rhs.value;
+	delete left;
+	left = (rhs.left == nullter) ? nullptr : new BST(*rhs.left);
+	
+	delete right;
+	right = (rhs.right == nullter) ? nullptr : new BST(*rhs.right);
+	return *this;
+}
+
+// Copy swap idiom
+void BST::swap(BST&amp; other) {
+	std::swap(value, other value);
+	std::swap(left, other.left);
+	std::swap(right, other.right);
+}
+
+BST&amp; BST::operator=(const BST&amp; rhs) {
+	if (this == &amp;rhs) return *this;
+	BST temp{rhs}; // using copy constructor
+	swap(temp);
+	return *this;
+}</code></pre><p id="8dcafc30-ba76-43db-a4de-c14557e0a04e" class="">
+</p><h1 id="5f9a690c-514d-4224-8dd3-451ea23a0088" class="">Move Constructor</h1><p id="823758a9-e933-4615-9d7f-b0dddf45bfc2" class="">Copy constructor: object is created from an existing object (lvalue or rvalue);</p><p id="2ca5b431-70cd-4570-9a99-73db665a28f8" class="">Move constructor: object is created from an existing object (only rvalue)</p><p id="fa3a708b-886b-4571-ac18-a6a9262e381a" class="">Differences between copy constructor and move constructor:</p><ul id="7c5cff1a-c67a-4b0f-8cda-2f18e5948c4b" class="bulleted-list"><li style="list-style-type:disc"><strong>Copy constructor </strong>takes a constant lvalue reference as a parameter.</li></ul><ul id="8321c459-8a9e-4784-b883-5d7ac39b467f" class="bulleted-list"><li style="list-style-type:disc"><strong>Move constructor</strong> takes a rvalue reference as a parameter.</li></ul><pre id="eb1cd66a-215b-4585-bdb6-b2187c97a5bb" class="code"><code>// move constructor
+BST(BST&amp;&amp;);</code></pre><p id="b2c0ec7a-e954-440f-a182-088099133d6a" class="">
+</p><p id="10d47065-e8b5-4d5d-84ab-ce5cb8939428" class=""><strong>Syntax for rvalue reference</strong>: <code>&amp;&amp;</code></p><p id="4d4cf321-3a78-43dd-b1ab-68b19ffc3246" class=""><strong>Note:</strong> Rvalue object is meant to be destroyed, therefore, we <strong>cannot have a constant reference rvalue</strong> as a parameter!</p><p id="8fcc957e-2aaf-4a7d-8331-1f7de6e87008" class="">
+</p><p id="a8335f2b-cd4b-4d44-a082-ad950c742ff2" class="">Idea: since rvalue objects are meant to be destroyed after use, we can just “steal” the field values;</p><pre id="dfc9cfea-12b2-41d0-9504-3d918c8e4db8" class="code"><code>// move constructor
+BST::BST(BST&amp;&amp; other):
+	value{other.value}, left{other.left}, right{other.right} {
+	std::cout &lt;&lt; &quot;Called MOVE CTOR&quot; &lt;&lt; std::endl; // indicator
+	other.left = nullptr; // we need to cut off the connections between the data we
+	other.right = nullptr; // want and their former owner object
+}</code></pre><p id="8df01ba2-25ca-4f12-b315-0d4cf171e180" class="">Rvalue objects will be destroyed after calling move constructor.</p><figure id="2c1c8565-c6f1-4a48-a0e1-f2b00372bfa6" class="image"><a href="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled.png"><img style="width:438px" src="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled.png"/></a></figure><p id="bbdf0f3a-abb4-4354-9d7e-7aa81cea3aad" class="">However…</p><p id="f0960c31-9e14-4d2c-828e-7e170d07a08b" class="">Example: consider the following code:</p><pre id="9c8f788a-1369-4aea-b774-2ac7850be7d2" class="code"><code>BST createBST() {
+	return BST{10};
+}
+
+int main() {
+	BST b = createBST();
+	b.print();
+}</code></pre><p id="d40573ba-f26d-4b97-821a-a5108236f050" class="">When we run this program, we have the following:</p><figure id="b5cfc669-6374-4408-a7be-cd0a09b058ed" class="image"><a href="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%201.png"><img style="width:1559px" src="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%201.png"/></a></figure><p id="7410d6f9-6f4c-46fa-b8fd-d8599a67f929" class=""><code>createBST()</code> returns a <strong>rvalue BST object</strong>, so we are expecting to see “<strong>Called MOVE CTOR</strong>” as output, but it didn’t show up. Why?</p><p id="bc93a685-c1d2-4351-9d61-6c7e9a997adc" class=""><strong>Reason:</strong> copy/move elision refers to a compiler optimization that eliminates unnecessary copying or moving objects.</p><h3 id="d93b223e-68ef-4aa7-80fe-3b23a6281d94" class="">Return value optimization (RVO):</h3><p id="12795945-65b8-46a5-bb6a-93ebcc5ab267" class="">A compiler optimization that involves eliminating the rvalue objects created to hold a function’s return value.</p><h3 id="a2d12750-af1f-4083-99d1-e1938ddb11c9" class="">Copy/move elision:</h3><p id="1541b5f0-44d3-4afd-ab6c-79c825a8fb0a" class="">Happens when an object is initialized by copying another object of the same type, and the rvalue object is destroyed afterwards, or when returning a local object/variable inside a function.</p><p id="7756c818-ba58-430e-8ddb-6a164d335239" class="">
+</p><p id="9c782f67-78e0-468d-852a-be1ba2c4be53" class=""><strong>Command to disable optimization</strong>: <code>g++14 -fno-elide-constructors [file names]</code></p><p id="6c71afa4-c8c3-4357-937c-ea767de1760e" class="">e.g.: <code>g++14 -fno-elide-constructors main.cc bst.cc</code></p><p id="b511d434-eb95-4e8b-b012-ab45f5ea68f8" class="">
+</p><p id="9ed2bdda-9028-40c0-80dc-75ab962b4490" class="">Effect:</p><figure id="b478b5cb-d554-42cf-bcb7-c7953148c0ac" class="image"><a href="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%202.png"><img style="width:967px" src="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%202.png"/></a></figure><h1 id="9eca204b-d7d3-4b65-b0b7-a27a7d079ef5" class="">Move Assignment Operator</h1><p id="d5fd553a-b1f1-437b-96f3-5568027056a5" class="">An existing object is assigned values from a rvalue object.</p><pre id="126ae073-424b-4ad2-b746-e35245107c7f" class="code"><code>// move assignment operator
+BST&amp; BST::operator=(BST&amp;&amp; rhs) {
+	std::swap{value, rhs.value};
+	std::swap{left, rhs.left};
+	std::swap{right, rhs.right};
+ return *this;
+}</code></pre><ul id="363ddef1-a08b-4a78-8c84-8d4415325c4f" class="bulleted-list"><li style="list-style-type:disc">We don’t need to check for self-assignment as we did in copy assignment operator because lvalue objects will never be the same as rvalue objects.</li></ul><ul id="567d9c35-6a53-44db-857e-04c996760277" class="bulleted-list"><li style="list-style-type:disc">We simply swap the field values.</li></ul><ul id="2f9bfa6d-dc28-42f9-ae1c-a5c8b4410b38" class="bulleted-list"><li style="list-style-type:disc">Now the rvalue object contains the field values which we don’t need anymore.</li></ul><ul id="abd80fc1-be70-4e04-9826-6ae579704f2a" class="bulleted-list"><li style="list-style-type:disc">The rvalue object is destroyed automatically afterwards.</li></ul><ul id="adcf90bb-6c86-402c-8a49-677a9dffad41" class="bulleted-list"><li style="list-style-type:disc">No memory leaks.</li></ul><p id="4b69959e-4766-4366-8415-b9850fafc37c" class="">
+</p><h3 id="4f82d526-78fc-4d75-b32b-730b05125940" class="">Member functions:</h3><p id="b169b807-a333-4ce8-9ffd-967acb2a4a02" class="">Recall the difference between a structure and a class: class can have methods (functions) but structures cannot.</p><p id="87dcb978-062d-4608-b954-59164600adf8" class="">For operator overloaded functions, where should them be put at?</p><p id="41664c8d-7d14-4973-afa1-ff2254380938" class="">Answer: depending on the operator we are trying to overload.</p><p id="cea2957e-2bce-4a4a-9926-6bdb1e60b559" class="">
+</p><p id="e51a8c00-6b5c-4e60-b6f2-6e73a600ac17" class="">Example:</p><pre id="d2c777d4-37e5-463e-9b97-3831befb35da" class="code"><code>struct Posn {
+	int x, y;
+
+	// constructor
+	Posn(int x, int y): x{x}, y{y} {}
+
+	// multiplication operator overloading
+	Posn operator*(const int&amp; n) { // has two parameters, the otherv hidden one is &quot;this&quot;
+		return Posn{x * n, y * n};
+	}
+};
+
+int main() {
+	Posn p{3, 4};
+	p * 5; // valid
+	5 * p; // invalid! compiling error</code></pre><p id="99e4b80f-fcd5-4574-9e5b-0d0dd3fb88a6" class="">If we want to solve this, we need to overload the non-class multiplication operator:</p><pre id="921b2ab9-7c13-494b-ae8c-a5da6e483b8f" class="code"><code>struct Posn {
+	int x, y;
+
+	// constructor
+	Posn(int x, int y): x{x}, y{y} {}
+
+	// multiplication operator overloading
+	Posn operator*(const int&amp; n) const { // overloading the multiplication operator
+																			 // in the Posn class
+		return Posn{x * n, y * n};
+	}
+};
+// e.g.  p * 5
+
+
+Posn operator*(const int&amp; n, const Posn&amp; p) { // overloading the normal multiplication
+																							// operator (not in the Posn class)
+	return p * n;
+}
+// e.g. 5 * p</code></pre><p id="927b1dbd-8e61-4ce2-8456-747ac2c6819c" class="">Now, no compiling error will occur.</p><p id="81848d1e-4a9d-4e7a-8673-2c825bc36aff" class="">
+</p><h1 id="211e799c-d370-4b27-aa11-faa33f6759c4" class="">Constant Methods</h1><p id="0464b2ba-0606-46ed-aeae-a02478da5b10" class="">Previous example:</p><pre id="31ec4523-f33c-4b1a-ab43-462220ec43e4" class="code"><code>struct Posn {
+	int x, y;
+
+	// constructor
+	Posn(int x, int y): x{x}, y{y} {}
+
+	// multiplication operator overloading
+	Posn operator*(const int&amp; n) const {
+		return Posn{x * n, y * n};
+	}
+};</code></pre><p id="7144cc3b-7458-410d-881d-52b441edae68" class=""><strong>Recall:</strong></p><ul id="baa3b9a3-5291-4571-b7c0-9446326178ea" class="bulleted-list"><li style="list-style-type:disc">We can have constant fields in class definition.</li></ul><ul id="97e7fc2c-7fc3-4a46-861e-c9d3ddae3800" class="bulleted-list"><li style="list-style-type:disc">We must use <mark class="highlight-red"><strong>MIL</strong></mark> to initialize constant fields.</li></ul><p id="33027e3a-7d1f-48d0-8692-6b1a8e98b219" class="">
+</p><p id="6476d910-ece0-4481-bd78-eed4dca22650" class="">We can also have constant methods as well.</p><pre id="c8cffa39-916a-4117-acc3-64889e36972b" class="code"><code>// multiplication operator overloading
+// constant method, no field is allowed to be mutated
+Posn operator*(const int&amp; n) const {
+	return Posn{x * n, y * n};
+}</code></pre><p id="0520d9e0-0942-4d44-adf1-8ff0aab256e3" class="">The <code>const</code> keyword after function signatures indicates that the method is a <strong>constant method</strong>.</p><h3 id="996e28f9-11cc-4b0b-b11e-2a4e12dacacc" class="">Constant method:</h3><ul id="bf3cd43b-9796-4ba3-a6c5-7b3fce9a900b" class="bulleted-list"><li style="list-style-type:disc">Promise <span style="border-bottom:0.05em solid">not to mutate fields</span> of the objects.</li></ul><ul id="5717eb36-c2cf-47cb-b642-240741b93b95" class="bulleted-list"><li style="list-style-type:disc">When we declare constants, we cannot mutate them anymore. An objects may contain multiple fields. If we use constant methods, we cannot mutate any fields.</li></ul><p id="60739e67-7f08-4108-9af8-0f9ec094e9ce" class="">What if the method needs to mutate some of the fields?</p><p id="04582de9-d398-4305-84b9-f2e282bee7f2" class=""><strong>Solution:</strong> Add the keyword <code>mutable</code> before the variable type. Now we can mutate the fields, even the method is declared as a <code>const</code> method.</p><p id="829b6aff-3624-4c55-a076-b9cd31d65cc6" class="">Example:</p><pre id="753d5174-753c-48be-b8cc-5b4425bce35e" class="code"><code>#include &lt;iostream&gt;
+
+struct Posn {
+	int x, y;
+	mutable int multiCount = 0;
+	// constructor
+	Posn(int x, int y): x{x}, y{y} {}
+	
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*(const int&amp; n) const {
+		multiCound += 1; // now we can mutate mutable fields
+		return Posn{x * n, y * n};
+	}
+};
+
+int main() {
+	Posn p{3, 4};
+	p * 5;
+	std::cout &lt;&lt; p.multiCount &lt;&lt; std::endl;
+}	</code></pre><p id="6ba05f4b-9a67-40ed-89eb-8b945a8cdfbe" class="">Now we can execute this program with no error.</p><p id="b3041b75-6ea6-4a70-9308-c1c613586bdc" class="">
+</p><h1 id="57695d82-9913-4819-af3a-5ef6ac7ad9c7" class="">Array of Objects</h1><p id="101698a0-bc5d-472e-bf30-e09fff333681" class="">Example:</p><pre id="06650977-0bd4-4410-af4d-9bf8dd7f9212" class="code"><code>struct Posn {
+	int x, y;
+	mutable int multiCount = 0;
+	// constructor
+	Posn(int x, int y): x{x}, y{y} {}
+	
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*(const int&amp; n) const {
+		multiCound += 1;
+		return Posn{x * n, y * n};
+	}
+};
+
+int main() {
+	Posn posnArr[5];
+}	</code></pre><p id="ab71c987-ccb2-485b-b5b5-85100656f9bd" class="">This code will lead to <strong>compiling error</strong>:</p><ul id="383bce58-f01e-4456-b19e-bdfd83a40284" class="bulleted-list"><li style="list-style-type:disc">No default constructor for <code>Posn</code>.</li></ul><ul id="6a6bf356-b1cc-49eb-89da-b5b86dd59974" class="bulleted-list"><li style="list-style-type:disc">We need to create objects manually (like below)</li></ul><pre id="5c3eb244-e1ea-4922-9ec1-c8a328e285a3" class="code"><code>int main() {
+	Posn posnArr[5] = 
+		{Posn{0, 1},
+		 Posn{2, 3},
+		 Posn{4, 5},
+		 Posn{6, 7},
+		 Posn{8, 9}};
+}</code></pre><p id="d1db5dc9-9912-4833-9347-cd58dfbfc818" class="">This is feasible, but way too complicated…</p><p id="26a410a7-2dd1-4daf-85b0-6c4e798c595b" class="">We have the following 3 methods for creating arrays of objects:</p><p id="f5de2679-6a47-44c3-8206-9a313df81774" class="">
+</p><h3 id="b5274b8c-ae73-4dd2-9516-21778f37d70a" class="">Method 1: using default constructors</h3><p id="e7a75f3c-9722-4fc2-b1a2-fbe82a5ac7cb" class="">We do not implement customized constructors. The program now use the default constructor and fill the fields with arbitrary values.</p><p id="70ef39ef-63fb-4bb8-8c26-f55287e486ec" class="">Example:</p><pre id="e3a9adee-af90-4c72-a2d5-c64689499dfe" class="code"><code>struct Posn {
+	int x, y;
+	mutable int multiCount = 0;
+	// constructor
+	// Not implementing customized constructors
+	
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*(const int&amp; n) const {
+		multiCound += 1;
+		return Posn{x * n, y * n};
+	}
+};
+
+int main() {
+	Posn posnArr[5]; // now this is valid
+}	</code></pre><p id="7099629f-1eb9-4145-8251-038b330c1806" class="">However, we don’t want this. Usually, we want to create customized constructors.</p><p id="590984fa-03aa-4cee-8975-b04e13232e4c" class="">
+</p><h3 id="e80277aa-e0a5-4fe0-a6ee-730315647e23" class="">Method 2: using default arguments</h3><pre id="ef2a9a93-51e9-4869-aac2-3b326e6e96a1" class="code"><code>struct Posn {
+	int x, y;
+	mutable int multiCount = 0;
+	// constructor
+	Posn(int x = 0, int y = 0): x{x}, y{y} {} // constructor with default values
+	
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*(const int&amp; n) const {
+		multiCound += 1;
+		return Posn{x * n, y * n};
+	}
+};
+
+int main() {
+	Posn posnArr[5]; // now this is valid
+}	</code></pre><p id="d3e11a7f-1850-4423-9fa6-803f946c1816" class="">Each time when a <code>Posn</code> object is created, if no value is assigned, then the object is created with default values: <code>x = 0</code> and <code>y = 0</code>. No arbitrary values are used.</p><p id="37719a75-6307-4a68-bb2a-343bca37190d" class="">
+</p><h3 id="56392d5b-eeee-4067-8eb8-c44100bfa8cb" class="">Inline initialization in C++:</h3><p id="456d5864-afec-477c-a3d2-07e7d592f52e" class="">C++ allows us define structures with default values.</p><p id="7b7f657a-ec78-4f55-bc9e-199201cd37a5" class="">Example:</p><pre id="330eebc8-bd16-4c35-a324-89f9c38e9b32" class="code"><code>struct BST {
+	int value = 0; // using default values
+	BST* left = nullptr;
+	BST* right = nullptr;
+};</code></pre><p id="0d5ea8f8-c4b5-485d-b567-57ab14d18423" class="">Benefit: We can use the default constructor directly.</p><p id="d139b04c-081b-4cd1-ace7-f3a8dfacfdd3" class="">
+</p><h3 id="3ffeefd4-4d63-4929-922d-83b9779971e8" class="">Method 3: using pointers pointing to objects</h3><pre id="03e80903-de88-4558-9154-fc1b607b9ec1" class="code"><code>int main() {
+	Posn* posnArr = new Posn[5]; // array of Posn objects
+
+	Posn** posnArr2 = new Posn*[5];                                             
+	for (int i = 0; i &lt; 5; i++) { // array of pointers pointing to Posn objects
+		posnArr2[i] = new Posn;
+	}
+}</code></pre><ul id="68119405-b17b-4a89-8026-54451aee79a5" class="bulleted-list"><li style="list-style-type:disc">The best method.</li></ul><ul id="4e8e0063-c0a5-4635-b1a9-b54833685223" class="bulleted-list"><li style="list-style-type:disc">Address is always 8 bytes, and it does not waste stack memory if the array is too large.</li></ul><ul id="1b6338fc-f837-47bd-9f55-143c46c9f761" class="bulleted-list"><li style="list-style-type:disc">Stack memory only cost 8 bytes, contents are allocated in heap memory,</li></ul><ul id="b36a9095-7fde-42f9-9b59-7cd76c6ce262" class="bulleted-list"><li style="list-style-type:disc">Always remember to free heap memory at the end because we are using pointers pointing to objects.</li></ul><ul id="ec47d33b-cd44-41f9-a1be-b28b658fe11e" class="bulleted-list"><li style="list-style-type:disc">We must delete pointers manually in order to call object destructors.</li></ul><p id="0be19468-e8f0-4174-a5f9-e8bb3aaa30ab" class="">
+</p><h1 id="503b042e-f4f2-4f8a-a120-10bebd2c5a1f" class="">Rules for Replacing Default Compiler Operations</h1><ol type="1" id="93caf1a0-b03a-40df-bfdd-1b3431e09945" class="numbered-list" start="1"><li>Default constructor is automatically deleted if user-defined constructors exist. (A class can have <strong><mark class="highlight-red">unlimited number</mark></strong> of constructors as long as their function signatures are different.)</li></ol><ol type="1" id="46ede058-1f52-4357-a09f-5608defe4e5c" class="numbered-list" start="2"><li>Default destructor is automatically deleted if user-defined destructors exist. (A class can <mark class="highlight-red"><strong>ONLY HAVE ONE</strong></mark> destructor because a destructor must not have parameters.)</li></ol><ol type="1" id="191a572f-8639-428c-97fe-709f0dcf8114" class="numbered-list" start="3"><li>(Trivial) user-defining overwrites default.</li></ol><ol type="1" id="a319f553-ab6e-46d3-81da-1712c9a6f498" class="numbered-list" start="4"><li>Default (implicit) <strong>copy constructor</strong> and <strong>copy assignment operator</strong> is deleted if user-defined <strong>move constructor / assignment operator</strong> exists.<p id="bbc011c7-8649-42ac-9d7e-3a8b697ee5bc" class=""><strong>Reason:</strong></p><p id="72792f2d-66cd-4608-a7a2-0f1c80af77ae" class="">First, take a look at the function signatures of default copy constructor and copy assignment operator:</p><p id="270f3971-39f4-4c23-a1a1-54a081a9953c" class="">Function signature for default copy constructor is: <code>className (const className&amp;);</code></p><p id="cdfb9bf8-f006-4a14-b038-742556893399" class="">Function signature for default copy assignment operator is: <code>operator=(const className&amp;);</code></p><ul id="d4740ffe-4c05-4955-9be8-6c6c42bbf10f" class="bulleted-list"><li style="list-style-type:disc">Recall that when a parameter is <code>const className&amp;</code>, it can accept rvalue reference.</li></ul><ul id="4ef1773e-3b8b-405a-8c99-4f93b0bc48b7" class="bulleted-list"><li style="list-style-type:disc">If there is no user-defined move constructor or move assignment operator, the compiler will <strong>automatically</strong> choose to use <strong>copy constructor and copy assignment operator</strong>, even if the argument is an <strong>rvalue</strong>.</li></ul><ul id="4bca3f49-474e-4403-9232-03ef12782ec8" class="bulleted-list"><li style="list-style-type:disc">Once <strong>user-defined</strong> move constructor or move assignment operator exists, if the argument is an <strong>rvalue</strong>, then the compiler will choose to used <mark class="highlight-red"><strong>move</strong></mark> constructor / assignment operator instead of <strong><mark class="highlight-red">copy</mark></strong> constructor / assignment operator</li></ul><ul id="d09c0b56-9d5e-45eb-a382-415af8b7314b" class="bulleted-list"><li style="list-style-type:disc">Now, compiler handles rvalue <strong><mark class="highlight-red">explicitly</mark></strong>.</li></ul><ul id="8fe8afac-fb67-4092-8cc0-66da00a16517" class="bulleted-list"><li style="list-style-type:disc">*Remember: <mark class="highlight-red"><strong>implicit</strong></mark> is disabled when <code>explicit</code> is defined, which means that copy constructor and copy assignment operator are <span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">DISABLED</mark></strong></span> because they handle rvalue <strong><mark class="highlight-red">implicitly</mark></strong>.</li></ul><ul id="8c8147ba-288b-48ea-8d31-941d15b1162e" class="bulleted-list"><li style="list-style-type:disc">However, if we manually define only move constructors / assignment operators, the compiler doesn’t know how to handle lvalues (since default copy constructor / assignment operator are disabled (or deleted)). Hence, <span style="border-bottom:0.05em solid">if we define move constructors / assignment operators, we must also define copy constructors / assignment operators manually!</span></li></ul><ul id="0e3e0d85-0e12-4926-b98f-499a6bc7d760" class="bulleted-list"><li style="list-style-type:disc">Must write user-defined copy constructors &amp; copy assignment operators which handles lvalue <strong>explicitly</strong>.</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="86e3027b-71f4-4554-a2d3-1cb8a39c0257"><div style="font-size:1.5em"><span class="icon">⚠️</span></div><div style="width:100%"><strong>Prior Big Five members:</strong>
+Destructor, Copy constructor, Copy assignment operator 
+<em>(when one of the last two is defined, the other Big Five must also be defined.)</em></div></figure></li></ol><ol type="1" id="5876e0a8-6337-4fc3-a96a-ffc75e70ca16" class="numbered-list" start="5"><li>If copy constructor and copy assignment operator are user-defined (explicitly), then move constructor and move assignment operator can be default (implicitly). In this case, since copy handles both lvalues and rvalues explicitly, then compiler just choose to use copy regardless of lvalue or rvalue. However, move is not recommended to be implicitly defined if destructor is user-defined.
+Example:<pre id="bbbcdd97-4eab-4b8f-b00e-08d6bfcf2716" class="code"><code>// move constructor
+BST::BST(BST&amp;&amp; other) {
+	value{other.value}, left{other.left}, right{other.right} { }</code></pre><p id="3f92bf08-b846-42c2-94a9-6881f2144f46" class=""><strong>Reason:</strong></p><ul id="b2088fcc-dcef-4872-88c6-6a8936b42a1b" class="bulleted-list"><li style="list-style-type:disc">This is an implicitly defined move constructor for BST.</li></ul><ul id="fd649813-f056-4474-8a64-c9a958c89686" class="bulleted-list"><li style="list-style-type:disc">After the move constructor is called, the rvalue object will be destroyed automatically and we cannot control this. This leads to the situation that the fields of the new object we just created are freed. As a result, move constructor and move assignment operators should be defined <strong>explicitly</strong> if the destructor is user-defined!</li></ul></li></ol><p id="8a9cb7bc-9404-4ad0-9836-5d8aac2faab0" class="">
+</p><p id="dac5cd93-f8d0-44c4-8bc1-5ca9583b4b21" class=""><strong>Conclusion:</strong></p><ol type="1" id="8724f828-10dd-488b-9fda-85889b4bba98" class="numbered-list" start="1"><li>If <strong>copy constructor</strong> is defined <strong>explicitly</strong>, then we should also define <strong>copy assignment operator</strong> explicitly since we want these two functions to have the same behaviors, and vice versa.</li></ol><ol type="1" id="ff14b2d3-d83f-417e-8979-9a71e804ccc0" class="numbered-list" start="2"><li>Destructor should be user defined if fields in user-defined class are designed to be <strong>heap-allocated</strong>.</li></ol><ol type="1" id="10633242-a3b6-40f2-8143-bf051d2310c3" class="numbered-list" start="3"><li>Error will <strong>NOT</strong> occur if copy is defined explicitly and move is defined implicitly because copy can deal with both lvalues and rvalues.</li></ol><ol type="1" id="57c1b608-b87a-4ae1-bc59-fbcd59be8892" class="numbered-list" start="4"><li>Error <strong>WILL</strong> occur if move is defined explicitly and copy is defined implicitly because the result of disabling copy <strong>leads to that compiler does not know how to deal with lvalues</strong>.</li></ol><ol type="1" id="5ef2f0ac-c854-4f8f-ab86-7c69e7e20586" class="numbered-list" start="5"><li>If move is user-defined, then copy <strong>MUST ALSO BE</strong> user-defined.</li></ol><p id="21afeaaa-cdee-4590-8d19-d675a483d3e2" class="">
+</p><p id="b4779391-c4d1-4bf6-b147-9faf6ad9cfca" class="">
+</p><h1 id="3bb4c3c6-d744-4016-9d2b-e35c08d21784" class="">Class Invariant</h1><p id="8eec4a48-4272-4752-a521-537f5e0b1147" class="">An assumption that the class objects will be created in heap or stack memory.</p><ul id="f3d0c942-059e-43aa-8f63-0f19929cd0f8" class="bulleted-list"><li style="list-style-type:disc">Defines all valid states of an object</li></ul><ul id="b0ee9c73-df6a-4482-95d4-64180234f5ab" class="bulleted-list"><li style="list-style-type:disc">A logical condition that ensures the correct working of a class</li></ul><ul id="c0adc118-f1b0-49e7-a617-6bc195c76c4c" class="bulleted-list"><li style="list-style-type:disc">Class variant must hold when an object is created</li></ul><ul id="9651872c-f1e4-41c2-ae06-50c1a8067809" class="bulleted-list"><li style="list-style-type:disc">Must be preserved under all operations of the class</li></ul><p id="d09381e8-cece-4575-8daa-595d4abcde4d" class="">
+</p><p id="65a1bc2f-8ead-44c9-847c-52a673fd42b8" class="">Example of an invariant we did with <code>BST</code> class:</p><ul id="24fa21dc-8d17-427d-9e8a-9a69eec09ac3" class="bulleted-list"><li style="list-style-type:disc">We implemented a customized destructor for class <code>BST</code></li></ul><ul id="1631184e-648b-4f62-b664-649f6100e56d" class="bulleted-list"><li style="list-style-type:disc">Deleting a pointer pointing to stack memory will cause error</li></ul><ul id="213bbf2f-8668-4b01-8669-68001b3b25ad" class="bulleted-list"><li style="list-style-type:disc">In order to ensure that the destructor works correctly, the children of BST objects must be created in heap memory!</li></ul><pre id="028a5ab5-dbec-460b-a976-e22f633aad87" class="code"><code>// destructor
+BST::~BST() {
+	std::cout &lt;&lt; &quot;Called DTOR&quot; &lt;&lt; std::endl;
+	delete left;
+	delete right;
+}</code></pre><p id="7beaca8e-9594-4c0d-9355-aaf20c5256ba" class="">We don’t have to write any code for class invariant. It is an assumption we made, and this assumption must hold true to let to program run correctly.</p><p id="632765a6-f44f-4cf3-97f3-9d9734ca9338" class="">
+</p><h1 id="6f11b9d5-f8a0-45fb-ae91-563ad32e8188" class="">Encapsulation</h1><p id="9755ad73-bb56-4ca4-8f5d-0ad300bb6037" class="">We learned modulization in C:</p><ul id="c21f6b12-7ceb-47a2-b9e0-1137311817df" class="bulleted-list"><li style="list-style-type:disc">We need both header files and implementation files to run a program.</li></ul><ul id="1301337e-6e6b-4722-b6ed-8be86001a020" class="bulleted-list"><li style="list-style-type:disc">Implementation files are often binary files, or that file contents are hidden.</li></ul><ul id="da9c8797-a181-4d01-acf6-cd43ad74329c" class="bulleted-list"><li style="list-style-type:disc">Clients only need the function declarations in header files to understand the use of the function.</li></ul><ul id="4bf60738-442c-47f1-9da2-7e320c735271" class="bulleted-list"><li style="list-style-type:disc">Clients do not need to know how functions are implemented.</li></ul><ul id="f2e6841d-5abc-4f2a-84ca-8a9d8f616e4b" class="bulleted-list"><li style="list-style-type:disc">One of the advantages is <mark class="highlight-red"><strong>information hiding</strong></mark>.</li></ul><ul id="6afb96b7-6ddf-404b-82b8-ec0b2bc8482f" class="bulleted-list"><li style="list-style-type:disc">In classes, we can also do information hiding, as known as <mark class="highlight-red"><strong>encapsulation</strong></mark>.</li></ul><p id="2170e7b7-b1a1-49c9-b9ba-beb4f474b028" class="">
+</p><p id="18d4f710-ac57-475c-9f10-81015e2222e9" class="">For objects:</p><ul id="d64b505b-c66f-48ec-8ec8-8f819e1258eb" class="bulleted-list"><li style="list-style-type:disc">We do not want clients to directly access some of the fields or methods.</li></ul><ul id="a3c05fab-2a18-4341-88ab-13f9268a50f7" class="bulleted-list"><li style="list-style-type:disc">Clients only interact objects with “exposed interface”.</li></ul><p id="a5510268-6504-4dca-8a03-e80f072e57c6" class="">
+</p><p id="8ef5e75d-18ef-41b4-b7f6-e8ce5116abc4" class="">Terms:</p><p id="cc4b2895-dd67-4367-916f-7700266a8199" class=""><code>private</code>: fields or methods that are <strong>hidden</strong>, clients <strong>cannot</strong> access these fields or methods directly.</p><p id="0248eb9b-5546-4ec4-bac5-563125330a5e" class=""><code>public</code>: fields or methods that are <strong>exposed</strong>, clients <strong>can</strong> access these fields or methods directly.</p><p id="6d719887-190d-4922-a741-dae48c39243e" class="">
+</p><p id="dc9ccbea-9cb2-45b1-8c7e-301822e130de" class="">Example:</p><pre id="ebc2a820-172e-42c6-a4e5-810213e54b02" class="code"><code>struct Posn {
+private: // all fields and methods below will be hidden until
+				 // keyword &quot;public&quot; appears.
+	int x, y;
+	mutable int multiCount = 0; // field which const methods
+															// are allowed to mutate
+public:
+	// constructor
+	Posn( int x = 0, int y = 0 ):
+		x{x}, y{y} { }
+
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*( const int&amp; n ) const { // const indicates that this
+	// function is not allowed to mutate any fields of the class
+		multiCount += 1;
+		// but const functions are allowed to mutate mutable fields
+		return Posn{ x * n, y * n };
+	}
+};
+
+int main() {
+	Posn p{ 3, 4 };
+	std::cout &lt;&lt; p.x &lt;&lt; std:endl; // this line will cause error!
+	// since we are not allowed to access a private field directly
+}
+																				</code></pre><p id="3cd9267f-8952-4e9d-9740-0423c5c38509" class="">Important Points:</p><ul id="0e449017-cc11-40b1-a704-71944cfa1256" class="bulleted-list"><li style="list-style-type:disc">In the example, all fields are declared <code>private</code>, so we cannot access fields directly.</li></ul><ul id="f8b1396b-50f1-4372-960e-dbf6afdff8a7" class="bulleted-list"><li style="list-style-type:disc">Once keyword “<code>private</code>” appears, all fields and methods below “<code>private</code>” will be <strong>hidden</strong> until keyword “<code>public</code>” appears.</li></ul><ul id="87f4140d-05a5-48d9-a827-8f0d34833e96" class="bulleted-list"><li style="list-style-type:disc">Keyword “<code>struct</code>” makes all fields and methods <mark class="highlight-red"><strong>public</strong></mark> by default.</li></ul><ul id="013b770b-e36b-4f07-b027-4b16b410fc5f" class="bulleted-list"><li style="list-style-type:disc">Keyword “<code>class</code>” makes all fields and methods <strong><mark class="highlight-red">private</mark></strong> by default.<p id="bc882080-24c8-4ba1-b1f9-0288641e5265" class="">Example:</p><pre id="15dcb040-7979-4f66-9af3-bbcb590a0ca4" class="code"><code>class Posn { // now all fields and methods are private by default
+	int x, y; // private fields
+	mutable int multiCount = 0;
+public: // now all methods below are public to clients
+	// constructor
+	Posn( int x = 0, int y = 0 ):
+		x{x}, y{y} { }
+
+	// multiplication operator overloading
+	Posn operator*( const int&amp; n ) const {
+		multiCount += 1;
+		return Posn{ x * n, y * n };
+	}
+};</code></pre><p id="b7c0f3cf-4550-4cfd-aa51-b6ea7f1e6444" class="">This is the ONLY difference between <code>struct</code> and <code>class</code> in C++:<div class="indented"><p id="5d1b76c2-e883-401b-991a-244e5610a24b" class=""><strong>(</strong><mark class="highlight-red"><strong>Default visibility</strong></mark><strong>)</strong></p></div></p></li></ul><p id="5708db8d-9fc4-44eb-a5ee-f8348209a896" class="">
+</p><h3 id="7aba4608-a9c0-4a63-ac46-076be65e427a" class="">Accessor &amp; Mutator:</h3><p id="e97cea80-bc5b-441b-8b69-85293495c295" class="">We often need to provide extra public methods to let clients retrieve field values or mutate field values. We call those functions <mark class="highlight-red"><strong>accessors</strong></mark> and <mark class="highlight-red"><strong>mutators</strong></mark>.</p><p id="b72371ff-0c00-4b86-a330-7beb8b2896ac" class=""><strong>Accessors</strong> are always <code>const</code> methods. We only want the values, we do not want to mutate them.</p><p id="fddc8aab-f098-49cc-9bab-2db5f7f7af9a" class=""><strong>Mutators</strong> <strong>CANNOT</strong> be <code>const</code> methods because we want to mutate field values.</p><p id="c8fe367a-ef05-49ba-b9e7-6bb6a7494571" class="">Example:</p><pre id="a5aade53-bf5e-473e-8c5e-7cb69b749555" class="code"><code>class Posn {
+	int x, y;
+public:
+	// constructor
+	Posn( int x = 0; int y = 0 ):
+		x{x}, y{y} { }
+
+	// multiplication operator overloading
+	// constant method, no field is allowed to be mutated
+	Posn operator*( const int&amp; n ) const {
+		multiCount += 1;
+		return Posn{ x * n, y * n };
+
+	// accessors
+	int getX() const { return x; }
+	int getY() const { return y; }
+
+	// mutators
+	void setX( const int&amp; n ) { x = n; }
+	void setY( const int&amp; n ) { y = n; }
+};
+
+int main() {
+	Posn p{ 3, 4 };
+	std::cout &lt;&lt; p.getX() &lt;&lt; std::endl; // now we can get the values of
+																			// private fields.
+}</code></pre><p id="5a082362-e5d2-4b64-9680-ac15b10245c2" class="">
+</p><p id="d8bb126f-4a86-4414-b518-4cf292121bdd" class=""><em><strong>Tradition:</strong></em></p><ul id="4c3ff8a8-9bf4-471c-8004-0fe63196623c" class="bulleted-list"><li style="list-style-type:disc"><strong>Fields</strong> are often <strong>all hidden</strong> from clients to ensure security.</li></ul><ul id="825fce9b-ac5b-49e6-bcfa-6ace7de46c20" class="bulleted-list"><li style="list-style-type:disc"><strong>Constructors</strong>:<p id="bb09be15-bec5-4615-9ca6-1d5f5c0f1ead" class="">Should be public (unless using Factory Design Pattern) because clients need it to create objects.</p></li></ul><ul id="9240fbfa-f458-47b0-aaee-01a470dc38cb" class="bulleted-list"><li style="list-style-type:disc"><strong>The Big Five</strong>: <p id="dbce9b0f-6daf-42b9-8edf-90e710447062" class="">Depending on design. Sometimes copy is disabled and clients can only pass by reference.</p></li></ul><ul id="6a92462e-c049-460a-b6f2-fd8c533a9f11" class="bulleted-list"><li style="list-style-type:disc"><strong>Other methods</strong>:<p id="2cfbc880-9d5a-4276-9775-56e71ad25eb9" class="">Depending on design.</p></li></ul><ul id="b3947b3e-0c25-4e82-9e74-af1f6cdc6007" class="bulleted-list"><li style="list-style-type:disc"><strong>Operator overloading</strong> should <mark class="highlight-red"><strong>ALWAYS</strong></mark> be public.</li></ul><p id="e30236dc-cc49-4f73-bced-7b9983a3185d" class="">
+</p><h1 id="9973352b-a7bb-477e-98ee-fd71ee478003" class="">Static in C++</h1><h3 id="2ab91273-0539-4d2b-abe0-a05f130d7f38" class="">Static fields:</h3><ul id="82edcc36-8646-47ef-9529-e94f36056959" class="bulleted-list"><li style="list-style-type:disc">Declaration only (no inline initialization!)</li></ul><ul id="b4c7c204-73a9-48cd-97c1-47bc9eef7a9d" class="bulleted-list"><li style="list-style-type:disc">Must be defined <mark class="highlight-red"><strong>explicitly</strong></mark> <mark class="highlight-red"><strong>outside the class</strong></mark>, either by user or by provider!</li></ul><ul id="87a2f06b-36dd-4bb4-98f2-5dc64a0b57f4" class="bulleted-list"><li style="list-style-type:disc">Get allocated <mark class="highlight-red"><strong>ONLY once</strong></mark> for the lifetime of the program.</li></ul><ul id="090bd977-325c-468b-966b-98c5f73a7d8a" class="bulleted-list"><li style="list-style-type:disc">Shared among all the objects created from the same class.</li></ul><ul id="7921f2ec-6b74-44a8-acb9-400a526ae3b9" class="bulleted-list"><li style="list-style-type:disc">Can be accessed without creating any object as long as it has been defined outside the class.</li></ul><p id="043198be-4b8a-4170-996e-efcce7ff7dd5" class="">Example:</p><pre id="8c2b4067-475f-4a85-b59d-d2fc6e40803e" class="code"><code>// declare a static variable that counts how many Posn objects
+// have been created
+
+class Posn {
+	int x, y;
+public:
+	static int count; // static field, only declaration allowed!
+	
+	// constructor
+	Posn( int x, int y ):
+		x{x}, y{y} { count += 1; }
+};
+
+int Posn::count = 0; // initialization outside the Posn class
+										 // must be defined globally
+
+int main() {
+	Posn p1{ 3, 4 };
+	Posn p2{ 5, 6 };
+	std::cout &lt;&lt; Posn::count &lt;&lt; std::endl;
+}</code></pre><p id="5d1dfd35-1a94-4c33-9c12-3466e5d90492" class="">
+</p><h3 id="250881c9-1991-4812-bfef-10eb9a961ded" class="">Static objects:</h3><p id="3276d80c-5057-4c16-9da9-8f0a125f2f41" class="">Same as static variables.</p><figure id="d9538e1e-c428-40d4-90a5-c90874eae82a" class="image"><a href="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%203.png"><img style="width:893px" src="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%203.png"/></a></figure><figure id="b8f88089-c03d-481d-ae96-9b189d968188" class="image"><a href="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%204.png"><img style="width:812px" src="C++%20Classes%20(part%202)%2084cf29b77ed24d459477f9b8c1be41fa/Untitled%204.png"/></a></figure><p id="e80bb487-cdc6-47b4-8e57-54bd4a1a2ea2" class="">
+</p><h3 id="cf1ada02-89a2-4220-ae9a-1976045a6a60" class="">Static methods inside class:</h3><ul id="094558d3-1a96-4811-8bb3-f5d586d0383f" class="bulleted-list"><li style="list-style-type:disc">Only have access to <mark class="highlight-red"><strong>static fields</strong></mark> inside the class.</li></ul><ul id="444b9802-9705-4283-995c-7736b2997f6f" class="bulleted-list"><li style="list-style-type:disc">Does not depend on the object created from the class.</li></ul><ul id="ca534dbc-ec17-4f97-ad51-d50cc960a9ac" class="bulleted-list"><li style="list-style-type:disc">Can be accessed using the scope resolution operator.</li></ul><p id="61ac4d4f-0daf-4ebd-beba-fa34883f735b" class="">Example: </p><pre id="3da4b316-35a2-4e27-9b5a-4d6ae7042fce" class="code"><code>#include &lt;iostream&gt;
+
+class Posn {
+	int x, y;
+	static int count;
+public:
+	Posn( int x, int y ):
+		x{x}, y{y} { }
+
+	static void print() { // static method inside class
+		std::cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; std::cout &lt;&lt; y &lt;&lt; std::endl;
+		// the above line will cause error because static methods are
+		// only allowed to access and mutate static fields of the class.
+		std::cout &lt;&lt; count &lt;&lt; std::endl; // this line is allowed
+	}
+};
+
+int main() {
+	Posn p{ 3, 4 };
+	p.print(); // this line will cause error ×
+	Posn::print(); // this is the correct way √
+}</code></pre><p id="4c82d303-8156-4fad-92c4-d7d017f8003c" class="">
+</p></div></article></body></html>

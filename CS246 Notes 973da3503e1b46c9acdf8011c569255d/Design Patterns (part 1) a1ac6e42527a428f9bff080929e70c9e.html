@@ -1,0 +1,1122 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Design Patterns (part 1)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a1ac6e42-527a-428f-9bff-080929e70c9e" class="page sans"><header><h1 class="page-title">Design Patterns (part 1)</h1></header><div class="page-body"><h1 id="cdbca632-008b-4a3d-a12c-99390133ef64" class="">Decorator Design Pattern</h1><p id="15b1efd0-0138-4650-9178-875622f13070" class="">Decorator Design Pattern belongs to Structural Design Pattern. It allows behaviors to be added to an individual object during runtime stage (dynamically).</p><p id="20420fa2-48e8-4ef9-944c-9d69cea2091e" class="">
+</p><p id="6da5fec8-9fd9-4dd9-95fe-cd655a696645" class=""><em><strong>What does a decorator design pattern contain?</strong></em></p><ul id="412a0cbc-8656-42d0-93f7-b5b2f829afb9" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Abstract component class</mark></strong> (common properties)
+(e.g.: when making a vehicle, must have engine and tires)</li></ul><ul id="d4f1eb44-4f04-47f8-a898-7269859e80ed" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Concrete component classes</mark></strong> inherited from the <strong><mark class="highlight-red">abstract component class</mark></strong> (used to create the component (core)).</li></ul><ul id="5ea7d03b-1e10-41be-8806-705631a9106c" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">A decorator base class (abstract class)</mark></strong> inherited from the <strong><mark class="highlight-red">abstract component class</mark></strong>
+(contains <span style="border-bottom:0.05em solid"><mark class="highlight-red">a pointer pointing to the component</mark></span>).</li></ul><ul id="51956a8a-516e-43cb-8dc2-63d2b038be56" class="bulleted-list"><li style="list-style-type:disc"><strong><mark class="highlight-red">Concrete classes</mark></strong> inherited from decorator base class (contain <span style="border-bottom:0.05em solid"><mark class="highlight-red">implementations</mark></span>).</li></ul><figure id="906faed3-5529-448c-90fa-0fa21ca55ea6" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled.png"><img style="width:384px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled.png"/></a><figcaption>A UML graph showing the Decorator Design Pattern relations</figcaption></figure><p id="d53bda73-09a2-4a1f-bfc2-995ada75b287" class="">
+</p><p id="2e966d42-9092-41ca-992a-ccde63010fef" class=""><em><strong>Example:</strong></em>
+We want to find out the <strong>price</strong> for making a vehicle using <strong>decorator design pattern</strong>.</p><p id="861f80c4-9b34-49ba-8225-8443f9f287b6" class="">Step 1:
+Define the <strong>abstract component class</strong>:</p><pre id="b619d13f-048b-4f8a-a2c7-6ac178325591" class="code"><code>// vehicle.h
+#ifndef __VEHICLE_H__
+#define __VEHICLE_H__
+
+class Vehicle {
+public:
+	// pure virtual method
+	// returns the cost of making a vehicle
+	virtual int make() = 0;
+
+	// virtual destructor
+	virtual ~Vehicle() {}
+};
+
+#endif</code></pre><p id="9ec12054-341a-4b0d-8159-ee13bb015c3c" class="">
+</p><p id="1e596b86-4bbc-4313-99ec-900c147e8407" class="">Step 2:
+Define the <strong>concrete component class</strong> so that we can create objects:</p><pre id="a3c048d7-adb3-4fd2-afac-bd09fb43f117" class="code"><code>// core.h
+#ifndef __CORE_H__
+#define __CORE_H__
+
+#include &lt;vector&gt;
+#include &quot;vehicle.h&quot;
+#include &quot;parts.h&quot;
+
+class CoreComponent : public Vehicle {
+	Engine engine; // add private fields
+	std::vector&lt;Tire&gt; tires;
+public:
+	CoreComponent(const Engine&amp; e, const Tire&amp; t);
+
+	int make() override;
+};
+
+#endif</code></pre><pre id="25054175-b0ec-431c-94ac-d143f8a77b7e" class="code"><code>// core.cc
+#include &lt;iostream&gt;
+#include &quot;core.h&quot;
+
+CoreComponent::CoreComponent(const Engine&amp; e, const Tire&amp; t):  // implement constructor
+	engine{e} {
+	for (int i = 0; i &lt; 4; i++) {
+		tire.emplace_back(t);
+	}
+}
+
+int CoreComponent::make() { // implement pure virtual method
+	int cost = engine.getPrice();
+	for (auto const&amp; t : tires) {
+		cost += t.getPrice();
+	}
+	std::cout &lt;&lt; &quot;Making core component cost: $&quot; &lt;&lt; cost &lt;&lt; std::endl;
+	return cost;
+}</code></pre><pre id="dd01f4d8-eeb7-48cd-9a53-97863f58ff09" class="code"><code>// main.cc
+#include &quot;core.h&quot;
+
+int main() {
+	Engine engine{&quot;Audi&quot;, 3000};
+	Tire t{&quot;Michelin&quot;, 300);
+
+	Vehicle* core = new CoreComponent{engine, t};
+	core-&gt;make();
+
+	delete core;
+}</code></pre><figure id="9487889a-f064-4e4d-9f09-7b2d5a23d7c3" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%201.png"><img style="width:1043px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%201.png"/></a><figcaption>Program gives us correct output</figcaption></figure><p id="e41a4379-02b4-4e97-b867-e8fbcdaead82" class="">Object core will be used for the decorator abstract class.</p><p id="acc65727-288d-4c65-9043-66610f77a78a" class="">Note:  The aggregation relationship in the UML diagram, core will be deallocated if concrete decorator objects are deallocated (depends on implementation). This is the reason why we use pointer pointing to core in decorator abstract class could be either composition or aggregation.</p><p id="6b493ee2-a042-4acc-8c52-da5babc7b6e2" class="">
+</p><p id="3e4e1800-60c2-425b-8604-d440e278db04" class="">Step 3:
+Define the <strong>abstract Decorator class</strong>:</p><pre id="4dcdf236-1aef-4b81-bb01-f5d776764a2f" class="code"><code>// decorator.h
+#ifndef __DECORATOR_H__
+#define __DECORATOR_H__
+
+#include &quot;vehicle.h&quot;
+#include &quot;parts.h&quot;
+
+class Decorator : public Vehicle {
+protected:
+	Vehicle* core; // We need a field which is a pointer pointing
+								 // to the component (Vehicle) object
+public:
+// Since this is an abstract decorator class, we don’t implement pure virtual methods.
+	Decorator(Vehicle*);
+	~Decorator();
+};
+
+#endif</code></pre><p id="dfaa9f24-6da8-44f9-9d9e-eb1604e38aa5" class=""><em>Note:</em>
+An abstract base class can have an abstract derived classes.</p><pre id="6c417883-6716-4e8d-8ca3-2f217c76743d" class="code"><code>// decorator.cc
+#include &quot;decorator.h&quot;
+
+Decorator::Decorator(Vehicle* core):
+	core{core} { }
+
+Decorator::~Decorator() {
+	delete core;
+}</code></pre><p id="e41c772f-4a99-4c06-ace3-ad936f3c730c" class="">
+</p><p id="f8a43323-e339-407e-827f-67695778dc51" class="">Step 4:
+Define <strong>concrete class derived from Decorator class</strong>:</p><pre id="683cf4f0-4d8c-44c5-9291-c67fd5775288" class="code"><code>// seat.h
+#ifndef __SEAT_H__
+#define __SEAT_H__
+
+#include &lt;vector&gt;
+#include &quot;decorator.h&quot;
+
+class AttachSeat : public Decorator {
+	std::vector&lt;Seat&gt; seats; // Add an additional field: a vector of Seat
+public:
+	AttachSeat{Vehicle*, const Seat&amp;};
+	int make() override;
+};
+
+#endif</code></pre><pre id="a28d8721-e0d1-4217-bf78-da0f71349eee" class="code"><code>// seat.cc
+#include &lt;iostream&gt;
+#include &quot;seat.h&quot;
+
+AttachSeat::AttachSeat(Vehicle* core, const Seat&amp; s):
+	Decorator{core} { // call the Decorator constructor
+	for (int i = 0; i &lt; 5; i++) {
+		seats.emplace_back(s);
+	}
+}
+// If we create an object by calling the constructor of AttachSeat,
+// then we can make a vehicle with core components and seats.
+
+int AttachSeat::make() {
+	int currCost = 0, prevCost = core-&gt;make();
+	for (auto const&amp; s : seats) {
+		currCost += s.getPrice();
+	}
+	std::cout &lt;&lt; &quot;\nPrevious total cost: $&quot; &lt;&lt; prevCost &lt;&lt; std::endl;
+	std::cout &lt;&lt; &quot;Making Seat cost: $&quot; &lt;&lt; currCost &lt;&lt; std::endl;
+	currCost += prevCost;
+	std::cout &lt;&lt; &quot;\nCurrent total cost: $&quot; &lt;&lt; currCost &lt;&lt; std::endl;
+	return currCost;
+}</code></pre><pre id="cd80defc-9b33-4f19-97f3-432a43659ca5" class="code"><code>// main.cc
+#include &quot;core.h&quot;
+#include &quot;seat.h&quot;
+
+int main() {
+	Engine engine{&quot;Audi&quot;, 3000};
+	Tire t{&quot;Michelin&quot;, 300);
+
+	Vehicle* vehicle = new CoreComponent{engine, t};
+	
+	// attach seats
+	Seat s{&quot;Leather&quot;, 150};
+	vehicle = new AttachSeat{vehicle, s};
+	vehicle-&gt;make();
+
+	delete vehicle;
+}
+</code></pre><p id="6b173188-9d88-41bb-850e-972d2d8cfe73" class="">The above are the four steps for implementing decorator design pattern.</p><ul id="a15ae186-0f09-47e4-acb3-874c71424508" class="bulleted-list"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid"><em><strong>Abstract base class</strong></em></span> only has <em><strong><mark class="highlight-red">pure virtual methods</mark></strong></em>. (We don’t want to add fields in this class, because this is just a framework. Derived component class and decorator classes will add fields.)</li></ul><ul id="0068dafa-264d-40d8-a3a7-80995d12392d" class="bulleted-list"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid"><em><strong>Concrete component class</strong></em></span> contains <mark class="highlight-red"><strong>fields</strong></mark> and <mark class="highlight-red"><strong>implementation</strong></mark> for <strong><em><mark class="highlight-red">pure virtual methods</mark></em></strong>, we create the core object from this class.</li></ul><ul id="47b2d5a2-f847-4eb9-9d6b-0128bed59670" class="bulleted-list"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid"><em><strong>Abstract decorator class</strong></em></span> is derived from <strong><em><mark class="highlight-red">abstract base class</mark></em></strong>; however, this class needs <strong><mark class="highlight-red">a field which is a pointer type pointing the core object</mark></strong>, and <strong><mark class="highlight-red">a user-defined constructor</mark></strong>.</li></ul><ul id="51393f92-980b-4cb6-9ab9-62d862ca60fc" class="bulleted-list"><li style="list-style-type:disc"><span style="border-bottom:0.05em solid"><em><strong>Concrete classes</strong></em></span> derived from <em><strong><mark class="highlight-red">abstract class</mark></strong></em> contains <strong><mark class="highlight-red">extra fields</mark></strong> (depending on the user). Users can have as many concrete classes as they want.</li></ul><p id="695661f1-a0ec-4159-8325-3fcaef4cb3ae" class="">
+</p><p id="9c671d77-7655-455c-9bb5-cabf819336fd" class=""><em>Example: </em>Adding seats and an audio device to a vehicle:</p><pre id="c75fc155-c6de-4999-98f7-2091e6af17b5" class="code"><code>// audio.h
+#ifndef __AUDIO_H__
+#define __AUDIO_H__
+
+#include &quot;decorator.h&quot;
+
+class AttachAudio : public Decorator {
+	Audio audio;
+public:
+	AttachAudio(Vehicle*, const Audio&amp;);
+	int make() override;
+};
+
+#endif</code></pre><pre id="b3aad66b-b7d0-48a6-b1e3-c4fa96ed6970" class="code"><code>// audio.cc
+#include &lt;iostream&gt;
+#include &quot;audio.h&quot;
+
+AttachAudio::AttachAudio(Vehicle* core, const Audio&amp; a):
+	Decorator{core}, audio{a} { }
+
+int AttachAudio::make() {
+	int currCost = audio.getPrice(), prevCost = core-&gt;make();
+	std::cout &lt;&lt; &quot;\nPrevious total cost: $&quot; &lt;&lt; prevCost &lt;&lt; std::endl;
+	std::cout &lt;&lt; &quot;Making Audio cost: $&quot; &lt;&lt; currCost &lt;&lt; std::endl;
+	currCost += prevCost;
+	std::cout &lt;&lt; &quot;\nCurrent total cost: $&quot; &lt;&lt; currCost &lt;&lt; std::endl;
+	return currCost;
+}</code></pre><pre id="e3b811d7-5ab1-4ba5-a9cb-6d1439644c4c" class="code"><code>// main.cc
+#include &quot;core.h&quot;
+#include &quot;seat.h&quot;
+#include &quot;audio.h&quot;
+
+int main() {
+	Engine engine{&quot;Audi&quot;, 3000};
+	Tire t{&quot;Michelin&quot;, 300);
+
+	Vehicle* vehicle = new CoreComponent{engine, t};
+	
+	// attach seats
+	Seat s{&quot;Leather&quot;, 150};
+	vehicle = new AttachSeat{vehicle, s};
+
+	// attach audio
+	Audio a{&quot;Bose&quot;, 1000};
+	vehicle = new AttachAudio{vehicle, a};
+	vehicle-&gt;make();
+
+	delete vehicle;
+}
+</code></pre><figure id="48332559-775c-48a6-a08e-868c2c974514" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%202.png"><img style="width:480px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%202.png"/></a></figure><p id="9a37a6b5-8bb5-4745-83ce-b377cd0bd991" class="">
+</p><p id="1a945333-3820-4600-866d-1d22990d0d20" class="">
+</p><h1 id="78844e2b-5259-4c1a-bc93-4f13cf906150" class="">Observer Design Pattern</h1><p id="2240b47b-0e02-4856-82cf-78a0c119e5e1" class=""><strong><em>Example: Number of Islands</em></strong></p><p id="643f47c9-5962-4d2f-ac66-efaf2f1a544d" class="">Given an <code>m x n</code> 2D binary grid <code>grid</code> which represents a map of <code>&#x27;1&#x27;</code>s (land) and <code>&#x27;0&#x27;</code>s (water), return <em>the number of islands</em>.</p><p id="8e20f417-9064-420e-8fce-d06bf0c90be2" class="">An <strong>island</strong> is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p><div id="a90d4f90-48f6-40b8-a835-7b56984c01aa" class="column-list"><div id="936f6db0-1654-4e87-ac65-e9845ac39cc7" style="width:50%" class="column"><p id="d7057484-e794-4cef-8007-d56db02afa23" class="">Example 1:</p></div><div id="f15d3607-1840-4eef-a809-c90b23d9bea1" style="width:50%" class="column"><p id="6d7da81c-1077-43ed-ba3b-c79551b43376" class="">Example 2:</p></div></div><div id="30fafbf8-7750-47bd-b2ac-1c953c063cd6" class="column-list"><div id="787cc189-1cd3-45d4-8b2c-7f437c7291e5" style="width:50%" class="column"><pre id="182017db-18a2-4791-b196-dc16c374bccf" class="code code-wrap"><code>Input:
+grid = [
+  [&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;0&quot;],
+  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;],
+  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],
+  [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;]
+]
+Output: 1</code></pre></div><div id="f749895e-6842-46b4-a9c5-bdac3ef503b3" style="width:49.99999999999999%" class="column"><pre id="7f98c948-161b-4afe-8e8b-f6ddb6869ede" class="code code-wrap"><code>Input:
+grid = [
+  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],
+  [&quot;1&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;],
+  [&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],
+  [&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;1&quot;]
+]
+Output: 3</code></pre></div></div><p id="fa2d53f3-7718-4539-b7ae-40dbe6e3ec64" class=""><em><strong>Idea:</strong></em></p><p id="394c9a28-6db0-4c8c-aacd-0178c784dd2e" class="">Whenever we found a ‘1’, we change it to zero, and change all ‘1’s that are attached to zero.</p><p id="83d76dc8-26b7-4427-84a3-69c71a4bba98" class="">
+</p><p id="670bebf0-d45a-4632-8b0b-78c40aafaf16" class="">Step 1: the subject Class</p><pre id="ee5268e2-9817-4445-a468-2baafb7c12b1" class="code"><code>// subject.h
+#ifndef __SUBJECT_H__
+#define __SUBJECT_H__
+
+#include &lt;vector&gt;
+
+class Observer;
+
+class Subject {
+protected:
+	std::vector&lt;Observer*&gt; neighbours;
+
+public:
+	// attach the observer to the vector
+	void attachOb(Observer*);
+
+	// when subject changes, this method will be called in order to notify
+	// all of its observers.
+	void notifyObservers();
+
+	// pure virtual method, so this class must be abstract
+	virtual std::vector&lt;int&gt; getState() const = 0;
+
+	// destructor must be virtual
+	virtual ~Subject();
+};
+
+#endif</code></pre><pre id="d897df6d-ef8b-4cd5-808c-00f13c7c17c3" class="code"><code>// subject.cc
+#include &quot;subject.h&quot;
+#include &quot;observer.h&quot;
+
+void Subject::attachOb(Observer* ob) {
+	// add the pointer to the vector
+	neighbour.emplace_back(ob);
+}
+
+void Subject::notifyObservers() {
+	// notify all its observers about any change
+	for (auto ob : neighbour) {
+		// observer receives updates from the subject it observes
+		ob-&gt;notify(*this);
+	}
+}
+
+Subject::~Subject() { }</code></pre><p id="cbf00335-9773-45c8-a559-084e55e2237d" class="">
+</p><p id="0cfe7f63-bebb-49fd-8441-a8af1a117d83" class="">Step 2: class Observer</p><pre id="1a22ad6a-0815-4829-bea2-7ec007843ba5" class="code"><code>// observer.h
+#ifndef __OBSERVER_H__
+#define __OBSERVER_H__
+
+class Subject;
+
+class Observer {
+public:
+	// pure virtual method
+	// The parameter represents the subject that notifies this observer
+	virtual void notify(Subject&amp;) = 0;
+	
+	virtual ~Observer();
+};
+
+#endif</code></pre><pre id="b740a14e-8bee-4136-ad87-320e9a485ff1" class="code"><code>// observer.cc
+#include &quot;observer.h&quot;
+
+Observer::~Observer() { }</code></pre><p id="72f43136-9165-47ba-9bc3-c1ad1310ada0" class="">In class Subject, we need a vector of <code>Observer*</code> because <em>class Observer</em> is <mark class="highlight-red">abstract</mark> which means that we cannot create objects from it. <code>attachOb()</code> and <code>notifyObservers()</code> should be implemented in <em>class Subject</em> without making them <mark class="highlight-red"><em>pure virtual method</em></mark>.</p><p id="abb10f92-3f21-45fd-898f-a8ae9123ddb2" class="">
+</p><p id="e75d1c27-66a0-47ee-b7e7-1cdde430c7a1" class="">In class Observer, <code>notify()</code> should be <em><mark class="highlight-red">pure virtual method</mark></em> since we do not have any concrete classes derived from class Observer.</p><p id="604948dd-772c-448a-9ba4-10cc4b1dbe3d" class="">
+</p><p id="4ab110a4-024d-4235-aae9-dc53c3d985fc" class="">Step 3: class Cell</p><pre id="322bc8fc-26a5-4091-b2d1-64e3e0ab8556" class="code"><code>// cell.h
+#ifndef __CELL_H__
+#define __CELL_H__
+
+#include &lt;vector&gt;
+#include &quot;subject.h&quot;
+#include &quot;observer.h&quot;
+
+// multiple inheritance (see below subsection for more info)
+class Cell : public Subject, public Observer {
+	int val, row, col;
+public:
+	// constructor
+	Cell(const int&amp;, const int&amp;, const int&amp;);
+	
+	// This method will change the subject, so it triggers notifyObservers()
+	void eraseVal();
+
+	std::vector&lt;int&gt; getState() const override;
+
+	void notify(Subject&amp;) override;
+};
+
+#endif</code></pre><pre id="c18d79f1-cf41-4f7f-838a-9011cc62cc64" class="code"><code>// cell.cc
+#include &quot;cell.h&quot;
+
+Cell::Cell(const int&amp; val, const int&amp; row, const int&amp; col):
+	val{val}, row{row}, col{col} { }
+
+void Cell::eraseVal() {
+	// change the val from 1 to 0
+	val = 0;
+	// since we modified val, this means that the subject changes,
+	// and we need to notify all its observers.
+	notifyObservers();
+}
+
+std::vector&lt;int&gt; getState() const {
+	return {val, row, col};
+}
+
+// As an observer, the cell is notified by its subject
+void Cell::notify(Subject&amp; whoNotified) {
+	if (val != 0) {
+		eraseVal();
+	} else {
+		// do nothing
+	}
+}</code></pre><p id="92e672ba-0f78-46e3-b8c1-d65d3e66c100" class="">Note: Cell is both subject and observer, therefore, in order to make Cell concrete class, it needs to implement all pure virtual methods from both base classes.</p><p id="d735c45a-36d1-44a7-8b4f-37d79d9af822" class="">
+</p><p id="f63f326b-7461-4cea-9a3e-5ae56da42604" class="">Step 4: class Grid Definition</p><figure id="fafd1cf2-73d1-4521-b706-3e386ae3d15c" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%203.png"><img style="width:528px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%203.png"/></a></figure><figure id="e5758443-c5df-4b17-9da5-cdae3f2edf01" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%204.png"><img style="width:528px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%204.png"/></a></figure><figure id="3c1290c7-79c7-4513-b124-672bb30c2d75" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%205.png"><img style="width:528px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%205.png"/></a></figure><p id="5a010ee8-3f30-418f-8e45-2d9bcd15d2a2" class="">Step 5: Graphical Display - Bonus</p><p id="ffd4eeb5-b2c5-47f9-9220-82a27dbd5730" class="">Step 6: Sample Client code</p><figure id="d90282d8-2344-42b9-96e9-b64549d736e4" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%206.png"><img style="width:528px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%206.png"/></a></figure><p id="8fe43402-375a-4dd6-866a-65e8e9c18890" class="">
+</p><h2 id="4dce0802-c348-4847-9ee7-ac351af9af88" class="">Multiple Inheritance:</h2><ul id="456ad791-747b-4b0a-9575-0ea19a438fba" class="bulleted-list"><li style="list-style-type:disc">A class can inherit from more than one class.</li></ul><ul id="681104e8-f9c5-432e-bc28-555c8827072b" class="bulleted-list"><li style="list-style-type:disc">Constructors are called in the same order in which they are inherited</li></ul><ul id="77cc8877-6e2e-4e39-a6de-3b3bc55f2c0b" class="bulleted-list"><li style="list-style-type:disc">Destructors are called in reverse order of constructors</li></ul><p id="da12ab39-26fe-476d-9a3d-d5faf6b1542f" class="">Example:</p><pre id="74bdf076-e83b-4b5d-b7d4-9c5f4dd1c444" class="code"><code>#include &lt;iostream&gt;
+using namespace std;
+
+class A {
+public:
+    A() {cout &lt;&lt; &quot;ctor A&quot; &lt;&lt; endl;}
+    virtual ~A() {cout &lt;&lt; &quot;dtor A&quot; &lt;&lt; endl;}
+
+    void print() {cout &lt;&lt; &quot;A print&quot; &lt;&lt; endl;}
+};
+
+
+
+class B {
+public:
+    B() {cout &lt;&lt; &quot;ctor B&quot; &lt;&lt; endl;}
+    virtual ~B(){cout &lt;&lt; &quot;dtor B&quot; &lt;&lt; endl;}
+
+    void print() {cout &lt;&lt; &quot;B print&quot; &lt;&lt; endl;}
+};
+
+class C : public A, public B {
+
+};
+
+int main() {
+    C c;
+		c.print(); // this won&#x27;t compile -&gt; ambiguous function call
+    c.A::print(); // this works
+    c.B::print(); // this works too
+}
+
+// If two base classes have two functions with the exact same function signatures,
+// then if the derived class needs to call that function, it has to specify which
+// scope the function wish to call is in.</code></pre><figure id="48f1fbf5-635b-49a7-b6b5-89c8ecba2602" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%207.png"><img style="width:576px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%207.png"/></a><figcaption>ambiguous function call → compiling error</figcaption></figure><figure id="d6ebc014-9169-41f3-a9cb-07d205e4c24d" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%208.png"><img style="width:576px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%208.png"/></a><figcaption>Constructors are called in the same order in which they are inherited;
+Destructors are called in reverse order of constructors</figcaption></figure><p id="ddc367b9-8a57-44a6-8a9f-170cfc8652af" class="">
+</p><h1 id="8103214e-1026-4d48-9302-c9c7e41b0d05" class="">Strategy Design Pattern</h1><ul id="7069a8e4-91e1-4468-8cc2-b6713433e163" class="bulleted-list"><li style="list-style-type:disc">A <em><strong><mark class="highlight-red">behavioral design pattern</mark></strong></em></li></ul><ul id="f709d7bf-0968-420d-8c34-a75ef16518d8" class="bulleted-list"><li style="list-style-type:disc">Turns a set of behaviors into objects and makes them interchangeable inside the original context object.</li></ul><ul id="d98687ce-d1a9-4aa1-94dd-e9ae7b64ce97" class="bulleted-list"><li style="list-style-type:disc">The simplest design pattern. ;)</li></ul><div id="52e71885-163d-43fc-a6fa-1d250a691dff" class="column-list"><div id="4aff12fe-f2b7-4871-94f0-3ddba533f165" style="width:50%" class="column"><figure id="bb5b65c2-6cd9-4cf5-8cd3-56f0a03f59c2" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%209.png"><img style="width:384px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%209.png"/></a></figure></div><div id="efb23e10-d82d-4081-b6c6-1086ce1cbc57" style="width:50%" class="column"><ul id="0946ad2a-f313-4ba4-af53-68294af7d911" class="bulleted-list"><li style="list-style-type:disc"><em>Context</em> is composed of <em>Strategy</em>.</li></ul><ul id="29ce033e-8c2b-4507-86d6-576e49943d92" class="bulleted-list"><li style="list-style-type:disc"><em>Context</em> might be changing strategies if necessary.</li></ul><ul id="e9a29dee-b9a6-4a7a-a4ff-0570b4b4d986" class="bulleted-list"><li style="list-style-type:disc">At least 3 classes are needed: 2 concrete classes and 1 abstract class.</li></ul></div></div><p id="94c5bd64-e7a1-4061-a765-608d3632941e" class=""><em>Example:</em> I want to perform different algorithms on a vector</p><p id="a3332800-031d-441f-8160-dba51598c4f6" class=""><em><strong>class Strategy:</strong></em></p><pre id="7f13175b-e017-4119-9a1d-3ff004c56c22" class="code"><code>template&lt;typename T&gt;
+class Strategy {
+public:
+	virtual ~Strategy() { } // virtual destructor
+
+	// pure virtual method
+	virtual void doAlgorithm(std::vector&lt;T&gt;&amp;) = 0;
+};</code></pre><ul id="7f68dc98-db28-495e-a95c-ff56063876ef" class="bulleted-list"><li style="list-style-type:disc">Abstract Strategy class.</li></ul><ul id="53160235-b2f0-43d7-b829-4214e0b42222" class="bulleted-list"><li style="list-style-type:disc">Concrete strategy classes will inherit from this class.</li></ul><ul id="344d53e6-e89f-4ac2-bf32-54da5ee84f47" class="bulleted-list"><li style="list-style-type:disc">Needs nothing but a pure virtual method.</li></ul><p id="b794f20c-6b59-4a87-804c-fbde06ec308b" class="">
+</p><p id="dbbf9ab0-5cb7-49bc-b7e3-e061222a428f" class=""><em><strong>class Context:</strong></em></p><pre id="46aace6e-4ca5-4eed-9b5b-ec2b91117bb5" class="code"><code>template &lt;typename T&gt;
+class Context {
+	std::vector&lt;T&gt; v;
+	Strategy&lt;T&gt;* strategy; // Context owns Strategy, so if Context is destroyed,
+												 // Strategy is destroyed as well.
+public:
+	Context(std::vector&lt;T&gt; v):
+		v{v}, strategy{nullptr} { }
+	~Context() {delete strategy;}
+
+	// changing strategy
+	void setStrategy(const std::string&amp; str) { // strategy is changed whenever necessary
+		delete strategy;
+		if (str == &quot;add&quot;) {
+			// implementation not shown
+		} else if (str == &quot;sort&quot;) {
+			// implementation not shown
+		} else {
+			// implementation not shown
+		}
+	}
+	
+	// applying the strategy
+	void doSomething() { // perform the current strategy we have
+		if (strategy != nullptr) {
+			std::cout &lt;&lt; &quot;doing some algorithms&quot; &lt;&lt; std::endl;
+			strategy-&gt;doAlgorithm(v);
+		}</code></pre><p id="7a06cc1b-bc6f-4cb5-b82c-95d4d78f5a35" class="">
+</p><p id="bb875078-d9a9-4c96-8752-def95b5e2fd6" class=""><em><strong>Concrete class derived from class Strategy:</strong></em></p><pre id="9d60933a-565f-4bb9-997b-019bae554971" class="code"><code>template&lt;typename T&gt;
+void printVector(const std::vector&lt;T&gt;&amp; v) {
+	for (const T&amp; n : v) {
+		std::cout &lt;&lt; n &lt;&lt; &#x27; &#x27;;
+	}
+	std::cout &lt;&lt; std::endl;
+}
+
+template&lt;typename T&gt;
+class PrintStrategy : public Strategy&lt;T&gt; {
+public:
+	// Implement the pure virtual method
+	virtual void doAlgorithm(std::vector&lt;T&gt;&amp; v) override {
+		std::cout &lt;&lt; &quot;print the vector&quot; &lt;&lt; std::endl;
+		printVector(v);
+	}
+};</code></pre><pre id="6e492738-f577-43e8-a5fa-0f53ad110db2" class="code"><code>int main() {
+	std::vector&lt;int&gt; v{5,4,9,10,6};
+
+	Context&lt;int&gt; context{v};
+	context.setStrategy{&quot;add&quot;};
+	context.doSomething();
+}</code></pre><p id="13ac6186-ab7d-4fef-a1e7-fcf8ebf0166a" class=""><strong><em>Result:</em></strong></p><figure id="e33027de-ea4c-4af6-83b8-503a0f0ee116" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2010.png"><img style="width:1105px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2010.png"/></a></figure><p id="e64d2f5b-4b77-424f-868b-117360f15fc9" class="">
+</p><p id="4740c29c-7522-4c79-b673-62a41738a444" class="">If changing strategies, then we will need another concrete class derived from <em>class Strategy</em>.</p><p id="8d9da95a-7029-4a59-9737-42e9cd9bc7d4" class="">For example:</p><pre id="2cdc551e-9dc4-4482-8e2b-ae6dce441de0" class="code"><code>template&lt;typename T&gt;
+class SortStrategy : public Strategy&lt;T&gt; {
+public:
+	void doAlgorithm(std::vector&lt;T&gt;&amp; v) override {
+		std::cout &lt;&lt; &quot;sort the vector&quot; &lt;&lt; std::endl;
+		std::sort(v.begin(), v.end());
+		printVector(v);
+	}
+};</code></pre><pre id="3d2acec9-4033-4d62-b794-6f0fa5d13a56" class="code"><code>int main() {
+	std::vector&lt;int&gt; v{5,4,9,10,6};
+
+	Context&lt;int&gt; context{v};
+	context.setStrategy{&quot;add&quot;};
+	context.doSomething();
+
+	context.setStrategy(&quot;sort&quot;);
+	context.doSomething();
+}
+	</code></pre><p id="6aaf3131-f852-4708-bb2b-679d27174abe" class=""><strong><em>Result:</em></strong></p><figure id="b9d755f2-f316-4771-9b9b-d001c4eb2f9b" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2011.png"><img style="width:1028px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2011.png"/></a></figure><p id="4dbc31b1-2600-4f6d-9ca8-290c5146b160" class="">
+</p><p id="e325c98d-c63e-4244-9ce8-4a5511049961" class="">
+</p><h1 id="50aafc61-8ddf-418d-bcfc-88faca66fdb9" class="">Template Method Design Pattern</h1><ul id="d931f9ec-d22a-405e-b9bd-48875fe9f864" class="bulleted-list"><li style="list-style-type:disc">A behavioral design pattern.</li></ul><ul id="75fbe60b-b5c0-40c3-8b81-908326a1920c" class="bulleted-list"><li style="list-style-type:disc">Defines a skeleton of algorithm in super class.</li></ul><ul id="e7c5f44c-b4e2-4031-8278-82d36f0779d3" class="bulleted-list"><li style="list-style-type:disc">Let derived classes override the methods without changing the overall algorithm structure.</li></ul><figure id="9d941eaf-c6e6-415d-949c-94f380b91886" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2012.png"><img style="width:480px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2012.png"/></a><figcaption>Template Method Design Pattern structure illustration</figcaption></figure><ul id="dff7b418-c370-451e-97a3-93ca142baa3c" class="bulleted-list"><li style="list-style-type:disc">Clients cannot access methods directly.</li></ul><ul id="bbcc2bea-c774-4d48-9bf0-edfcdc507af2" class="bulleted-list"><li style="list-style-type:disc">Clients can only call public method which is most likely a sequence of operations that are fully implemented in the derived classes.</li></ul><p id="9910f968-4d1f-465c-bf01-83ad63f422d6" class="">
+</p><p id="f0fb1828-937c-46b4-827e-63ff5a6bc19d" class=""><em><strong>Example:</strong></em></p><p id="3a813b6f-61ff-4603-a94b-b38279c98628" class=""><strong>Base class</strong></p><figure id="a1f180c0-1e82-4246-b6a0-bee49d894fdc" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2013.png"><img style="width:336px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2013.png"/></a></figure><ul id="32a5d26e-50a4-46a6-88d8-5fb805364de8" class="bulleted-list"><li style="list-style-type:disc">Pure virtual methods will be implemented in derived classes.</li></ul><ul id="281a4725-5b6a-4af5-8e3b-77022a0de5c3" class="bulleted-list"><li style="list-style-type:disc">Clients will only be able to call execute.</li></ul><p id="adac1c5d-a346-4ae0-b009-3cfc86efb6ef" class="">
+</p><p id="c8561e89-036e-4947-83b8-ec3d644bd0da" class=""><strong>Derived classes</strong></p><figure id="9528bb5e-8e62-4a27-abc4-0d65989dcd74" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2014.png"><img style="width:1147px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2014.png"/></a><figcaption>Implement all pure virtual methods to become concrete classes</figcaption></figure><p id="4c4a058a-4148-4681-8303-694d031ac02e" class="">
+</p><p id="f66e47e1-aba3-426e-ae28-89e23f82dccf" class="">Main file:</p><div id="c2a27b45-8e78-49fa-9501-86c9b37c5a93" class="column-list"><div id="86e575e6-5f89-41d3-ab79-049ee654b1f7" style="width:50%" class="column"><figure id="d6010343-8206-41e9-9159-4fe0bf6f0652" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2015.png"><img style="width:336px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2015.png"/></a></figure></div><div id="94f60478-6592-478d-bb6a-8cfa47eda39c" style="width:50%" class="column"><ul id="9350a47d-1e27-4f55-8caa-a1181e8d2873" class="bulleted-list"><li style="list-style-type:disc">Follows the same sequence of operations.</li></ul><ul id="3ce9ea8e-3d76-42e8-9519-bf19fa1ac267" class="bulleted-list"><li style="list-style-type:disc">Compiler choose which method to run <mark class="highlight-red">dynamically</mark></li></ul><ul id="3a06818d-55b7-4e80-b3e1-3df8aca71222" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">Dynamic dispatch</mark></li></ul></div></div><p id="b6b766a9-f522-45ad-9929-c4a59d527054" class=""><strong>Result:</strong></p><figure id="ccd19eb6-071d-40ca-8eb7-c38efaf18fdd" class="image"><a href="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2016.png"><img style="width:982px" src="Design%20Patterns%20(part%201)%20a1ac6e42527a428f9bff080929e70c9e/Untitled%2016.png"/></a></figure><p id="ed621574-add3-4086-9182-f994b7323f55" class="">The specific implementation of Template Method Design Pattern: <strong><mark class="highlight-red">Non-virtual Interface</mark></strong></p><p id="e34018e3-2c0a-4e1c-b7c8-af50a822b414" class="">
+</p></div></article></body></html>
