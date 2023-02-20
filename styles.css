@@ -1,75 +1,220 @@
-// Quantity should be the same in PUG
-$quantity: 15
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
 
-html, body
-  height: 100%
+/* ............................................................... */
+/* ............................................................... */
+/* ............................................................... */
+#retrobg {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  color: #a3c;
+  background-color: #000;
+}
 
-body
-  background: url(https://i.pinimg.com/originals/44/6e/3b/446e3b79395a287ca32f7977dd83b290.jpg)
-  background-size: cover
-    
-.firefly
-  position: fixed
-  left: 50%
-  top: 50%
-  width: 0.4vw
-  height: 0.4vw
-  margin: -0.2vw 0 0 9.8vw
-  animation: ease 200s alternate infinite
-  pointer-events: none
+/* ............................................................... */
+#retrobg-sky {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(#214 75%, #249);
+}
 
-  &::before,
-  &::after
-    content: ''
-    position: absolute
-    width: 100%
-    height: 100%
-    border-radius: 50%
-    transform-origin: -10vw
-  
-  &::before
-    background: black
-    opacity: 0.4
-    animation: drift ease alternate infinite
-  
-  &::after
-    background: white
-    opacity: 0
-    box-shadow: 0 0 0vw 0vw yellow
-    animation: drift ease alternate infinite, flash ease infinite
+/* ............................................................... */
+#retrobg-sunWrap {
+  position: relative;
+  width: 40%;
+  margin-bottom: -15%;
+}
 
-  
-// Randomize Fireflies Motion
-@for $i from 1 through $quantity
-  
-  $steps: random(12) + 16
-  $rotationSpeed: random(10) + 8s
-  
-  .firefly:nth-child(#{$i})
-    animation-name: move#{$i}
+#retrobg-sun {
+  --glow-color: #d44;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-image: linear-gradient(#fcdf11, #ff623f, #fe2085 50%);
+  box-shadow: 0 0 160px 80px var(--glow-color);
+  animation: 2s ease infinite alternate retrobg-sun-glow-anim;
+}
 
-    &::before
-      animation-duration: #{$rotationSpeed}
+.retrobg-shutdown #retrobg-sun {
+  background-image: linear-gradient(#000, #000 40%);
+  --glow-color: #000;
+}
 
-    &::after
-      animation-duration: #{$rotationSpeed}, random(6000) + 5000ms
-      animation-delay: 0ms, random(8000) + 500ms
+@keyframes retrobg-sun-glow-anim {
+  from {
+    box-shadow: 0 0 160px 80px var(--glow-color);
+  }
+  to {
+    box-shadow: 0 0 200px 95px var(--glow-color);
+  }
+}
+/* ............................................................... */
+#retrobg-stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 
-  @keyframes move#{$i}
-    @for $step from 0 through $steps
-      #{$step * (100 / $steps)}%
-        transform: translateX(random(100) - 50vw) translateY(random(100) - 50vh) scale(random(75) / 100 + .25)
+.retrobg-star {
+  position: absolute;
+  border-radius: 50%;
+  width: 2px;
+  height: 2px;
+  background-color: #fff;
+}
 
-@keyframes drift
-  0%
-    transform: rotate(0deg)
-  100%
-    transform: rotate(360deg)
+/* ............................................................... */
+#retrobg-mountains {
+  position: absolute;
+  width: 100%;
+  height: 30%;
+}
 
-@keyframes flash
-  0%, 30%, 100%
-    opacity: 0
-    box-shadow: 0 0 0vw 0vw yellow
-  5%
-    opacity: 1
-    box-shadow: 0 0 2vw 0.4vw yellow
+.retrobg-mountain {
+  position: absolute;
+  width: 30%;
+  height: 100%;
+  background-image: linear-gradient(#000 70%, #111 85%, rgba(255, 255, 255, 0.0666666667));
+}
+
+#retrobg-mountains-left {
+  left: 0;
+  clip-path: polygon(0% 100%, 0% 55%, 5% 60%, 10% 55%, 20% 50%, 25% 42%, 30% 38%, 33% 35%, 40% 45%, 50% 50%, 60% 70%, 70% 85%, 75% 82%, 80% 91%, 85% 90%, 90% 95%, 95% 98%, 100% 100%);
+}
+
+#retrobg-mountains-right {
+  right: 0;
+  clip-path: polygon(0% 100%, 5% 95%, 10% 85%, 15% 87%, 20% 80%, 25% 78%, 30% 65%, 40% 70%, 50% 57%, 60% 53%, 67% 68%, 70% 70%, 75% 66%, 80% 55%, 90% 50%, 95% 60%, 100% 57%, 100% 100%);
+}
+
+/* ............................................................... */
+#retrobg-cityWrap {
+  position: absolute;
+  width: 50%;
+  margin-left: -1%;
+}
+
+#retrobg-city {
+  padding-top: 20%;
+}
+
+.retrobg-building {
+  position: absolute;
+  width: 5%;
+  height: 100%;
+  bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background-image: linear-gradient(0deg, rgba(17, 17, 34, 0), #112 30px, #000);
+}
+
+.retrobg-building:nth-child(odd) {
+  background-image: linear-gradient(0deg, rgba(24, 24, 42, 0), #223 30px, #000);
+}
+
+.retrobg-antenna::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  margin-left: calc(-1px - 5%);
+  bottom: 100%;
+  width: 10%;
+  min-width: 2px;
+  height: 33%;
+  background-color: #000;
+}
+
+/* ............................................................... */
+#retrobg-ground {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 45%;
+  bottom: 0;
+  border-top: 2px solid #bf578c;
+  background-color: #000;
+}
+
+.retrobg-shutdown #retrobg-ground {
+  border-color: #000;
+}
+
+#retrobg-groundShadow {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(#000 0%, transparent);
+}
+
+/* ............................................................... */
+#retrobg-linesWrap {
+  height: 100%;
+  perspective: 1000px;
+  perspective-origin: center top;
+}
+
+#retrobg-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: top center;
+  animation: 0.35s linear infinite retrobg-lines-anim;
+}
+
+.retrobg-shutdown #retrobg-lines {
+  animation-duration: 5s;
+}
+
+@keyframes retrobg-lines-anim {
+  from {
+    transform: rotateX(84deg) translateY(0);
+  }
+  to {
+    transform: rotateX(84deg) translateY(100px);
+  }
+}
+#retrobg-hlines,
+#retrobg-vlines {
+  position: absolute;
+  left: -400%;
+  width: 900%;
+  height: 500%;
+}
+
+#retrobg-vlines {
+  display: flex;
+  justify-content: center;
+}
+
+.retrobg-hline,
+.retrobg-vline {
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+}
+
+.retrobg-hline {
+  height: 3px;
+}
+
+.retrobg-vline {
+  width: 3px;
+}
+
+.retrobg-hline + .retrobg-hline {
+  margin-top: 98px;
+}
+
+.retrobg-vline + .retrobg-vline {
+  margin-left: 48px;
+}
+
+/*# sourceMappingURL=output.css.map */
