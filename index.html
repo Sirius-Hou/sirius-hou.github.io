@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Sirius Hou's Resume</title>
-    <style>
-      /* Center the heading */
-      h1 {
-        text-align: center;
-      }
-      /* Add some style to the section buttons */
-      .button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-      }
-      /* Add some style to the active button */
-      .active {
-        background-color: #007ACC;
-      }
-      /* Style the introduction section */
-      #introduction {
-        padding: 50px;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Add the centered heading -->
-    <h1>Sirius Hou</h1>
-    <!-- Add the section buttons -->
-    <div style="text-align:center">
-      <a href="#projects" class="button">Projects</a>
-      <a href="#skills" class="button">Skills</a>
-      <a href="#activity" class="button">Activity</a>
-      <a href="#awards" class="button">Awards</a>
-      <a href="#education" class="button">Education</a>
-    </div>
-    
-    
-    <!-- Add the introduction section -->
+<head>
+	<title>Sirius Hou</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
+		header {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 30px;
+		}
+		h1 {
+			font-size: 60px;
+			margin: 0;
+		}
+        h2 {
+            font-size: 30px;
+            margin: 0;
+        }
+		nav {
+			background-color: #f2f2f2;
+			overflow: hidden;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			padding: 10px;
+		}
+		nav a {
+			color: #333;
+			text-decoration: none;
+			text-transform: uppercase;
+			font-weight: bold;
+			letter-spacing: 2px;
+			padding: 10px;
+		}
+		nav a:hover {
+			background-color: #ddd;
+			color: #333;
+			border-radius: 5px;
+			transition: background-color 0.5s ease;
+		}
+        section {
+            padding: 30px;
+        }
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Sirius Hou</h1>
+        <h2>Computer Science Student</h2>
+	</header>
+	<nav>
+		<a href="#introduction">Introduction</a>
+		<a href="#education">Education</a>
+		<a href="#skills">Skills</a>
+		<a href="#activity">Activity</a>
+		<a href="#awards">Awards</a>
+		<a href="#projects">Projects</a>
+	</nav>
     <section id="introduction">
-      <h2>Introduction</h2>
-      <ul>
-        <li> something testing here </li>
-        
-      </ul>
-      <p>Introduction about yourself goes here.</p>
+        <h2>Introduction</h2>
+        <p>Introduction about yourself goes here.</p>
     </section>
 
 
