@@ -1,71 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
-    <script src="./index.js"></script>
-  </body>
-</html>
+    <header>
+      <h1>My Portfolio</h1>
+      <nav>
+        <ul>
+          <li><a href="#self-introduction">Self-introduction</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#project">Project</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#activity">Activity</a></li>
+          <li><a href="#awards">Awards</a></li>
+          <li><a href="#education">Education</a></li>
+        </ul>
+      </nav>
+    </header>
 
-<body>
-	<header>
-		<h1>Your Name</h1>
-		<nav>
-			<ul>
-				<li><a href="#about">About</a></li>
-				<li><a href="#projects">Projects</a></li>
-				<li><a href="#internships">Internships</a></li>
-				<li><a href="#skills">Skills</a></li>
-			</ul>
-		</nav>
-	</header>
-	
-	<main>
-		<section id="about">
-			<h2>About Me</h2>
-			<p>Introduce yourself here.</p>
-		</section>
-		
-		<section id="projects">
-			<h2>Projects</h2>
-			<ul>
-				<li><a href="#">Project 1</a></li>
-				<li><a href="#">Project 2</a></li>
-				<li><a href="#">Project 3</a></li>
-			</ul>
-		</section>
-		
-		<section id="internships">
-			<h2>Internships</h2>
-			<ul>
-				<li><a href="#">Internship 1</a></li>
-				<li><a href="#">Internship 2</a></li>
-				<li><a href="#">Internship 3</a></li>
-			</ul>
-		</section>
-		
-		<section id="skills">
-			<h2>Skills</h2>
-			<ul>
-				<li>Programming languages: C++, Python, Java, etc.</li>
-				<li>Tools: MS Word, Excel, LaTeX, etc.</li>
-				<li>Web technologies: HTML, CSS, JavaScript, etc.</li>
-			</ul>
-		</section>
-	</main>
-	
-	<footer>
-		<p>Copyright &copy; Your Name</p>
-	</footer>
-</body>
-</html>
+    <main>
+      <section id="self-introduction">
+        <h2>Self-introduction</h2>
+        <p>Fill in your self-introduction here</p>
+      </section>
 
-
-
+      <section id="experience">
+        <h2>Experience</h2>
+        <ul>
+          <li>
+            <h3>University of Waterloo</h3>
+            <p>Waterloo, ON, Canada</p>
+            <p>Instructional Support Assistant</p>
+            <p>August 2022 ~ December 2022</p>
+            <ul>
+              <li>Designed and tested proprietary configuration files for the auto-grading system, Lint R, to assess and provide feedback on students' assignments, saving over 70% of manual grading time.</li>
+              <li>Developed two Batch scripts to extract and integrate students' assignment completion status and calculate overall class score distributions, reducing spot-checking time by over 60% and minimizing potential system errors.</li>
+              <li>Implemented a C++ program to identify students with unusually low scores, which helped identify system bugs and increased the efficiency of the Lint R system and configuration files by over 50%.</li>
+              <li>Conducted weekly office hours, tutorials, and pre-exam review sessions, gaining extensive public speaking and teaching experience.</li>
+            </ul>
+          </li>
+          <li>
+            <h3>Litchi Future Edu Co., LTD</h3>
+            <p>Guangzhou, China</p>
+            <p>Technical Support Assistant Intern</p>
+            <p>June 2021 ~ August 2021</p>
+            <ul>
+              <li>Inspected and made targeted suggestions about Android SES client application UI.</li>
+              <li>Quality tested system API under Linux environment and reported errors to developers.</li>
+            </ul>
+          </li>
+          <li>
+            <h3>Guangzhou Iridescent Consulting Co., LTD</h3>
+            <p>Guangzhou, China</p>
+            <p>Educational Analyst Intern</p>
+            <p>June 2021 ~ August 2021</p>
+            <ul>
+              <li>Produced quality educational materials covering grammar and reading comprehension. Highly appreciated by employer (reference letter included).</li>
+              <li>Communicated with instructors to customize contents.</li>
+              <li>Proficiently categorize and present course
