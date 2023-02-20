@@ -1,9 +1,3 @@
-document.querySelector( "#retrobg-sun" ).onclick = () => {
-  document.querySelector( "#retrobg" ).classList.toggle( "retrobg-shutdown" );
-};
-
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
